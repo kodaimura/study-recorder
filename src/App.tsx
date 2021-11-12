@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState,useEffect} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+} from 'react-router-dom';
+
+import Login from './components/pages/Login';
+import Signup from './components/pages/Signup';
+import Mypage from './components/pages/Mypage';
+import {apiDomain} from './utils/constants';
+
+
+const App = () => {
+	const [auth, setAuth] = useState(false);
+
+  	useEffect(() => {
+    	fetch(`${apiDomain}/profile`, {
+      		headers: {"Content-Type": "application/json",
+      		Authorization: `Bearer ${localStorage.token}`
+    	}})
+    	.then(response => (response.ok)? setAuth(true) : setAuth(false));
+  	}, []); 
+
+  	return (
+    	<div className="App">
+    	<BrowserRouter>
+        	<Switch>
+          	<Route exact path="/" component={auth? Mypage : Login} />
+          	<Route exact path="/signup" component={Signup} />　
+          	<Route component={Login} />　
+        	</Switch>
+        </BrowserRouter>
+    	</div>
+  	);
 }
 
 export default App;
