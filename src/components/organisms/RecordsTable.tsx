@@ -24,9 +24,11 @@ const postRecord = (
 	year: number,
 	month: number,
 	day: number,
-	comment: string,
+	comment0: string | undefined,
 	minuteTime0: string
 ) => {
+
+	const comment: string = (comment0)? comment0 : ""; 
 	const minuteTime: number = (minuteTime0)? parseInt(minuteTime0) : NaN; 
 
 	if (Number.isNaN(minuteTime)){
@@ -103,7 +105,7 @@ const RecordsTable = (props:{
 	const [data, setData] = useState(fillUpData(year, month, []));
 	const [reload, setReload] = useState(1);
 	const [target, setTarget] = useState(NaN);
-	const [comment, setComment] = useState("");
+	const [comment, setComment] = useState<string | undefined>("");
 	const [minuteTime, setMinuteTime] = useState("")
 
 
@@ -183,7 +185,15 @@ const RecordsTable = (props:{
             <TableCell>
            		<IconButton 
            			size="small"
-           			onClick={() => setTarget((target === index)? NaN : index)}>
+           			onClick={() => {
+           				if (target !== index) {
+           					setTarget(index);
+           					setMinuteTime(record.minuteTime.toString());
+ 	 						setComment(record.comment);
+           				} else {
+           					setTarget(NaN)
+           				}
+           			}}>
            			<EditIcon />
            		</IconButton>
             </TableCell>

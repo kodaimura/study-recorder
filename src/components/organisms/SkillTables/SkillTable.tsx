@@ -291,7 +291,7 @@ const SkillTable = (props:{
            			size="small"
               		onClick={() => {
               			if (target !== index) {
-              				setTarget(index)
+              				setTarget(index);
               				setItem1(row.item1);
  	 						setItem2(row.item2);
  	 						setComment(row.comment);
