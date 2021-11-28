@@ -9,7 +9,7 @@ import { GoalForMonthDto } from './goalForMonth.dto';
 
 
 @Injectable()
-export class GoalService {
+export class GoalsService {
 
 	constructor(
     	@InjectRepository(GoalForYear)

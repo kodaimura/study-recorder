@@ -13,26 +13,26 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { DayPipe, MonthPipe, YearPipe } from '../app.pipe';
-import { RecordService } from './records.service';
+import { RecordsService } from './records.service';
 import { RecordDto } from './record.dto';
 import { CommentDto } from './comment.dto';
 
 
 @Controller('api/records')
-export class RecordController {
+export class RecordsController {
 
-	constructor(private recordService: RecordService) {}
+	constructor(private recordsService: RecordsService) {}
 
 	@Get('record')
 	@UseGuards(AuthGuard('jwt'))
 	async record(@Request() req) {
-		return this.recordService.record(req.user.userNo);
+		return this.recordsService.record(req.user.userNo);
 	} 
 
 	@Get('state')
 	@UseGuards(AuthGuard('jwt'))
 	async getState(@Request() req) {
-		return this.recordService.getRecordState(req.user.userNo);
+		return this.recordsService.getRecordState(req.user.userNo);
 	}
 
 	@Get()
@@ -43,7 +43,7 @@ export class RecordController {
 		@Query('day', DayPipe) day,
 		@Request() req
 	) {
-		return this.recordService.getRecords(
+		return this.recordsService.getRecords(
 			req.user.userNo, year, month, day
 		);
 	} 
@@ -56,7 +56,7 @@ export class RecordController {
 		@Query('day', DayPipe) day,
 		@Request() req
 	) {
-		return this.recordService.getMinuteTimes(
+		return this.recordsService.getMinuteTimes(
 			req.user.userNo, year, month, day
 		);
 	} 
@@ -69,7 +69,7 @@ export class RecordController {
 		@Query('day', DayPipe) day,
 		@Request() req
 	) {
-		return this.recordService.getComments(
+		return this.recordsService.getComments(
 			req.user.userNo, year, month, day
 		);
 	} 
@@ -81,7 +81,7 @@ export class RecordController {
 		@Request() req
 	) {
 		recordDto.userNo = req.user.userNo;
-		return this.recordService.registerRecord(
+		return this.recordsService.registerRecord(
 			recordDto
 		);
 	} 
@@ -93,7 +93,7 @@ export class RecordController {
 		@Request() req
 	) {
 		commentDto.userNo = req.user.userNo;
-		return this.recordService.registerComment(
+		return this.recordsService.registerComment(
 			commentDto
 		);
 	}

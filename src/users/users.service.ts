@@ -25,12 +25,26 @@ export class UsersService {
    		return this.userRepository.findOne({ where: { userId } });
   	}
 
-  	async register(userDate: Omit<User, 'userNo'>): Promise<void> {
+  	async signup(userDate: Omit<User, 'userNo'>): Promise<void> {
   		if(await this.findOne(userDate.userId)) {
   			throw new ConflictException();
   		}
 
   		await this.userRepository.insert({
+  			...userDate,
+  			password: this.hashPassword(userDate.password)
+  		});
+
+  		return;
+  	}
+
+  	async changeProfile(userDate: User): Promise<void> {
+  		const user = await this.findOne(userDate.userId);
+  		if(user && user.userNo !== userDate.userNo) {
+  			throw new ConflictException();
+  		}
+
+  		await this.userRepository.save({
   			...userDate,
   			password: this.hashPassword(userDate.password)
   		});

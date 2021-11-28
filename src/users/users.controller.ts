@@ -1,4 +1,13 @@
-import { Controller, Body, Post, BadRequestException } from '@nestjs/common';
+import { 
+	Request,
+	Controller, 
+	Body, 
+	Post, 
+	BadRequestException,
+	UseGuards 
+} from '@nestjs/common';
+
+import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from './users.service';
 import { SignUpDto } from './signUp.dto';
@@ -17,6 +26,22 @@ export class UsersController {
 
   		delete signUpDto.passwordConfirm;
 
-  		return this.usersService.register(signUpDto);
+  		return this.usersService.signup(signUpDto);
+  	}
+
+  	@Post('changeprofile')
+  	@UseGuards(AuthGuard('jwt'))
+  	async changeProfile(
+  		@Body() signUpDto: SignUpDto,
+  		@Request() req
+  	) {
+  		if (signUpDto.password !== signUpDto.passwordConfirm) {
+  			throw new BadRequestException();
+  		}
+
+  		delete signUpDto.passwordConfirm;
+  		signUpDto.userNo = req.user.userNo;
+
+  		return this.usersService.changeProfile(signUpDto);
   	}
 }

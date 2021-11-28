@@ -16,15 +16,15 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { MonthPipe, YearPipe } from '../app.pipe';
-import { GoalService } from './goals.service';
+import { GoalsService } from './goals.service';
 import { GoalForYearDto } from './goalForYear.dto';
 import { GoalForMonthDto } from './goalForMonth.dto';
 
 
 @Controller('api/goals')
-export class GoalController {
+export class GoalsController {
 
-	constructor(private goalService: GoalService) {}
+	constructor(private goalsService: GoalsService) {}
 
 	@Get('year')
 	@UseGuards(AuthGuard('jwt'))
@@ -32,7 +32,7 @@ export class GoalController {
 		@Query('year', YearPipe) year, 
 		@Request() req,
 	) {
-		return this.goalService.getGoalForYear(req.user.userNo, year);
+		return this.goalsService.getGoalForYear(req.user.userNo, year);
 	}
 
 	@Get('month')
@@ -42,7 +42,7 @@ export class GoalController {
 		@Query('month', MonthPipe) month, 
 		@Request() req,
 	) {
-		return this.goalService.getGoalForMonth(
+		return this.goalsService.getGoalForMonth(
 			req.user.userNo, year, month
 		);
 	}
@@ -54,7 +54,7 @@ export class GoalController {
 		@Body() goalForYearDto: GoalForYearDto,
 	) {
 		goalForYearDto.userNo = req.user.userNo;
-		return this.goalService.registerGoalForYear(goalForYearDto);
+		return this.goalsService.registerGoalForYear(goalForYearDto);
 	}
 
 	@Post('month')
@@ -64,6 +64,6 @@ export class GoalController {
 		@Body() goalForMonthDto: GoalForMonthDto,
 	) {
 		goalForMonthDto.userNo = req.user.userNo;
-		return this.goalService.registerGoalForMonth(goalForMonthDto);
+		return this.goalsService.registerGoalForMonth(goalForMonthDto);
 	}
 }

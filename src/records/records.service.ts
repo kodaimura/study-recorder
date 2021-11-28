@@ -9,7 +9,7 @@ import { CommentDto } from './comment.dto';
 
 
 @Injectable()
-export class RecordService {
+export class RecordsService {
 
 	constructor(
     	@InjectRepository(Record)
@@ -50,7 +50,7 @@ export class RecordService {
   		}
   	}
 
-  	getRecordState(userNo: DailyRecord['userNo']) {
+  	async getRecordState(userNo: DailyRecord['userNo']) {
   		return this.dailyRecordRepository.findOne({
   			select: ['startTime', 'stopTime'],
   			where: {userNo}
