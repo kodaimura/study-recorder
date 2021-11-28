@@ -1,9 +1,10 @@
 import {useState,useEffect} from 'react';
+import {useHistory} from 'react-router';
 import Button from '@mui/material/Button';
-import {parseResponse} from '../../utils/utils';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
+import {parseResponse} from '../../utils/utils';
 import {apiDomain} from '../../utils/constants';
 
 
@@ -33,6 +34,21 @@ const getRecordState = () => {
 
 const RecordButton = () => {
 	const [startTime, setStartTime ] = useState("");
+	const history = useHistory();
+
+	const record = () => {
+		requestRecord()
+		.then(data => {
+      		if (data && data.startTime) {
+   				let startDate = new Date(data.startTime);
+        		setStartTime(startDate.toLocaleDateString() + " " 
+        			+ startDate.toLocaleTimeString() + "~");
+      		}else {
+      			setStartTime("");
+      			history.go(0);
+      		}
+   		 });
+	}
 
 	useEffect(() => {
     	getRecordState().then(data => {
@@ -44,20 +60,9 @@ const RecordButton = () => {
    		 });
  	}, [])
 
-	const record = () => {
-		requestRecord().then(data => {
-      		if (data && data.startTime) {
-   				let startDate = new Date(data.startTime);
-        		setStartTime(startDate.toLocaleDateString() + " " 
-        			+ startDate.toLocaleTimeString() + "~");
-      		}else {
-      			setStartTime("");
-      		}
-   		 });
-	}
 
 	return (
-		<div>
+		<>
 		<Button 
 			variant="contained" 
 			color="error" size="large" 
@@ -67,7 +72,7 @@ const RecordButton = () => {
       	Record
      	</Button>
      	&nbsp;&nbsp;&nbsp;{startTime}
-     	</div> 
+     	</> 
     )
 }
 

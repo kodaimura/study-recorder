@@ -6,9 +6,10 @@ import {
   Route,
 } from 'react-router-dom';
 
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
-import Mypage from './components/pages/Mypage';
+import LoginPage from './components/pages/LoginPage';
+import SignupPage from './components/pages/SignupPage';
+import MyPage from './components/pages/MyPage';
+import ChangeProfilePage from './components/pages/ChangeProfilePage';
 import {apiDomain} from './utils/constants';
 
 
@@ -27,9 +28,10 @@ const App = () => {
     	<div className="App">
     	<BrowserRouter>
         	<Switch>
-          	<Route exact path="/" component={auth? Mypage : Login} />
-          	<Route exact path="/signup" component={Signup} />　
-          	<Route component={Login} />　
+          	<Route exact path="/" component={auth? MyPage : LoginPage} />
+          	<Route exact path="/signup" component={SignupPage} />
+            <Route exact path="/changeprofile" component={ChangeProfilePage} />　
+          	<Route component={LoginPage} />　
         	</Switch>
         </BrowserRouter>
     	</div>

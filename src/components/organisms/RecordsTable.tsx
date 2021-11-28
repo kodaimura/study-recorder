@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,9 +8,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
 import {parseResponse} from '../../utils/utils';
@@ -21,11 +23,11 @@ import {Record} from '../../types/types';
 const postRecord = (
 	year: number,
 	month: number,
-	day: number
+	day: number,
+	comment: string,
+	minuteTime0: string
 ) => {
-	const comment = (document.getElementById("comment") as HTMLInputElement)?.value;
-	const mt = (document.getElementById("minuteTime") as HTMLInputElement)?.value;
-	const minuteTime: number = parseInt(mt); 
+	const minuteTime: number = (minuteTime0)? parseInt(minuteTime0) : NaN; 
 
 	if (Number.isNaN(minuteTime)){
 		alert("Please enter an integer.");
@@ -65,7 +67,7 @@ const compareDate = (
 } 
 
 
-const fillUpDay = (
+const fillUpData = (
 	year: number,
 	month: number,
 	data: Record[]
@@ -86,85 +88,104 @@ const fillUpDay = (
 }
 
 
-const RecordsEditor = (props:{
+const CustomTableCell = styled(TableCell)({ 
+	backgroundColor: "black",
+    color: "white", 
+})
+
+
+const RecordsTable = (props:{
 	year: number,
 	month: number,
 }) => {
 	const year = props.year;
   	const month = props.month;
-	const [filledData, setFilledData] = useState(fillUpDay(year, month, []));
+	const [data, setData] = useState(fillUpData(year, month, []));
 	const [reload, setReload] = useState(1);
-	const [target, setTarget] = useState(0);
+	const [target, setTarget] = useState(NaN);
+	const [comment, setComment] = useState("");
+	const [minuteTime, setMinuteTime] = useState("")
+
 
 	useEffect(() => {
 		getRecords(year, month)
- 	 	.then(data => setFilledData(fillUpDay(year, month, data)));
+ 	 	.then(data => setData(fillUpData(year, month, data)));
 
-  		setTarget(0);
+  		setTarget(NaN);
 	}, [year, month, reload]);
 
-	const CustomCell = styled(TableCell) (props => ({
-		width: props.width,
-	}))
 
 	return (
-		<div>
+		<>
 		<TableContainer component={Paper}>
-		<Table sx={{ minWidth: 500 }} aria-label="simple table">
+		<Table size="small">
         <TableHead>
         <TableRow>
-        <CustomCell width="70px"></CustomCell>
-        <CustomCell width="120px">Year/Month</CustomCell>
-        <CustomCell width="70px">Day</CustomCell>
-        <CustomCell width="70px"></CustomCell>
-        <CustomCell width="90px">Time [m]</CustomCell>
-        <CustomCell>Comment</CustomCell>
+        	<CustomTableCell width="120px">Year/Month</CustomTableCell>
+        	<CustomTableCell width="70px">Day</CustomTableCell>
+        	<CustomTableCell width="90px">Time [m]</CustomTableCell>
+        	<CustomTableCell>Comment</CustomTableCell>
+        	<CustomTableCell width="70px"></CustomTableCell>
+        	<CustomTableCell width="40px"></CustomTableCell>
         </TableRow>
         </TableHead>
 
         <TableBody>
-        {filledData.map((record: Record) => (
+        {data.map((record: Record, index: number) => (
         	<TableRow
-            	key={record.day}
+            	key={index}
             	sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-            <TableCell component="th" scope="row">
-           		<Button 
-              		startIcon={<EditIcon />} 
-              		onClick={() => setTarget(record.day)}
-            	/>
-            </TableCell>
             <TableCell>{record.year}/{record.month}</TableCell>
             <TableCell>{record.day}</TableCell>
             <TableCell>
-            {(target === record.day)? 
-            	<Button 
-            		startIcon={<SaveIcon/>} 
-            		onClick={() => {
-            			postRecord(year, month, record.day)
-            			.then(response => {
-            				setReload(reload * (-1));
-            			});
-            		}}>Save</Button> 
-           		: ""}
-            </TableCell>
-            <TableCell>
-            {(target === record.day)? 
-            	<Input 
-            		id="minuteTime" 
+            {(target === index)? 
+            	<TextField 
+            		size="small"
+            		type="number"
+          			InputLabelProps={{
+            			shrink: true,
+          			}}
             		defaultValue={record.minuteTime} 
+            		onChange={(e) => setMinuteTime(e.target.value)}
             	/> 
             	: record.minuteTime} 
             </TableCell>
             <TableCell>
-            {(target === record.day)? 
+            {(target === index)? 
             	<Input 
+            		size="small"
             		placeholder="free comment"
-            		id="comment" 
             		fullWidth 
             		defaultValue={record.comment} 
+            		onChange={(e) => setComment(e.target.value)}
             	/> 
             	: record.comment}
+            </TableCell>
+            <TableCell>
+            {(target === index)? 
+            	<Button 
+            		size="small"
+            		startIcon={<SaveIcon/>} 
+            		onClick={() => {
+            			postRecord(
+            				year, 
+          					month, 
+            				record.day,
+            				comment,
+            				minuteTime
+            			).then(response => {
+            				setReload(reload * (-1));
+         				});
+        			}}>Save</Button> 
+           		: ""}
+            </TableCell>
+            <TableCell>
+           		<IconButton 
+           			size="small"
+           			onClick={() => setTarget((target === index)? NaN : index)}>
+           			<EditIcon />
+           		</IconButton>
             </TableCell>
             </TableRow>
         ))}
@@ -172,8 +193,8 @@ const RecordsEditor = (props:{
 
       	</Table>
     	</TableContainer>
-		</div>
+		</>
 	);
 }
 
-export default RecordsEditor;
+export default RecordsTable;

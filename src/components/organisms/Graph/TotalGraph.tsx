@@ -1,7 +1,15 @@
 import {useState,useEffect} from 'react';
 import { Line, } from 'react-chartjs-2';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
-import {parseResponse, getTotal} from '../../../utils/utils';
+import {parseResponse, getMinuteTotal, toHour} from '../../../utils/utils';
 import {apiDomain} from '../../../utils/constants';
 import {Record} from '../../../types/types';
 
@@ -122,6 +130,12 @@ const makePlotOptions = (
  	}
 }
 
+const CustomTableCell = styled(TableCell) (props => ({ 
+    backgroundColor: "black",
+    color: "white",
+    fontSize: 20,
+}))
+
 
 const TotalGraph = (plops: {
 	timeUnit: string
@@ -132,23 +146,43 @@ const TotalGraph = (plops: {
 	const [plotOptions, setPlotOptions] = useState(makePlotOptions(6000));
 	const [total, setTotal] = useState(0);
 
+
  	useEffect(() => {
  		getRecords()
  		.then(data => setData(data));
 	}, []);
 
+
     useEffect(() => {
+        setTotal(getMinuteTotal(data));
         setPlotData(makePlotData(data, timeUnit));
-        setTotal(getTotal(data, timeUnit));
-        (timeUnit === "m")? setPlotOptions(makePlotOptions(6000))
-        : setPlotOptions(makePlotOptions(100))
+        setPlotOptions(makePlotOptions((timeUnit === "m")? 6000 : 100));
     }, [timeUnit, data]);
 
+
     return (
-        <div>
-        <h2>Total: {total}[{timeUnit}]</h2>
-        <Line data={plotData} options={plotOptions} />
-        </div>
+        <TableContainer component={Paper}>
+        <Table size="small">
+        <TableHead>
+        <TableRow>
+            <CustomTableCell>
+            Total: {
+                (timeUnit === "m")? total 
+                : toHour(total)}[{timeUnit}]
+            </CustomTableCell>
+        </TableRow>
+        </TableHead>
+        <TableBody>
+        <TableRow>
+            <TableCell>
+            <div style={{ position: "relative", margin: "auto", width: "95%"}}>
+            <Line data={plotData} options={plotOptions} />
+            </div>
+            </TableCell>
+        </TableRow>
+        </TableBody>
+        </Table>
+        </TableContainer>
     );
 }
 

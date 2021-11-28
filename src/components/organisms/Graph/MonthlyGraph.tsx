@@ -1,7 +1,15 @@
 import {useState,useEffect} from 'react';
 import { Line, } from 'react-chartjs-2';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
-import {parseResponse, getTotal} from '../../../utils/utils';
+import {parseResponse, getMinuteTotal, toHour} from '../../../utils/utils';
 import {apiDomain} from '../../../utils/constants';
 
 
@@ -103,6 +111,16 @@ const makePlotOptions = (
   	}
 }
 
+const Content = styled('div') ({
+	backgroundColor: "white",
+})
+
+const CustomTableCell = styled(TableCell) (props => ({ 
+	backgroundColor: "black",
+    color: "white",
+    fontSize: 20,
+}))
+
 
 const MonthlyGraph = (props: {
   	year:number, 
@@ -117,24 +135,47 @@ const MonthlyGraph = (props: {
   	const [plotOptions, setPlotOptions] = useState(makePlotOptions(6000));
   	const [total, setTotal] = useState(0);
 
+
   	useEffect(() => {
     	getRecords(year, month)
     	.then(data => setData(data));
-  	}, [year, month]);
+  	}, []);
+
 
   	useEffect(() => {
-  		makePlotData(year, month, data, timeUnit).then(setPlotData);
-  		(timeUnit === "m")? setPlotOptions(makePlotOptions(6000))
-      	: setPlotOptions(makePlotOptions(10));
-      	setTotal(getTotal(data, timeUnit));
+  		makePlotData(year, month, data, timeUnit)
+  		.then(setPlotData);
 
+        setTotal(getMinuteTotal(data));
+        setPlotOptions(makePlotOptions((timeUnit === "m")? 6000 : 10));
   	}, [data, timeUnit]);
 
+
   	return (
-    	<div>
-    	<h2>Monthly Total: {total}[{timeUnit}]</h2>
-    	<Line data={plotData} options={plotOptions}/>
-    	</div>
+  		<Content>
+  		<TableContainer component={Paper}>
+        <Table size="small">
+        <TableHead>
+        <TableRow>
+        	<CustomTableCell >
+        	Monthly Total: {
+                (timeUnit === "m")? total :
+                 toHour(total)}[{timeUnit}]
+        	</CustomTableCell >
+        </TableRow>
+        </TableHead>
+        <TableBody>
+        <TableRow>
+        	<TableCell>
+        	<div  style={{ position: "relative", margin: "auto", width: "95%"}}>
+        	<Line data={plotData} options={plotOptions} />
+        	</div>
+        	</TableCell>
+        </TableRow>
+        </TableBody>
+        </Table>
+        </TableContainer>
+        </Content>
   	);
 }
 

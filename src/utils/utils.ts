@@ -13,15 +13,19 @@ export const parseResponse = (response: Response) => {
 
 
 //data [{minuteTime: 20}, {minuteTime: 30}, {minuteTime: 10}] 
-//timeUnit : "m" -> getTotal -> 60
-//timeUnit : "h" -> getTotal -> 1
-export const getTotal = (
+//getMinuteTotal -> 60
+export const getMinuteTotal = (
 	data: {
    		minuteTime: number,
 	}[],
 	timeUnit: string = "m"
-) => {
-	const sum = data.reduce((sum, elem) => sum + elem.minuteTime, 0);
-
-	return (timeUnit === "m")? sum : Math.round(sum / 60 * 100) / 100;
+): number => {
+	return data.reduce((sum, elem) => sum + elem.minuteTime, 0);
 }
+
+
+export const toHour = (
+	minute: number
+):number => {
+	return Math.round(minute / 60 * 100) / 100;
+} 

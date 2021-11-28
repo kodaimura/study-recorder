@@ -1,34 +1,29 @@
+import React from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 
-import React from 'react';
+const CustomAppBar = styled(AppBar) ({
+	backgroundColor: "black",
+});
+
 
 const Header = (props: {
-	userName?: string,
-	button?: React.ReactNode
+	rightContent: React.ReactNode
 }) => {
-	const userName = props.userName;
-	const button = props.button;
-
-	const Header = styled(AppBar) ({
-		backgroundColor: "black",
-	});
 
 	return (
-		<Header position="static">
+		<CustomAppBar position="static">
 		<Toolbar>
 		<Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
       	STUDY RECORDER
         </Typography>
-        <Typography variant="h6">
-      	{(userName)? `${userName}　` : ""}
-        </Typography>
-		{button}
+		{props.rightContent}
 		</ Toolbar>
-		</Header>
+		</CustomAppBar>
 	);
 }
 

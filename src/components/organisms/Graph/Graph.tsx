@@ -13,9 +13,9 @@ const Graph = (props: {
 	const [timeUnit, setTimeUnit] = useState("m");
 
 	return (
-		<div>
+		<>
 		<Button 
-			variant="outlined" 
+			variant="text" 
 			size="large" 
 			onClick={()=> (timeUnit === "m")? setTimeUnit("h") : setTimeUnit("m")} 
 		>
@@ -23,17 +23,17 @@ const Graph = (props: {
 		</Button>
 
 		<Button 
-			variant="outlined" 
+			variant="text" 
 			size="large" 
 			onClick={() => setMode(mode * (-1))} 
 		>
-		{(mode === 1)? "→ Total Graph" : "→ Monthly Graph"}
+		{(mode === 1)? "Total Graph" : "Monthly Graph"}
 		</Button>
 
 		{(mode === 1)? 
 			<MonthlyGraph year={props.year} month={props.month} timeUnit={timeUnit} />
 			:<TotalGraph timeUnit={timeUnit} />}
-		</div>
+		</>
 	);
 }
 
