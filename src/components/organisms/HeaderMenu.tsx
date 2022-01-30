@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -38,6 +39,7 @@ const HeaderMenu = () => {
  	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   	const open = Boolean(anchorEl);
   	const [userName, setUserName] = useState("");
+  	const history = useHistory();
 
 	useEffect(() => {
 		getProfile()
@@ -104,11 +106,11 @@ const HeaderMenu = () => {
         	<Typography variant="body2" color="text.secondary">
         	</Typography>
         </MenuItem>
-        <MenuItem onClick={() => document.location.href = "/changeprofile"}>
+        <MenuItem onClick={() => history.push("/changeprofile") }>
         	<Avatar /> Change Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => document.location.href = "/"}>
+        <MenuItem onClick={() => history.push("/") }>
         	<ListItemIcon>
         	<Home fontSize="small" />
         	</ListItemIcon>

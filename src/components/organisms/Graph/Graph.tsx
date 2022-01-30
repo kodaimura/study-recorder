@@ -10,7 +10,7 @@ const Graph = (props: {
 	month: number,
 })=> {
 	const [mode, setMode] = useState(1);
-	const [timeUnit, setTimeUnit] = useState("m");
+	const [timeUnit, setTimeUnit] = useState("h");
 
 	return (
 		<>

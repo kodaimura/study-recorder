@@ -210,7 +210,7 @@ const RecordsCalendar = (props: {
 	const year = props.year;
     const month = props.month;
     const [data, setData] = useState([[{year: 0, month: 0, day:0, minuteTime:0}]]);
-    const [timeUnit, setTimeUnit] = useState("m");
+    const [timeUnit, setTimeUnit] = useState("h");
     const [total, setTotal] = useState(0);
 
 

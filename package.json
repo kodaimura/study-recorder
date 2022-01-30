@@ -1,7 +1,6 @@
 {
   "name": "study-recorder-client",
   "version": "0.1.0",
-  "homepage": "./",
   "private": true,
   "proxy": "http://localhost:3000",
   "dependencies": {
@@ -27,7 +26,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
