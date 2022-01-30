@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 import { SignUpDto } from './signUp.dto';
 
 
-@Controller('api')
+@Controller()
 export class UsersController {
 
 	constructor(private usersService: UsersService) {}

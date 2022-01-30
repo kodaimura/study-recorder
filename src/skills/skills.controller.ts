@@ -21,7 +21,7 @@ import { SkillDto } from './skill.dto';
 import { SkillCategoryDto } from './skillCategory.dto';
 
 
-@Controller('api/skills')
+@Controller('skills')
 export class SkillsController {
 
 	constructor(private skillsService: SkillsService) {}

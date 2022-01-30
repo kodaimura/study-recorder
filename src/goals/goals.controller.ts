@@ -21,7 +21,7 @@ import { GoalForYearDto } from './goalForYear.dto';
 import { GoalForMonthDto } from './goalForMonth.dto';
 
 
-@Controller('api/goals')
+@Controller('goals')
 export class GoalsController {
 
 	constructor(private goalsService: GoalsService) {}

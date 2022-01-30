@@ -18,7 +18,7 @@ import { RecordDto } from './record.dto';
 import { CommentDto } from './comment.dto';
 
 
-@Controller('api/records')
+@Controller('records')
 export class RecordsController {
 
 	constructor(private recordsService: RecordsService) {}
