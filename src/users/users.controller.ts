@@ -10,7 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from './users.service';
-import { SignUpDto } from './signUp.dto';
+import { SignUpDto, ChangePasswordDto } from './users.dto';
 
 
 @Controller()
@@ -20,28 +20,15 @@ export class UsersController {
 
 	@Post('signup')
   	async signup(@Body() signUpDto: SignUpDto) {
-  		if (signUpDto.password !== signUpDto.passwordConfirm) {
-  			throw new BadRequestException();
-  		}
-
-  		delete signUpDto.passwordConfirm;
-
   		return this.usersService.signup(signUpDto);
   	}
 
-  	@Post('changeprofile')
+  	@Post('passwordchange')
   	@UseGuards(AuthGuard('jwt'))
-  	async changeProfile(
-  		@Body() signUpDto: SignUpDto,
+  	async changePassword(
+  		@Body() changePasswordDto: ChangePasswordDto,
   		@Request() req
   	) {
-  		if (signUpDto.password !== signUpDto.passwordConfirm) {
-  			throw new BadRequestException();
-  		}
-
-  		delete signUpDto.passwordConfirm;
-  		signUpDto.userNo = req.user.userNo;
-
-  		return this.usersService.changeProfile(signUpDto);
+  		return this.usersService.changePassword(req.user.username, changePasswordDto);
   	}
 }

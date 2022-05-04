@@ -10,14 +10,13 @@ import { AuthService, PasswordOmitUser } from './auth.service';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   	constructor(private authService: AuthService) {
     	//LocalStrategy デフォルトではusernameとpasswordを使う認証
-    	//username ->userId
-    	super({ usernameField: "userId" });
+    	super();
   	}
 
   	//認証
-  	async validate(userId: User['userId'], password: User['password'])
+  	async validate(username: User['username'], password: User['password'])
   	: Promise<PasswordOmitUser> {
-    	const user = await this.authService.validateUser(userId, password);
+    	const user = await this.authService.validateUser(username, password);
     	if (!user) {
       		throw new UnauthorizedException();
     	}

@@ -31,7 +31,7 @@ import { SkillCategory } from './skills/skillCategory.entity';
     	TypeOrmModule.forRoot({
       		type: 'sqlite',
       		database: 'study-recorder.db',
-      		synchronize: true,  
+      		synchronize: false,  
       		entities: [User, GoalForMonth, GoalForYear, Record, DailyRecord,
       					Skill, SkillCategory],
     	}),

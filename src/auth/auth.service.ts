@@ -15,9 +15,9 @@ export class AuthService {
 	){}
 
 	//認証処理
-	async validateUser(userId: User['userId'], pass: User['password'])
+	async validateUser(username: User['username'], pass: User['password'])
 	: Promise< PasswordOmitUser | null> {
-		const user = await this.usersService.findOne(userId);
+		const user = await this.usersService.findOne(username);
     	if (user && user.password === this.usersService.hashPassword(pass)) {
       		const { password, ...result } = await user;
       		return result;
@@ -28,9 +28,9 @@ export class AuthService {
 
   	//jwtを返す
   	async login(user: PasswordOmitUser) {
-    	const payload = { userNo: user.userNo, userName: user.userName };
+    	const payload = { userNo: user.userNo, username: user.username };
     	return {
-    		userName: user.userName,
+    		username: user.username,
       		access_token: this.jwtService.sign(payload),
     	};
   	}

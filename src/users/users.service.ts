@@ -1,9 +1,14 @@
-import { Injectable, ConflictException  } from '@nestjs/common';
+import { 
+	Injectable, 
+	ConflictException, 
+	BadRequestException 
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
 
 import { User } from './user.entity';
+import { SignUpDto, ChangePasswordDto } from './users.dto';
 
 
 @Injectable()
@@ -21,33 +26,38 @@ export class UsersService {
 			.digest('hex')
 	}
 
-  	async findOne(userId: User['userId']): Promise<User | undefined> {
-   		return this.userRepository.findOne({ where: { userId } });
+  	async findOne(username: User['username']): Promise<User | undefined> {
+   		return this.userRepository.findOne({ where: { username } });
   	}
 
-  	async signup(userDate: Omit<User, 'userNo'>): Promise<void> {
-  		if(await this.findOne(userDate.userId)) {
+  	async signup(signUpDto: SignUpDto): Promise<void> {
+  		if(await this.findOne(signUpDto.username)) {
   			throw new ConflictException();
   		}
 
   		await this.userRepository.insert({
-  			...userDate,
-  			password: this.hashPassword(userDate.password)
+  			...signUpDto,
+  			password: this.hashPassword(signUpDto.password)
   		});
 
   		return;
   	}
 
-  	async changeProfile(userDate: User): Promise<void> {
-  		const user = await this.findOne(userDate.userId);
-  		if(user && user.userNo !== userDate.userNo) {
-  			throw new ConflictException();
-  		}
-
-  		await this.userRepository.save({
-  			...userDate,
-  			password: this.hashPassword(userDate.password)
-  		});
+  	async changePassword(username: User['username'], changePasswordDto: ChangePasswordDto): Promise<void> {
+  		const user = await this.findOne(username);
+ 
+ 		if (user && user.password === this.hashPassword(changePasswordDto.password)) {
+ 			await this.userRepository.update(
+ 				{ 
+ 					username: username
+ 				},
+ 				{
+  					password: this.hashPassword(changePasswordDto.newPassword)
+  				}
+  			);
+    	} else {
+    		throw new BadRequestException();
+    	}
 
   		return;
   	}
