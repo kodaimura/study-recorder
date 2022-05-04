@@ -90,7 +90,7 @@ const HeaderMenu = () => {
         	</Typography>
         </MenuItem>
         <MenuItem onClick={() => history.push("/passwordchange") }>
-        	<Avatar /> Change Profile
+        	<Avatar /> Change Password
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => history.push("/") }>
