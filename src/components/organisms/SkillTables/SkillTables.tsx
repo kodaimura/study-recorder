@@ -5,19 +5,19 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 
 import SkillTable from './SkillTable';
-import {parseResponse} from '../../../utils/utils';
-import {apiDomain} from '../../../utils/constants';
+import {responseFilter} from '../../../utils/utils';
+import {apiurl} from '../../../utils/constants';
 import DeleteDialog from '../../parts/DeleteDialog';
 
 
 const getCategories = () => {
-	return fetch(`${apiDomain}/skills/categories`, {
+	return fetch(`${apiurl}/skills/categories`, {
      	headers: {
       		"Content-Type": "application/json",
       		Authorization: `Bearer ${localStorage.token}`
     	}
     })
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 
@@ -26,7 +26,7 @@ const postCategry = (
 	categoryName: string
 ) => {
 
-	return fetch(`${apiDomain}/skills/categories`, {
+	return fetch(`${apiurl}/skills/categories`, {
      	method: "POST",
       	headers: {
       		"Content-Type": "application/json",
@@ -40,7 +40,7 @@ const postCategry = (
 const deleteCategory = (
 	categoryId: number
 ) => {
-	return fetch(`${apiDomain}/skills/categories/${categoryId}`, {
+	return fetch(`${apiurl}/skills/categories/${categoryId}`, {
 		method: "DELETE",
      	headers: {
       		"Content-Type": "application/json",

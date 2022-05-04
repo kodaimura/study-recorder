@@ -1,7 +1,11 @@
+import {useState} from 'react';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
+
+import {signup} from '../../utils/common-requests';
+
 
 const ErrorMessage = styled("div") ({
 	color: "red"
@@ -11,41 +15,34 @@ const TextInput = styled(TextField) ({
 	width: 300
 })
 
-const SignupForm = (props :{
-	onChange1: (event: React.ChangeEvent<HTMLInputElement>) => void,
-	onChange2: (event: React.ChangeEvent<HTMLInputElement>) => void,
-	onChange3: (event: React.ChangeEvent<HTMLInputElement>) => void,
-	onChange4: (event: React.ChangeEvent<HTMLInputElement>) => void,
-	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
-	buttonText?: string,
-	errorMessage: string
-}) => {
+
+const SignupForm = () => {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirm, setPasswordConfig] = useState("");
+	const [errorMsg, setErrorMsg] = useState("");
 
 	return (
 		<Grid 
-			container 
+			container
 			direction="column" 
 			alignItems="center" 
 			justifyContent="center" 
-			style={{ height: '80vh' }} 
+			style={{ height: '70vh' }} 
 			spacing={2}
 		>
 		<Grid item>
-		<TextInput 
-			label="Name" 
-			required 
-			fullWidth 
-			variant="filled"
-			onChange={props.onChange1}
-		/>
+			<em>
+			Create a new account.
+			</em>
 		</Grid>
 		<Grid item>
 		<TextInput 
-			label="ID" 
+			label="Username"
 			required 
-			fullWidth  
+			fullWidth 
 			variant="filled"
-			onChange={props.onChange2}
+			onChange={(e) => setUsername(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
@@ -55,7 +52,7 @@ const SignupForm = (props :{
 			fullWidth 
 			type="password" 
 			variant="filled"
-			onChange={props.onChange3}
+			onChange={(e) => setPassword(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
@@ -65,7 +62,7 @@ const SignupForm = (props :{
 			fullWidth  
 			type="password" 
 			variant="filled"
-			onChange={props.onChange4}
+			onChange={(e) => setPasswordConfig(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
@@ -73,12 +70,12 @@ const SignupForm = (props :{
 			size="large" 
 			variant="contained" 
 			color="primary" 
-			onClick={props.onClick} 
-		>{(props.buttonText)? props.buttonText : "SIGN UP"}</ Button>
+			onClick={() => signup(username, password, passwordConfirm, setErrorMsg)}
+		>Signup</ Button>
 		</Grid>
 		<Grid item>
 		<ErrorMessage>
-		{props.errorMessage}
+		{errorMsg}
 		</ErrorMessage>
 		</Grid>
 		</Grid>

@@ -15,36 +15,19 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Home from '@mui/icons-material/Home';
 
-import {parseResponse} from '../../utils/utils';
-import {apiDomain} from '../../utils/constants';
-
-
-const logout = () => {
-	localStorage.removeItem("token");
-	document.location.href = "/";
-}
-
-const getProfile = () => {
-	return fetch(`${apiDomain}/profile`, {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${localStorage.token}`
-	}})
-	.then(parseResponse)
-	.catch(console.error);
-}
+import {getProfile, logout} from '../../utils/common-requests';
 
 
 const HeaderMenu = () => {
  	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   	const open = Boolean(anchorEl);
-  	const [userName, setUserName] = useState("");
+  	const [username, setUsername] = useState("");
   	const history = useHistory();
 
 	useEffect(() => {
 		getProfile()
 		.then(data => {
-			if (data && data.userName) setUserName(data.userName);
+			if (data && data.username) setUsername(data.username);
 		});
 	}, [])
 
@@ -62,7 +45,7 @@ const HeaderMenu = () => {
   		<Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center'}}>
         <Tooltip title="Account settings">
         	<IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 36, height: 36 }}>{userName.charAt(0)}</Avatar>
+            <Avatar sx={{ width: 36, height: 36 }}>{username.charAt(0)}</Avatar>
           	</IconButton>
         </Tooltip>
       	</Box>
@@ -102,11 +85,11 @@ const HeaderMenu = () => {
        		anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       	>
       	<MenuItem>
-        	<ListItemText>{userName}</ListItemText>
+        	<ListItemText>{username}</ListItemText>
         	<Typography variant="body2" color="text.secondary">
         	</Typography>
         </MenuItem>
-        <MenuItem onClick={() => history.push("/changeprofile") }>
+        <MenuItem onClick={() => history.push("/passwordchange") }>
         	<Avatar /> Change Profile
         </MenuItem>
         <Divider />

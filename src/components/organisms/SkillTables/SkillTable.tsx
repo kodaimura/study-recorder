@@ -16,8 +16,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import {parseResponse} from '../../../utils/utils';
-import {apiDomain} from '../../../utils/constants';
+import {responseFilter} from '../../../utils/utils';
+import {apiurl} from '../../../utils/constants';
 import DeleteDialog from '../../parts/DeleteDialog';
 
 
@@ -32,7 +32,7 @@ const postSkill = (
 	let postData: any = {categoryId, item1, item2, comment};
 	if (skillNo) postData.skillNo = skillNo;
 
-	return fetch(`${apiDomain}/skills`, {
+	return fetch(`${apiurl}/skills`, {
      	method: "POST",
       	headers: {
       		"Content-Type": "application/json",
@@ -47,7 +47,7 @@ const postCategry = (
 	categoryName: string
 ) => {
 
-	return fetch(`${apiDomain}/skills/categories`, {
+	return fetch(`${apiurl}/skills/categories`, {
      	method: "POST",
       	headers: {
       		"Content-Type": "application/json",
@@ -60,26 +60,26 @@ const postCategry = (
 const getSkills = (
 	categoryId: number
 ) => {
-	return fetch(`${apiDomain}/skills?categoryId=${categoryId}`, {
+	return fetch(`${apiurl}/skills?categoryId=${categoryId}`, {
      	headers: {
       		"Content-Type": "application/json",
       		Authorization: `Bearer ${localStorage.token}`
     	}
     })
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 
 const getCategory = (
 	categoryId: number
 ) => {
-	return fetch(`${apiDomain}/skills/categories?categoryId=${categoryId}`, {
+	return fetch(`${apiurl}/skills/categories?categoryId=${categoryId}`, {
      	headers: {
       		"Content-Type": "application/json",
       		Authorization: `Bearer ${localStorage.token}`
     	}
     })
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 
@@ -87,14 +87,14 @@ const getCategory = (
 const deleteSkill = (
 	skillNo: number
 ) => {
-	return fetch(`${apiDomain}/skills/${skillNo}`, {
+	return fetch(`${apiurl}/skills/${skillNo}`, {
 		method: "DELETE",
      	headers: {
       		"Content-Type": "application/json",
       		Authorization: `Bearer ${localStorage.token}`
     	}
     })
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 

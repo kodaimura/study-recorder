@@ -1,1 +1,1 @@
-export const apiDomain = "/api";
+export const apiurl = "/api";

@@ -14,20 +14,20 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import {parseResponse} from '../../utils/utils';
-import {apiDomain} from '../../utils/constants';
+import {responseFilter} from '../../utils/utils';
+import {apiurl} from '../../utils/constants';
 
 
 const getGoalForYear = (
     year: number,
 ) => {
-    return fetch(`${apiDomain}/goals/year?year=${year}`, {
+    return fetch(`${apiurl}/goals/year?year=${year}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
         }
     })
-    .then(parseResponse)
+    .then(responseFilter)
     .catch(console.error);
 }
 
@@ -36,7 +36,7 @@ const postGoalForYear = (
     year: number,
     goal: string
 ) => {
-    return fetch(`${apiDomain}/goals/year`, {
+    return fetch(`${apiurl}/goals/year`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -53,13 +53,13 @@ const getGoalForMonth = (
     year: number,
     month: number,
 ) => {
-    return fetch(`${apiDomain}/goals/month?year=${year}&month=${month}`, {
+    return fetch(`${apiurl}/goals/month?year=${year}&month=${month}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
         }
     })
-    .then(parseResponse)
+    .then(responseFilter)
     .catch(console.error);
 }
 
@@ -70,7 +70,7 @@ const postGoalForMonth = (
     goal: string
 ) => {
 
-    return fetch(`${apiDomain}/goals/month`, {
+    return fetch(`${apiurl}/goals/month`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

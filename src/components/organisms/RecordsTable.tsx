@@ -15,8 +15,8 @@ import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {parseResponse} from '../../utils/utils';
-import {apiDomain} from '../../utils/constants';
+import {responseFilter} from '../../utils/utils';
+import {apiurl} from '../../utils/constants';
 import {Record} from '../../types/types';
 
 
@@ -35,7 +35,7 @@ const postRecord = (
 		alert("Please enter an integer.");
 	}
 		
-	return fetch(`${apiDomain}/records`, {
+	return fetch(`${apiurl}/records`, {
      	method: "POST",
       	headers: {
       		"Content-Type": "application/json",
@@ -50,13 +50,13 @@ const getRecords = (
 	year: number,
 	month: number,
 ) => {
-	return fetch(`${apiDomain}/records?year=${year}&month=${month}`, {
+	return fetch(`${apiurl}/records?year=${year}&month=${month}`, {
      	headers: {
       		"Content-Type": "application/json",
       		Authorization: `Bearer ${localStorage.token}`
     	}
     })
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 

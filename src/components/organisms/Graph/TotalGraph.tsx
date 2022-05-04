@@ -9,19 +9,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {parseResponse, getMinuteTotal, toHour} from '../../../utils/utils';
-import {apiDomain} from '../../../utils/constants';
+import {responseFilter, getMinuteTotal, toHour} from '../../../utils/utils';
+import {apiurl} from '../../../utils/constants';
 import {Record} from '../../../types/types';
 
 
 const getRecords = () => {
-    return fetch(`${apiDomain}/records`, {
+    return fetch(`${apiurl}/records`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
         }
     })
-    .then(parseResponse)
+    .then(responseFilter)
     .catch(console.error);
 }
 

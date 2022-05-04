@@ -4,30 +4,30 @@ import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
-import {parseResponse} from '../../utils/utils';
-import {apiDomain} from '../../utils/constants';
+import {responseFilter} from '../../utils/utils';
+import {apiurl} from '../../utils/constants';
 
 
 const requestRecord = () => {
-  	return fetch(`${apiDomain}/records/record`, {
+  	return fetch(`${apiurl}/records/record`, {
       	headers: {
         	"Content-Type": "application/json",
         	Authorization: `Bearer ${localStorage.token}`
       	}
   	})
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 
 
 const getRecordState = () => {
-  	return fetch(`${apiDomain}/records/state`, {
+  	return fetch(`${apiurl}/records/state`, {
       	headers: {
         	"Content-Type": "application/json",
         	Authorization: `Bearer ${localStorage.token}`
       	}
   	})
-  	.then(parseResponse)
+  	.then(responseFilter)
   	.catch(console.error);
 }
 
