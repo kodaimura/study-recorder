@@ -5,50 +5,12 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 
 import SkillTable from './SkillTable';
-import {responseFilter} from '../../../utils/utils';
-import {apiurl} from '../../../utils/constants';
-import DeleteDialog from '../../parts/DeleteDialog';
-
-
-const getCategories = () => {
-	return fetch(`${apiurl}/skills/categories`, {
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.then(responseFilter)
-  	.catch(console.error);
-}
-
-
-const postCategry = (
-	categoryName: string
-) => {
-
-	return fetch(`${apiurl}/skills/categories`, {
-     	method: "POST",
-      	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-      	},
-      	body: JSON.stringify({categoryName})
-    }).catch(console.error);
-}
-
-
-const deleteCategory = (
-	categoryId: number
-) => {
-	return fetch(`${apiurl}/skills/categories/${categoryId}`, {
-		method: "DELETE",
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.catch(console.error);
-}
+import DeleteDialog from '../shared/DeleteDialog';
+import {
+	postCategry,
+	getCategories,
+	deleteCategory
+} from '../../apis/skills.api';
 
 
 const SkillTables = () => {

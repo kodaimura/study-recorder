@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {signup} from '../../utils/common-requests';
+import {signup} from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({

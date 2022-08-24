@@ -15,51 +15,12 @@ import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {responseFilter} from '../../utils/utils';
-import {apiurl} from '../../utils/constants';
 import {Record} from '../../types/types';
 
-
-const postRecord = (
-	year: number,
-	month: number,
-	day: number,
-	comment0: string | undefined,
-	minuteTime0: string
-) => {
-
-	const comment: string = (comment0)? comment0 : ""; 
-	const minuteTime: number = (minuteTime0)? parseInt(minuteTime0) : NaN; 
-
-	if (Number.isNaN(minuteTime)){
-		alert("Please enter an integer.");
-	}
-		
-	return fetch(`${apiurl}/records`, {
-     	method: "POST",
-      	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-      	},
-      	body: JSON.stringify({year, month, day, minuteTime, comment})
-    }).catch(console.error);
-}
-
-
-const getRecords = (
-	year: number,
-	month: number,
-) => {
-	return fetch(`${apiurl}/records?year=${year}&month=${month}`, {
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.then(responseFilter)
-  	.catch(console.error);
-}
-
+import {
+    getRecordsByYearMonth,
+    postRecord
+} from '../../apis/records.api'
 
 const compareDate = (
   	a: {day: number}, 
@@ -96,7 +57,7 @@ const CustomTableCell = styled(TableCell)({
 })
 
 
-const RecordsTable = (props:{
+const RecordTable = (props:{
 	year: number,
 	month: number,
 }) => {
@@ -110,7 +71,7 @@ const RecordsTable = (props:{
 
 
 	useEffect(() => {
-		getRecords(year, month)
+		getRecordsByYearMonth(year, month)
  	 	.then(data => setData(fillUpData(year, month, data)));
 
   		setTarget(NaN);
@@ -207,4 +168,4 @@ const RecordsTable = (props:{
 	);
 }
 
-export default RecordsTable;
+export default RecordTable;

@@ -4,7 +4,7 @@
 export const responseFilter = (response: Response) => {
 	if (!response.ok){
    		if (response.status === 401) {
-      		document.location.href = "/";
+      		document.location.href = "/login";
     	}
     	throw new Error(response.statusText);
   	}

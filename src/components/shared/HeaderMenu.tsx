@@ -1,5 +1,5 @@
-import React, {useState,useEffect} from 'react';
-import {useHistory} from 'react-router-dom';
+import React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -15,22 +15,15 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import Home from '@mui/icons-material/Home';
 
-import {getProfile, logout} from '../../utils/common-requests';
+import {logout} from '../../apis/users.api';
 
 
-const HeaderMenu = () => {
+const HeaderMenu = (props: {
+    username: string
+}) => {
  	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   	const open = Boolean(anchorEl);
-  	const [username, setUsername] = useState("");
-  	const history = useHistory();
-
-	useEffect(() => {
-		getProfile()
-		.then(data => {
-			if (data && data.username) setUsername(data.username);
-		});
-	}, [])
-
+  	const navigate = useNavigate();
 
   	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     	setAnchorEl(event.currentTarget);
@@ -45,7 +38,9 @@ const HeaderMenu = () => {
   		<Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center'}}>
         <Tooltip title="Account settings">
         	<IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-            <Avatar sx={{ width: 36, height: 36 }}>{username.charAt(0)}</Avatar>
+            <Avatar sx={{ width: 36, height: 36 }}>
+            {props.username.charAt(0)}
+            </Avatar>
           	</IconButton>
         </Tooltip>
       	</Box>
@@ -85,15 +80,15 @@ const HeaderMenu = () => {
        		anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       	>
       	<MenuItem>
-        	<ListItemText>{username}</ListItemText>
+        	<ListItemText>{props.username}</ListItemText>
         	<Typography variant="body2" color="text.secondary">
         	</Typography>
         </MenuItem>
-        <MenuItem onClick={() => history.push("/passwordchange") }>
+        <MenuItem onClick={() => navigate("/passwordchange") }>
         	<Avatar /> Change Password
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => history.push("/") }>
+        <MenuItem onClick={() => navigate("/") }>
         	<ListItemIcon>
         	<Home fontSize="small" />
         	</ListItemIcon>

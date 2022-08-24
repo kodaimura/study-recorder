@@ -10,25 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-import {responseFilter, getMinuteTotal, toHour} from '../../utils/utils';
-import {apiurl} from '../../utils/constants';
+import {getMinuteTotal, toHour} from '../../utils/utils';
 import {Record} from '../../types/types';
 
-
-const getRecords = (
-	year: number,
-	month: number,
-) => {
-	return fetch(`${apiurl}/records?year=${year}&month=${month}`, {
-		mode: 'cors',
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        }
-    })
-    .then(responseFilter)
-    .catch(console.error);
-}
+import {
+    getRecordsByYearMonth
+} from '../../apis/records.api'
 
 
 const compareDate = (
@@ -203,7 +190,7 @@ const CustomTableCell = styled(TableCell) (props => ({
     borderLeft: "1px solid rgba(224, 224, 224, 1)"
 }))
 
-const RecordsCalendar = (props: {
+const RecordCalendar = (props: {
 	year: number, 
 	month: number
 }) => {
@@ -215,7 +202,7 @@ const RecordsCalendar = (props: {
 
 
   	useEffect(() => {
-    	getRecords(year, month)
+    	getRecordsByYearMonth(year, month)
     	.then(records => {
     		if (records) {
     			setTotal(getMinuteTotal(records));
@@ -265,4 +252,4 @@ const RecordsCalendar = (props: {
      )
 }
 
-export default RecordsCalendar;
+export default RecordCalendar;

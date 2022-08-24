@@ -9,22 +9,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {responseFilter, getMinuteTotal, toHour} from '../../../utils/utils';
-import {apiurl} from '../../../utils/constants';
-import {Record} from '../../../types/types';
+import {getMinuteTotal, toHour} from '../../utils/utils';
+import {Record} from '../../types/types';
 
-
-const getRecords = () => {
-    return fetch(`${apiurl}/records`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        }
-    })
-    .then(responseFilter)
-    .catch(console.error);
-}
-
+import {
+    getRecords,
+} from '../../apis/records.api'
 
 const compareDate = (
     a: {
@@ -137,7 +127,7 @@ const CustomTableCell = styled(TableCell) (props => ({
 }))
 
 
-const TotalGraph = (plops: {
+const GraphTotal = (plops: {
 	timeUnit: string
 })=> {
 	const timeUnit = plops.timeUnit;
@@ -187,4 +177,4 @@ const TotalGraph = (plops: {
 }
 
 
-export default TotalGraph;
+export default GraphTotal;

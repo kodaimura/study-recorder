@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {useHistory} from 'react-router'
+import {useNavigate} from 'react-router'
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -16,87 +16,16 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import {responseFilter} from '../../../utils/utils';
-import {apiurl} from '../../../utils/constants';
-import DeleteDialog from '../../parts/DeleteDialog';
+import DeleteDialog from '../shared/DeleteDialog';
 
+import {
+    getSkills,
+    postSkill,
+    deleteSkill,
+    getCategory,
+    putCategry,
+} from '../../apis/skills.api';
 
-const postSkill = (
-	categoryId: number,
-	skillNo: number | undefined,
-	item1: string,
-	item2: string,
-	comment: string,
-) => {
-
-	let postData: any = {categoryId, item1, item2, comment};
-	if (skillNo) postData.skillNo = skillNo;
-
-	return fetch(`${apiurl}/skills`, {
-     	method: "POST",
-      	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-      	},
-      	body: JSON.stringify(postData)
-    }).catch(console.error);
-}
-
-const postCategry = (
-	categoryId: number,
-	categoryName: string
-) => {
-
-	return fetch(`${apiurl}/skills/categories`, {
-     	method: "POST",
-      	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-      	},
-      	body: JSON.stringify({categoryId, categoryName})
-    }).catch(console.error);
-}
-
-const getSkills = (
-	categoryId: number
-) => {
-	return fetch(`${apiurl}/skills?categoryId=${categoryId}`, {
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.then(responseFilter)
-  	.catch(console.error);
-}
-
-const getCategory = (
-	categoryId: number
-) => {
-	return fetch(`${apiurl}/skills/categories?categoryId=${categoryId}`, {
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.then(responseFilter)
-  	.catch(console.error);
-}
-
-
-const deleteSkill = (
-	skillNo: number
-) => {
-	return fetch(`${apiurl}/skills/${skillNo}`, {
-		method: "DELETE",
-     	headers: {
-      		"Content-Type": "application/json",
-      		Authorization: `Bearer ${localStorage.token}`
-    	}
-    })
-  	.then(responseFilter)
-  	.catch(console.error);
-}
 
 type Skill = {
 	skillNo: number | undefined,
@@ -145,7 +74,7 @@ const SkillTable = (props:{
 	const [item2, setItem2] = useState("");
 	const [comment, setComment] = useState("");
 	const [categoryName, setCategoryName] = useState("");
-	const history = useHistory();
+	const navigate = useNavigate();
 
 
 	useEffect(() => {
@@ -159,11 +88,11 @@ const SkillTable = (props:{
  	 		if (data && data.length !== 0) {
  	 			setCategoryName(data[0].categoryName);
  	 		} else {
- 	 			history.go(0);
+ 	 			navigate(0);
  	 		}
  	 	});
 
-	}, [reload]);
+	}, [reload, props.category.categoryId]);
 
 
 	return (
@@ -187,7 +116,7 @@ const SkillTable = (props:{
             	startIcon={<SaveIcon/>}
             	onClick={
             		() => {
-            			postCategry(
+            			putCategry(
             				props.category.categoryId,
             				categoryName
             			).then(response => {

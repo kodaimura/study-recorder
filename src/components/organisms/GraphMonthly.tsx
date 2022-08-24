@@ -9,23 +9,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {responseFilter, getMinuteTotal, toHour} from '../../../utils/utils';
-import {apiurl} from '../../../utils/constants';
-
-
-const getRecords = (
-	year: number,
-	month: number
-) => {
-  	return fetch(`${apiurl}/records?year=${year}&month=${month}`, {
-      	headers: {
-          	"Content-Type": "application/json",
-          	Authorization: `Bearer ${localStorage.token}`
-      	}
-    })
-    .then(responseFilter)
-    .catch(console.error);
-}
+import {getMinuteTotal, toHour} from '../../utils/utils';
+import {
+    getRecordsByYearMonth
+} from '../../apis/records.api'
 
 
 const makeDataAndLabels = async (
@@ -122,7 +109,7 @@ const CustomTableCell = styled(TableCell) (props => ({
 }))
 
 
-const MonthlyGraph = (props: {
+const GraphMonthly = (props: {
   	year:number, 
   	month: number, 
   	timeUnit: string,
@@ -137,9 +124,9 @@ const MonthlyGraph = (props: {
 
 
   	useEffect(() => {
-    	getRecords(year, month)
+    	getRecordsByYearMonth(year, month)
     	.then(data => setData(data));
-  	}, []);
+  	}, [year, month]);
 
 
   	useEffect(() => {
@@ -148,7 +135,7 @@ const MonthlyGraph = (props: {
 
         setTotal(getMinuteTotal(data));
         setPlotOptions(makePlotOptions((timeUnit === "m")? 6000 : 10));
-  	}, [data, timeUnit]);
+  	}, [data, timeUnit, year, month]);
 
 
   	return (
@@ -179,4 +166,4 @@ const MonthlyGraph = (props: {
   	);
 }
 
-export default MonthlyGraph;
+export default GraphMonthly;

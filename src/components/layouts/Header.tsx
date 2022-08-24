@@ -7,24 +7,24 @@ import { styled } from '@mui/material/styles';
 
 
 const CustomAppBar = styled(AppBar) ({
-	backgroundColor: "black",
+    backgroundColor: "black",
 });
 
 
 const Header = (props: {
-	rightContent: React.ReactNode
+    rightContent: React.ReactNode
 }) => {
 
-	return (
-		<CustomAppBar position="static">
-		<Toolbar>
-		<Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-      	STUDY RECORDER
+    return (
+        <CustomAppBar position="static">
+        <Toolbar>
+        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+        STUDY RECORDER
         </Typography>
-		{props.rightContent}
-		</ Toolbar>
-		</CustomAppBar>
-	);
+        {props.rightContent}
+        </ Toolbar>
+        </CustomAppBar>
+    );
 }
 
 export default Header;

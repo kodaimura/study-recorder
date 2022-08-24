@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {changePassword} from '../../utils/common-requests';
+import {login} from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({
@@ -15,16 +15,15 @@ const TextInput = styled(TextField) ({
 	width: 300
 })
 
-
-const PasswordChangeForm = () => {
+const LoginForm = () => {
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
-	const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
 
 	return (
+		<>
 		<Grid 
-			container
+			container 
 			direction="column" 
 			alignItems="center" 
 			justifyContent="center" 
@@ -33,48 +32,33 @@ const PasswordChangeForm = () => {
 		>
 		<Grid item>
 			<em>
-			Change password.
+			Login to StudyRecorder.
 			</em>
 		</Grid>
 		<Grid item>
-		</Grid>
-		<Grid item>
 		<TextInput 
-			label="Old Password" 
 			required 
-			fullWidth
-			type="password"   
+			label="Username" 
 			variant="filled"
-			onChange={(e) => setPassword(e.target.value)}
+			onChange={(e) => setUsername(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
 		<TextInput 
-			label="New Password" 
 			required 
-			fullWidth 
+			label="Password" 
 			type="password" 
 			variant="filled"
-			onChange={(e) => setNewPassword(e.target.value)}
-		/>
-		</Grid>
-		<Grid item>
-		<TextInput 
-			label="Confirmation New Password" 
-			required 
-			fullWidth  
-			type="password" 
-			variant="filled"
-			onChange={(e) => setNewPasswordConfirm(e.target.value)}
+			onChange={(e) => setPassword(e.target.value)} 
 		/>
 		</Grid>
 		<Grid item>
 		<Button 
-			size="large" 
+			size="large"
 			variant="contained" 
 			color="primary" 
-			onClick={() => changePassword(password, newPassword, newPasswordConfirm, setErrorMsg)}
-		>Change</ Button>
+			onClick={() => login(username, password, setErrorMsg)}
+		>Login</ Button>
 		</Grid>
 		<Grid item>
 		<ErrorMessage>
@@ -82,7 +66,8 @@ const PasswordChangeForm = () => {
 		</ErrorMessage>
 		</Grid>
 		</Grid>
+		</>
 		)
 }
 
-export default PasswordChangeForm;
+export default LoginForm;

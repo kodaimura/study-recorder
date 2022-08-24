@@ -14,74 +14,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import {responseFilter} from '../../utils/utils';
-import {apiurl} from '../../utils/constants';
-
-
-const getGoalForYear = (
-    year: number,
-) => {
-    return fetch(`${apiurl}/goals/year?year=${year}`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        }
-    })
-    .then(responseFilter)
-    .catch(console.error);
-}
-
-
-const postGoalForYear = (
-    year: number,
-    goal: string
-) => {
-    return fetch(`${apiurl}/goals/year`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        },
-        body: JSON.stringify({
-            year, goal
-        })})
-    .catch(console.error);
-}
-
-
-const getGoalForMonth = (
-    year: number,
-    month: number,
-) => {
-    return fetch(`${apiurl}/goals/month?year=${year}&month=${month}`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        }
-    })
-    .then(responseFilter)
-    .catch(console.error);
-}
-
-
-const postGoalForMonth = (
-    year: number,
-    month: number,
-    goal: string
-) => {
-
-    return fetch(`${apiurl}/goals/month`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.token}`
-        },
-        body: JSON.stringify({
-            year, month, goal
-        })})
-    .catch(console.error);
-}
-
+import {
+    getGoalForYear,
+    getGoalForMonth,
+    postGoalForYear,
+    postGoalForMonth,
+    
+} from '../../apis/goals.api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
