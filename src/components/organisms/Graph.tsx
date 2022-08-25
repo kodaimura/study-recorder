@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 
-import GraphMonthly from './GraphMonthly';
+//import GraphMonthly from './GraphMonthly';
 import GraphTotal from './GraphTotal';
 
 
@@ -30,9 +30,8 @@ const Graph = (props: {
 		{(mode === 1)? "Total Graph" : "Monthly Graph"}
 		</Button>
 
-		{(mode === 1)? 
-			<GraphMonthly year={props.year} month={props.month} timeUnit={timeUnit} />
-			:<GraphTotal timeUnit={timeUnit} />}
+		<GraphTotal timeUnit={timeUnit} />
+		
 		</>
 	);
 }

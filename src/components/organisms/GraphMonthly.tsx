@@ -1,5 +1,6 @@
+/*
 import {useState,useEffect} from 'react';
-import { Line, } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -74,7 +75,7 @@ const makePlotData = async(
   	.then(dataAndLabels => {
   		return {
   			datasets: makeDatasets(dataAndLabels.data),
-  			labels: dataAndLabels.labels
+  			//labels: dataAndLabels.labels
   	}});
 }
 
@@ -118,9 +119,11 @@ const GraphMonthly = (props: {
   	const year = props.year;
   	const month = props.month;
   	const [data, setData] = useState([]);
-  	const [plotData, setPlotData] = useState({labels:["1"], datasets: makeDatasets([1])});
+  	const [plotData, setPlotData] = useState({ datasets: makeDatasets([1])})//{labels:["1"], datasets: makeDatasets([1])});
   	const [plotOptions, setPlotOptions] = useState(makePlotOptions(6000));
   	const [total, setTotal] = useState(0);
+
+    const [chartData, setChartData] = useState({datasets:[]});
 
 
   	useEffect(() => {
@@ -136,6 +139,10 @@ const GraphMonthly = (props: {
         setTotal(getMinuteTotal(data));
         setPlotOptions(makePlotOptions((timeUnit === "m")? 6000 : 10));
   	}, [data, timeUnit, year, month]);
+
+    useEffect(() => {
+        setChartData(plotData)
+    }, [plotData]);
 
 
   	return (
@@ -167,3 +174,6 @@ const GraphMonthly = (props: {
 }
 
 export default GraphMonthly;
+*/
+
+export {}

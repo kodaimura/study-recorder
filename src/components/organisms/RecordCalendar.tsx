@@ -10,8 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-import {getMinuteTotal, toHour} from '../../utils/utils';
 import {Record} from '../../types/types';
+import {toHour, getMinuteTotal} from '../../utils/utils';
 
 import {
     getRecordsByYearMonth

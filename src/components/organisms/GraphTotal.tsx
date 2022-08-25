@@ -1,4 +1,14 @@
 import {useState,useEffect} from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { Line, } from 'react-chartjs-2';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
@@ -9,12 +19,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {getMinuteTotal, toHour} from '../../utils/utils';
 import {Record} from '../../types/types';
+
+import {toHour, msToHs, getMinuteTotal} from '../../utils/utils';
 
 import {
     getRecords,
 } from '../../apis/records.api'
+
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const compareDate = (
     a: {
@@ -36,42 +58,50 @@ const compareDate = (
 }
 
 
-const makeDataAndLabels = (
+//data: ソート済み
+const makePlotData = (
 	data: Record[],
-    timeUnit: string
  ) => {
-	data.sort(compareDate);
-    let labels = [""];
-    let times = [0];
+    let plotData = [0];
     let year = (data.length)? data[0].year : 0;
     let month = (year)? data[0].month : 0;
 
-    let monthTotal = 0;
+    let total = 0;
 
     for (let d of data) {
-        if (year === d.year && month === d.month) {
-            monthTotal += d.minuteTime;
-        } else {
-            if (timeUnit === "m") {
-            times.push(monthTotal);
-            }else {
-                times.push(Math.round(monthTotal / 60 * 10000) / 10000);
-            }
+        if (year !== d.year || month !== d.month) {
+            plotData.push(total);
+            year = d.year;
+            month = d.month;
+        }
+        total += d.minuteTime;
+    }
 
+    plotData.push(total);
+
+    return plotData;
+}
+
+
+//data: ソート済み
+const makePlotLabels = (
+    data: Record[],
+ ) => {
+    let labels = [""];
+    let year = (data.length)? data[0].year : 0;
+    let month = (year)? data[0].month : 0;
+
+    for (let d of data) {
+        if (year !== d.year || month !== d.month) {
             labels.push(String(year) + "/" + String(month));
             year = d.year;
             month = d.month;
         }    
     }
 
-    if (timeUnit === "m") {
-        times.push(monthTotal);
-    }else {
-        times.push(Math.round(monthTotal / 60 * 10000) / 10000);
-    }
     labels.push(String(year) + "/" + String(month));
 
-    return {labels, data: times};
+    return labels;
 }
 
 
@@ -88,20 +118,23 @@ const makeDatasets = (
 }
 
 
-const makePlotData = (
-	data: Record[],
+const makeLineChartData = (
+	plotData: number[],
+    plotLabels: string[],
     timeUnit: string
 ) => {
-	const dataAndLabels = makeDataAndLabels(data, timeUnit);
+    if (timeUnit === "h") {
+        plotData = msToHs(plotData)
+    } 
 
     return {
-        labels: dataAndLabels.labels,
-        datasets: makeDatasets(dataAndLabels.data)
+        labels: plotLabels,
+        datasets: makeDatasets(plotData)
     };
 }
 
 
-const makePlotOptions = (
+const makeLineChartOptions = (
 	stepSize: number
 ) => {
 	return {
@@ -120,6 +153,7 @@ const makePlotOptions = (
  	}
 }
 
+
 const CustomTableCell = styled(TableCell) (props => ({ 
     backgroundColor: "black",
     color: "white",
@@ -132,22 +166,37 @@ const GraphTotal = (plops: {
 })=> {
 	const timeUnit = plops.timeUnit;
     const [data, setData] = useState([]);
-	const [plotData, setPlotData] = useState(makePlotData([], timeUnit));
-	const [plotOptions, setPlotOptions] = useState(makePlotOptions(6000));
+    const [plotData, setPlotData] = useState(makePlotData([]));
+    const [plotLabels, setPlotLabels] = useState(makePlotLabels([]));
+	const [lineChartData, setLineChartData] = useState(makeLineChartData([], [], timeUnit));
+	const [plotOptions, setPlotOptions] = useState(makeLineChartOptions(6000));
 	const [total, setTotal] = useState(0);
 
 
  	useEffect(() => {
  		getRecords()
- 		.then(data => setData(data));
+ 		.then(records => {
+            setTotal(getMinuteTotal(records));
+            records.sort(compareDate);
+            setData(records);
+        });
 	}, []);
 
 
     useEffect(() => {
-        setTotal(getMinuteTotal(data));
-        setPlotData(makePlotData(data, timeUnit));
-        setPlotOptions(makePlotOptions((timeUnit === "m")? 6000 : 100));
-    }, [timeUnit, data]);
+        setPlotData(makePlotData(data))
+        setPlotLabels(makePlotLabels(data))
+    }, [data]);
+
+
+    useEffect(() => {
+        setLineChartData(makeLineChartData(plotData, plotLabels, timeUnit))
+    }, [plotData, plotLabels, timeUnit]);
+
+
+    useEffect(() => {
+        setPlotOptions(makeLineChartOptions((timeUnit === "m")? 6000 : 100));
+    }, [timeUnit]);
 
 
     return (
@@ -156,9 +205,7 @@ const GraphTotal = (plops: {
         <TableHead>
         <TableRow>
             <CustomTableCell>
-            Total: {
-                (timeUnit === "m")? total 
-                : toHour(total)}[{timeUnit}]
+            Total: {(timeUnit === "m")? total : toHour(total)}[{timeUnit}]
             </CustomTableCell>
         </TableRow>
         </TableHead>
@@ -166,7 +213,7 @@ const GraphTotal = (plops: {
         <TableRow>
             <TableCell>
             <div style={{ position: "relative", margin: "auto", width: "95%"}}>
-            <Line data={plotData} options={plotOptions} />
+            <Line data={lineChartData} options={plotOptions} />
             </div>
             </TableCell>
         </TableRow>
