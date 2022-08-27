@@ -10,12 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-import {Record} from '../../types/types';
-import {toHour, getMinuteTotal} from '../../utils/utils';
+import {Record} from '../../../types/types';
+import {toHour, getMinuteTotal} from '../../../utils/utils';
 
 import {
     getRecordsByYearMonth
-} from '../../apis/records.api'
+} from '../../../apis/records.api'
 
 
 const compareDate = (
@@ -190,7 +190,7 @@ const CustomTableCell = styled(TableCell) (props => ({
     borderLeft: "1px solid rgba(224, 224, 224, 1)"
 }))
 
-const RecordCalendar = (props: {
+export const RecordCalendar = (props: {
 	year: number, 
 	month: number
 }) => {
@@ -251,5 +251,3 @@ const RecordCalendar = (props: {
       	</>
      )
 }
-
-export default RecordCalendar;

@@ -20,7 +20,7 @@ import {
     postGoalForYear,
     postGoalForMonth,
     
-} from '../../apis/goals.api';
+} from '../../../apis/goals.api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
@@ -28,7 +28,7 @@ const CustomTableCell = styled(TableCell)({
 })
 
 
-const GoalTable = (props:{
+export const GoalTable = (props:{
 	year: number,
 	month: number,
 }) => {
@@ -160,5 +160,3 @@ const GoalTable = (props:{
 		</>
 	);
 }
-
-export default GoalTable;

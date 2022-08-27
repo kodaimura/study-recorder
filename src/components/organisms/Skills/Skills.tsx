@@ -5,15 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 
 import SkillTable from './SkillTable';
-import DeleteDialog from '../shared/DeleteDialog';
+import DeleteDialog from '../../shared/DeleteDialog';
 import {
 	postCategry,
 	getCategories,
 	deleteCategory
-} from '../../apis/skills.api';
+} from '../../../apis/skills.api';
 
 
-const SkillTables = () => {
+export const Skills = () => {
 	const [categories, setCategories] = useState([]);
 	const [reload, setReload] = useState(1);
 	const [categoryName, setCategoryName] = useState("");
@@ -74,5 +74,3 @@ const SkillTables = () => {
         </div>
 	);
 }
-
-export default SkillTables;

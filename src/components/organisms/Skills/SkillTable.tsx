@@ -16,7 +16,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import DeleteDialog from '../shared/DeleteDialog';
+import DeleteDialog from '../../shared/DeleteDialog';
 
 import {
     getSkills,
@@ -24,7 +24,7 @@ import {
     deleteSkill,
     getCategory,
     putCategry,
-} from '../../apis/skills.api';
+} from '../../../apis/skills.api';
 
 
 type Skill = {

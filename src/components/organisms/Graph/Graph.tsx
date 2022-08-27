@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 
-const Graph = (props: {
+export const Graph = (props: {
 	year: number, 
 	month: number,
 })=> {
@@ -61,5 +61,3 @@ const Graph = (props: {
 		</>
 	);
 }
-
-export default Graph;

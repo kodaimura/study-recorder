@@ -2,12 +2,15 @@ import React, {useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
 
 import Header from '../../layouts/Header';
-import RecordButton from '../../organisms/RecordButton';
-import GoalTable from '../../organisms/GoalTable';
-import RecordCalendar from '../../organisms/RecordCalendar';
-import Graph from '../../organisms/Graph';
-import RecordTable from '../../organisms/RecordTable';
-import SkillTables from '../../organisms/SkillTables';
+
+import {
+	RecordButton,
+	GoalTable,
+	RecordCalendar,
+	Graph,
+	RecordTable,
+	Skills
+} from '../../organisms'
 import HeaderMenu from '../../shared/HeaderMenu';
 
 import ContentMenu from './ContentMenu';
@@ -49,7 +52,7 @@ export const MyPage = () => {
 		}else if (mode === "graph") {
 			return <Graph year={year} month={month} />;
 		}else if (mode === "skill") {
-			return <SkillTables />;
+			return <Skills />;
 		}else {
 			return (
 				<>

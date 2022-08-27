@@ -9,12 +9,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {toHour, msToHs, getMinuteTotal} from '../../utils/utils';
-import {Record} from '../../types/types';
+import {toHour, msToHs, getMinuteTotal} from '../../../utils/utils';
+import {Record} from '../../../types/types';
 
 import {
     getRecords,
-} from '../../apis/records.api'
+} from '../../../apis/records.api'
 
 
 const compareDate = (

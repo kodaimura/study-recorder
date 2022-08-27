@@ -7,9 +7,10 @@ import StopIcon from '@mui/icons-material/Stop';
 import {
 	requestRecord,
 	getRecordState
-} from '../../apis/records.api';
+} from '../../../apis/records.api';
 
-const RecordButton = () => {
+
+export const RecordButton = () => {
 	const [startTime, setStartTime ] = useState("");
 	const navigate = useNavigate();
 
@@ -52,5 +53,3 @@ const RecordButton = () => {
      	</> 
     )
 }
-
-export default RecordButton;
