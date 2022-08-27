@@ -18,6 +18,7 @@ import { styled } from '@mui/material/styles';
 
 import DeleteDialog from '../../shared/DeleteDialog';
 
+import {Skill, SkillCategory} from '../../../types/types';
 import {
     getSkills,
     postSkill,
@@ -25,20 +26,6 @@ import {
     getCategory,
     putCategry,
 } from '../../../apis/skills.api';
-
-
-type Skill = {
-	skillNo: number | undefined,
-	categoryId: number,
-	item1: string,
-	item2: string,
-	comment: string
-}
-
-type SkillCategory = {
-	categoryId: number,
-	categoryName: string
-}
 
 
 const StyledCell = styled(TableCell) (props => ({ 

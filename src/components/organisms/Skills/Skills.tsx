@@ -6,6 +6,8 @@ import Input from '@mui/material/Input';
 
 import SkillTable from './SkillTable';
 import DeleteDialog from '../../shared/DeleteDialog';
+
+import {SkillCategory} from '../../../types/types';
 import {
 	postCategry,
 	getCategories,
@@ -49,11 +51,8 @@ export const Skills = () => {
 		<AddIcon />
 		</IconButton>
 		<br/>
-        {categories.map((category: {
-        	categoryId: number,
-        	categoryName: string,
-  		}, index: number) => (
-        	<>
+        {categories.map((category: SkillCategory, index: number) => (
+        	<div key={index}>
         	<br/>
         	<DeleteDialog 
         		head="削除しますか？" 
@@ -68,8 +67,8 @@ export const Skills = () => {
         			}
         		}/>
         	
-        	<SkillTable category={category} key={index} />
-        	</>
+        	<SkillTable category={category} />
+        	</div>
         ))}
         </div>
 	);
