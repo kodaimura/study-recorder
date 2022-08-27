@@ -69,12 +69,14 @@ export const MyPage = () => {
 		<ContentMenu setContent={setMode} />
 		<hr/>
 		<RightBox>
+		{(mode === "graph")? "" :
 		<SelectDate 
 			year={year} 
 			month={month} 
 			setYear={setYear}
 			setMonth={setMonth}
 		/>
+		}
 		</RightBox>
 		<Content />
 		</Box>

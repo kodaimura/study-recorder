@@ -1,8 +1,32 @@
 import { useState } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
 import Button from '@mui/material/Button';
 
-//import GraphMonthly from './GraphMonthly';
+import GraphMonthly from './GraphMonthly';
 import GraphTotal from './GraphTotal';
+
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 
 const Graph = (props: {
@@ -30,7 +54,9 @@ const Graph = (props: {
 		{(mode === 1)? "Total Graph" : "Monthly Graph"}
 		</Button>
 
-		<GraphTotal timeUnit={timeUnit} />
+		{(mode === 1)? 
+			<GraphMonthly timeUnit={timeUnit} />
+			:<GraphTotal timeUnit={timeUnit} />}
 		
 		</>
 	);
