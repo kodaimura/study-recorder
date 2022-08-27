@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  registerables as registerablesJS
 } from 'chart.js';
 
 import Button from '@mui/material/Button';
@@ -16,7 +17,7 @@ import Button from '@mui/material/Button';
 import GraphMonthly from './GraphMonthly';
 import GraphTotal from './GraphTotal';
 
-
+ChartJS.register(...registerablesJS);
 ChartJS.register(
   CategoryScale,
   LinearScale,
