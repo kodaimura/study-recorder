@@ -37,6 +37,16 @@ const compareDate = (
 }
 
 
+const toCumulative = (
+    ls: number[]
+) => {
+    for (let i = 2; i < 32; i++){
+        ls[i] = ls[i - 1] + ls[i]
+    }
+    return ls
+}
+
+
 //data: ソート済み
 const makeData = async (
     data: Record[],
@@ -50,7 +60,7 @@ const makeData = async (
 
     for (let d of data) {
         if (year !== d.year || month !== d.month) {
-            plotData.push(arr);
+            plotData.push(toCumulative(arr));
             year = d.year;
             month = d.month;
             arr = await Array(32)
@@ -61,7 +71,7 @@ const makeData = async (
 
     //最終月はを先頭を1とする(makeDatasetsで最終月を判断するため)
     arr[0] = 1
-    plotData.push(arr);
+    plotData.push(toCumulative(arr));
 
     return await plotData
 }
@@ -69,12 +79,14 @@ const makeData = async (
 
 const makeDatasets = (
     data: number[][],
+    year: number,
+    month: number
 ) => {
     return data.map(d => {
         //最終月は色を変える
         if (d[0] !== 0) {
             return {
-                label: "Last Record",
+                label: String(year) + "-" + String(month),
                 type: 'line' as any,
                 data: d,
                 backgroundColor: 'rgba(255, 80, 100, 0.4)',
@@ -96,12 +108,14 @@ const makeDatasets = (
 
 const makePlotData = (
     data: number[][],
-    timeUnit: string
+    timeUnit: string,
+    year: number,
+    month: number
 ) => {
     if (timeUnit === "h") {
         data = data.map(d => msToHs(d))
     } 
-    let d = makeDatasets(data);
+    let d = makeDatasets(data, year, month);
 
     return {
         labels: [
@@ -154,17 +168,18 @@ const GraphMonthly = (props: {
   	timeUnit: string,
 }) => {
     const timeUnit = props.timeUnit;
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([] as any[]);
     const [dataMonthly, setDataMonthly] = useState([[]] as any[][]);
     const [plotData, setPlotData] = useState({datasets:[]} as any);
     const [plotOptions, setPlotOptions] = useState(makePlotOptions(6000));
     const [total, setTotal] = useState(0);
+    const [year, setYear] = useState(0);
+    const [month, setMonth] = useState(0);
 
 
     useEffect(() => {
         getRecords()
         .then(records => {
-            setTotal(getMinuteTotal(records));
             records.sort(compareDate);
             setData(records);
         });
@@ -175,11 +190,21 @@ const GraphMonthly = (props: {
         .then(d => {
             setDataMonthly(d)
         })
+
+        if (data.length !== 0) {
+            setMonth(data.slice(-1)[0].month);
+            setYear(data.slice(-1)[0].year);
+        }
     }, [data]);
 
 
     useEffect(() => {
-        setPlotData(makePlotData(dataMonthly, timeUnit))
+        setTotal(dataMonthly.slice(-1)[0].slice(-1)[0]);
+    }, [dataMonthly]);
+
+
+    useEffect(() => {
+        setPlotData(makePlotData(dataMonthly, timeUnit, year, month))
     }, [dataMonthly, timeUnit]);
 
 
@@ -195,7 +220,7 @@ const GraphMonthly = (props: {
         <TableHead>
         <TableRow>
         	<CustomTableCell >
-        	Monthly Total: {
+        	{year}-{month} Total: {
                 (timeUnit === "m")? total :
                  toHour(total)}[{timeUnit}]
         	</CustomTableCell >

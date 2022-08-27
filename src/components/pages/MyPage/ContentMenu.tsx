@@ -22,19 +22,19 @@ const ContentMenu = (props: {
 		</Button>
 		<Button 
 			variant="contained" 
+			color="success" 
+			size="large" 
+			onClick={() => props.setContent("edit")} 
+			startIcon={<EditIcon />}>
+		Edit
+		</Button>
+		<Button 
+			variant="contained" 
 			color="primary" 
 			size="large" 
 			onClick={() => props.setContent("graph")}
 			startIcon={<ShowChartIcon />}>
 		Graph
-		</Button>
-		<Button 
-			variant="contained" 
-			color="success" 
-			size="large" 
-			onClick={() => props.setContent("edit")} 
-			startIcon={<EditIcon />}>
-		Edit & TABLE
 		</Button>
 		<Button 
 			variant="contained" 

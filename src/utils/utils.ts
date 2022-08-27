@@ -42,3 +42,10 @@ export const getMinuteTotal = (
 ): number => {
 	return data.reduce((sum, elem) => sum + elem.minuteTime, 0);
 }
+
+
+export const getTotal = (
+	ls: number[]
+): number => {
+	return ls.reduce((sum, elem) => sum + elem);
+}

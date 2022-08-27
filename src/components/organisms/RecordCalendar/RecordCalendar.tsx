@@ -192,12 +192,13 @@ const CustomTableCell = styled(TableCell) (props => ({
 
 export const RecordCalendar = (props: {
 	year: number, 
-	month: number
+	month: number,
+	timeUnit: string
 }) => {
 	const year = props.year;
     const month = props.month;
+    const timeUnit = props.timeUnit;
     const [data, setData] = useState([[{year: 0, month: 0, day:0, minuteTime:0}]]);
-    const [timeUnit, setTimeUnit] = useState("h");
     const [total, setTotal] = useState(0);
 
 
@@ -217,13 +218,6 @@ export const RecordCalendar = (props: {
 
   	return (
   		<>
-      	<Button 
-      		variant="text" 
-      		size="large" 
-      		onClick={()=> (timeUnit === "m")? setTimeUnit("h") : setTimeUnit("m")} 
-      	>
-      	{(timeUnit === "m")? "m → h" : "h → m"}
-      	</Button>
       	<TableContainer component={Paper}>
 		<Table size="small">
         <TableHead>

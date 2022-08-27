@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { styled } from '@mui/material/styles';
+import Grid from "@mui/material/Grid";
+import Button from '@mui/material/Button';
 
 import Header from '../../layouts/Header';
 
@@ -37,6 +39,7 @@ export const MyPage = () => {
 	const [month, setMonth] = useState(today.getMonth()+1);
 	const [mode, setMode] = useState("calendar");
 	const [username, setUsername] = useState("");
+	const [timeUnit, setTimeUnit] = useState("h");
 
 	useEffect(() => {
 		getProfile()
@@ -48,9 +51,9 @@ export const MyPage = () => {
 
 	const Content = () => {
 		if (mode === "calendar") {
-			return <RecordCalendar year={year} month={month} />;
+			return <RecordCalendar year={year} month={month} timeUnit={timeUnit}/>;
 		}else if (mode === "graph") {
-			return <Graph year={year} month={month} />;
+			return <Graph year={year} month={month} timeUnit={timeUnit}/>;
 		}else if (mode === "skill") {
 			return <Skills />;
 		}else {
@@ -69,10 +72,25 @@ export const MyPage = () => {
 		<Box>
 		<RecordButton />
 		<hr />
-		<ContentMenu setContent={setMode} />
+		<Grid container>
+			<Grid item xs={6}>
+				<ContentMenu setContent={setMode} />
+			</Grid>
+			<Grid item xs= {6}>
+				<Button 
+					variant="outlined" 
+					size="large" 
+					onClick={()=> (timeUnit === "m")? setTimeUnit("h") : setTimeUnit("m")} 
+				>
+				{(timeUnit === "m")? "m → h" : "h → m"}
+				</Button>
+			</Grid>
+		</Grid>
+
 		<hr/>
+		
 		<RightBox>
-		{(mode === "graph")? "" :
+		{(mode === "graph" || mode === "skill")? "" :
 		<SelectDate 
 			year={year} 
 			month={month} 

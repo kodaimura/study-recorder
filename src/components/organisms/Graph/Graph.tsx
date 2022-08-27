@@ -32,20 +32,13 @@ ChartJS.register(
 export const Graph = (props: {
 	year: number, 
 	month: number,
+	timeUnit: string
 })=> {
+	const timeUnit = props.timeUnit
 	const [mode, setMode] = useState(1);
-	const [timeUnit, setTimeUnit] = useState("h");
 
 	return (
 		<>
-		<Button 
-			variant="text" 
-			size="large" 
-			onClick={()=> (timeUnit === "m")? setTimeUnit("h") : setTimeUnit("m")} 
-		>
-		{(timeUnit === "m")? "m → h" : "h → m"}
-		</Button>
-
 		<Button 
 			variant="text" 
 			size="large" 
