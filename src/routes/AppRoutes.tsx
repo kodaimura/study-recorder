@@ -8,7 +8,8 @@ import {
 import {
     LoginPage,
     SignupPage,
-    MyPage
+    MyPage,
+    PasswordPage
 } from '../components/pages'
 
 import {
@@ -23,6 +24,7 @@ const AppRoutes = () => {
             <Route path="/" element={<MyPage />}/>
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/signup" element={<SignupPage />}/>
+            <Route path="/password" element={<PasswordPage />}/>
             <Route path="*" element={<NotFoundPage />}/>
         </Routes>
         </BrowserRouter>
