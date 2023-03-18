@@ -20,7 +20,7 @@ export class RecordsService {
 
   	async record(userNo: DailyRecord['userNo'])
   	: Promise<{stopTime:DailyRecord['stopTime']} | {startTime:DailyRecord['startTime']}>{ 
-  		const dailyRecord = await this.dailyRecordRepository.findOne({userNo});
+  		const dailyRecord = await this.dailyRecordRepository.findOne({where:{userNo}});
   		const now = Date.now();
 
   		if (!dailyRecord || dailyRecord.stopTime >= dailyRecord.startTime) {
@@ -38,7 +38,7 @@ export class RecordsService {
   			const year = startDate.getUTCFullYear();
   			const month = startDate.getUTCMonth() + 1;
   			const day = startDate.getUTCDate();
-  			let record = await this.recordRepository.findOne({userNo, year, month, day});
+  			let record = await this.recordRepository.findOne({where:{userNo, year, month, day}});
   			if (!record) {
   				await this.recordRepository.save({userNo, year, month, day, minuteTime});
   			}else {

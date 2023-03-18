@@ -1,1 +1,1 @@
-https://studyrecorder.carkodr.com/
+v18.15.0

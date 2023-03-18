@@ -23,9 +23,9 @@ export class GoalsService {
 		year: GoalForYear['year']
 	): Promise<GoalForYear[] | GoalForYear | undefined> {
   		if (year){
-  			return this.gfYearRepository.find({userNo, year});
+  			return this.gfYearRepository.find({where:{userNo, year}});
   		}else {
-  			return this.gfYearRepository.find({userNo});
+  			return this.gfYearRepository.find({where:{userNo}});
   		}
   		
   	}
