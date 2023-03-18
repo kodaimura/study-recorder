@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import { Chart } from 'react-chartjs-2';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
