@@ -38,12 +38,8 @@ export class GoalsService {
   		let cond: any = {userNo};
 		if (year) cond.year = year;
 		if (month) cond.month = month;
-
-  		if (Object.keys(cond).length === 3) {
-  			return this.gfMonthRepository.find(cond);
-  		} else {
-  			return this.gfMonthRepository.find(cond);
-  		}
+		
+		return this.gfMonthRepository.find({where: cond});
   		
   	}
 
