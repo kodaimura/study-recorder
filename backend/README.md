@@ -1,1 +1,0 @@
-https://studyrecorder.carkodr.com/
