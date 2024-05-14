@@ -1,7 +1,6 @@
 FROM node:22.1
 
-#COPY package*.json ./
+WORKDIR /usr/src/app
 
-#RUN npm install -g npm-check-updates
-#RUN ncu -u
-#RUN npm install
+COPY package*.json ./
+RUN npm ci
