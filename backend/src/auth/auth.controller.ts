@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards} from '@nestjs/common';
+import { Controller, Request, Post, UseGuards} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
@@ -9,16 +9,9 @@ export class AuthController {
 
 	constructor(private authService: AuthService) {}
 
-  	//LocalStrategyのvalidateの戻り値がreqに入る
   	@Post('login')
   	@UseGuards(AuthGuard('local'))
-  	async login(@Request() req) {
+  	async login(@Request() req: any) {
   		return this.authService.login(req.user);
-  	}
-
-  	@Get('profile')
-  	@UseGuards(AuthGuard('jwt'))
-  	async getJwt(@Request() req) {
-  		return req.user;
   	}
 }

@@ -15,11 +15,10 @@ export class AuthService {
 	){}
 
 	//認証処理
-	async validateUser(username: User['username'], pass: User['password'])
-	: Promise< PasswordOmitUser | null> {
-		const user = await this.usersService.findOne(username);
-    	if (user && user.password === this.usersService.hashPassword(pass)) {
-      		const { password, ...result } = await user;
+	async validateUser(username: string, password: string): Promise<PasswordOmitUser | null> {
+		const user = await this.usersService.getByUsername(username);
+    	if (user && user.password === this.usersService.hashPassword(password)) {
+      		const { password, ...result } = user;
       		return result;
     	}
 
@@ -30,7 +29,6 @@ export class AuthService {
   	async login(user: PasswordOmitUser) {
     	const payload = { userNo: user.userNo, username: user.username };
     	return {
-    		username: user.username,
       		access_token: this.jwtService.sign(payload),
     	};
   	}

@@ -1,7 +1,7 @@
 import {IsNotEmpty, Length} from 'class-validator';
 
 
-export class SignUpDto {
+export class SignupDto {
 
 	@IsNotEmpty()
 	@Length(1, 30)
@@ -12,7 +12,10 @@ export class SignUpDto {
 }
 
 
-export class ChangePasswordDto {
+export class PutPasswordDto {
+
+	@IsNotEmpty()
+	username: string;
 	
 	@IsNotEmpty()
 	password: string;

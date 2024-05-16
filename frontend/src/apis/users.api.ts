@@ -2,7 +2,7 @@ import {responseFilter} from '../utils/utils';
 import {apiurl} from '../utils/constants';
 
 
-export const login =　(
+export const login = (
 	username: string,
 	password: string,
 	setError?: (message: string) => void 
@@ -79,8 +79,8 @@ export const changePassword = (
 		return
 	}
 
-	fetch(`${apiurl}/passwordchange`, {
-		method: "POST",
+	fetch(`${apiurl}/account/password`, {
+		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`
@@ -100,7 +100,7 @@ export const changePassword = (
 
 
 export const getProfile = () => {
-	return fetch(`${apiurl}/profile`, {
+	return fetch(`${apiurl}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`
@@ -111,7 +111,7 @@ export const getProfile = () => {
 
 
 export const checkAuth = () => {
-	return fetch(`${apiurl}/profile`, {
+	return fetch(`${apiurl}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`

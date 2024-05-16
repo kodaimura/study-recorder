@@ -1,16 +1,17 @@
-import { 
-	Request,
+import {
 	Controller, 
 	Body, 
+	Get,
 	Post, 
-	BadRequestException,
-	UseGuards 
+	Put,
+	UseGuards, 
+	Request
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from './users.service';
-import { SignUpDto, ChangePasswordDto } from './users.dto';
+import { SignupDto, PutPasswordDto } from './users.dto';
 
 
 @Controller()
@@ -19,16 +20,19 @@ export class UsersController {
 	constructor(private usersService: UsersService) {}
 
 	@Post('signup')
-  	async signup(@Body() signUpDto: SignUpDto) {
-  		return this.usersService.signup(signUpDto);
+  	async signup(@Body() dto: SignupDto) {
+  		return this.usersService.signup(dto);
   	}
 
-  	@Post('passwordchange')
+  	@Put('/account/password')
   	@UseGuards(AuthGuard('jwt'))
-  	async changePassword(
-  		@Body() changePasswordDto: ChangePasswordDto,
-  		@Request() req
-  	) {
-  		return this.usersService.changePassword(req.user.username, changePasswordDto);
+  	async putPassword(@Body() dto: PutPasswordDto, @Request() req: any) {
+  		return this.usersService.updatePassword(req.user.username, dto);
+  	}
+
+	@Get('/account/profile')
+  	@UseGuards(AuthGuard('jwt'))
+  	async getJwt(@Request() req: any) {
+  		return req.user;
   	}
 }
