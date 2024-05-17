@@ -1,7 +1,7 @@
 import {IsInt, IsString, Min, Max, Length} from 'class-validator';
 
 
-export class GoalForYearDto {
+export class ThemeForMonthDto {
 
 	userNo: number;
 
@@ -10,8 +10,13 @@ export class GoalForYearDto {
 	@Max(3000)
 	year: number;
 
+	@IsInt()
+	@Min(1)
+	@Max(12)
+	month: number;
+
 	@IsString()
 	@Length(0, 100)
-	goal: string;
-	
+	theme: string;
+
 }

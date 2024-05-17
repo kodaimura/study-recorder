@@ -8,9 +8,9 @@ import { AppService } from './app.service';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { GoalForMonth } from './goals/goalForMonth.entity';
-import { GoalForYear } from './goals/goalForYear.entity';
-import { GoalsModule } from './goals/goals.module';
+import { ThemeForMonth } from './themes/theme-for-month.entity';
+import { ThemeForYear } from './themes/theme-for-year.entity';
+import { ThemesModule } from './themes/themes.module';
 import { RecordsModule } from './records/records.module';
 import { Record } from './records/record.entity';
 import { DailyRecord } from './records/dailyRecord.entity';
@@ -27,12 +27,12 @@ import { SkillCategory } from './skills/skillCategory.entity';
   		}),
     	AuthModule, 
     	UsersModule,
-    	GoalsModule,
+    	ThemesModule,
     	TypeOrmModule.forRoot({
       		type: 'sqlite',
       		database: 'study-recorder.db',
       		synchronize: false,  
-      		entities: [User, GoalForMonth, GoalForYear, Record, DailyRecord,
+      		entities: [User, ThemeForMonth, ThemeForYear, Record, DailyRecord,
       					Skill, SkillCategory],
     	}),
     	RecordsModule,

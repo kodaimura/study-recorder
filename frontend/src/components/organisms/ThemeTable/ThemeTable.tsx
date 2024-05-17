@@ -15,12 +15,12 @@ import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
 import {
-    getGoalForYear,
-    getGoalForMonth,
-    postGoalForYear,
-    postGoalForMonth,
+    getThemeForYear,
+    getThemeForMonth,
+    postThemeForYear,
+    postThemeForMonth,
     
-} from '../../../apis/goals.api';
+} from '../../../apis/themes.api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
@@ -28,34 +28,34 @@ const CustomTableCell = styled(TableCell)({
 })
 
 
-export const GoalTable = (props:{
+export const ThemeTable = (props:{
 	year: number,
 	month: number,
 }) => {
 	const year = props.year;
   	const month = props.month;
-    const [goalForYear, setGoalForYear] = useState("");
-	const [goalForMonth, setGoalForMonth] = useState("");
+    const [themeForYear, setThemeForYear] = useState("");
+	const [themeForMonth, setThemeForMonth] = useState("");
 	const [target, setTarget] = useState("");
 
 
 	useEffect(() => {
-		getGoalForYear(year)
+		getThemeForYear(year)
  	 	.then(data => {
             (data && data.length)? 
-            setGoalForYear(data[0].goal) 
-            : setGoalForYear("")
+            setThemeForYear(data[0].theme) 
+            : setThemeForYear("")
         });
         setTarget("");
     }, [year]);
 
 
     useEffect(() => {
-        getGoalForMonth(year, month)
+        getThemeForMonth(year, month)
         .then(data => {
             (data && data.length)? 
-            setGoalForMonth(data[0].goal) 
-            : setGoalForMonth("")
+            setThemeForMonth(data[0].theme) 
+            : setThemeForMonth("")
         });
 
   		setTarget("");
@@ -69,7 +69,7 @@ export const GoalTable = (props:{
         <TableHead>
         <TableRow>
             <CustomTableCell width="70px">Term</CustomTableCell>
-            <CustomTableCell>Goal</CustomTableCell>
+            <CustomTableCell>Theme</CustomTableCell>
             <CustomTableCell width="70px"></CustomTableCell>
             <CustomTableCell width="40px"></CustomTableCell>
         </TableRow>
@@ -84,12 +84,12 @@ export const GoalTable = (props:{
             {(target === "yearly")? 
             	<Input 
                     size="small"
-            		placeholder="goal for year"
+            		placeholder="theme for year"
             		fullWidth 
-            		defaultValue={goalForYear}
-                    onChange={(e) => setGoalForYear(e.target.value)}
+            		defaultValue={themeForYear}
+                    onChange={(e) => setThemeForYear(e.target.value)}
             	/> 
-            	: goalForYear}
+            	: themeForYear}
             </TableCell>
             <TableCell>
             {(target === "yearly")? 
@@ -97,9 +97,9 @@ export const GoalTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        postGoalForYear(
+                        postThemeForYear(
                             year, 
-                            goalForYear
+                            themeForYear
                         ).then(response => { 
                             setTarget("");
                         });
@@ -122,12 +122,12 @@ export const GoalTable = (props:{
             {(target === "monthly")? 
                 <Input 
                     size="small"
-                    placeholder="goal for Month"
+                    placeholder="theme for Month"
                     fullWidth 
-                    defaultValue={goalForMonth}
-                    onChange={(e) => setGoalForMonth(e.target.value)}
+                    defaultValue={themeForMonth}
+                    onChange={(e) => setThemeForMonth(e.target.value)}
                 /> 
-                : goalForMonth}
+                : themeForMonth}
             </TableCell>
             <TableCell>
             {(target === "monthly")? 
@@ -135,10 +135,10 @@ export const GoalTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        postGoalForMonth(
+                        postThemeForMonth(
                             year, 
                             month,
-                            goalForMonth
+                            themeForMonth
                         ).then(response => {
                             setTarget("");
                         });

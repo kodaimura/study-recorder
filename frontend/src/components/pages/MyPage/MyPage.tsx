@@ -7,7 +7,7 @@ import Header from '../../layouts/Header';
 
 import {
 	RecordButton,
-	GoalTable,
+	ThemeTable,
 	RecordCalendar,
 	Graph,
 	RecordTable,
@@ -59,7 +59,7 @@ export const MyPage = () => {
 		}else {
 			return (
 				<>
-				<GoalTable year={year} month={month} /><br/>
+				<ThemeTable year={year} month={month} /><br/>
 				<RecordTable year={year} month={month} />
 				</>
 			)

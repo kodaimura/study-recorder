@@ -1,4 +1,4 @@
-export {GoalTable} from './GoalTable/GoalTable'
+export {ThemeTable} from './ThemeTable/ThemeTable'
 export {Graph} from './Graph/Graph'
 export {RecordButton} from './RecordButton/RecordButton'
 export {RecordCalendar} from './RecordCalendar/RecordCalendar'

@@ -2,10 +2,10 @@ import {responseFilter} from '../utils/utils';
 import {apiurl} from '../utils/constants';
 
 
-export const getGoalForYear = (
+export const getThemeForYear = (
     year: number,
 ) => {
-    return fetch(`${apiurl}/goals/year?year=${year}`, {
+    return fetch(`${apiurl}/themes/year?year=${year}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
@@ -16,28 +16,28 @@ export const getGoalForYear = (
 }
 
 
-export const postGoalForYear = (
+export const postThemeForYear = (
     year: number,
-    goal: string
+    theme: string
 ) => {
-    return fetch(`${apiurl}/goals/year`, {
+    return fetch(`${apiurl}/themes/year`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
         },
         body: JSON.stringify({
-            year, goal
+            year, theme
         })})
     .catch(console.error);
 }
 
 
-export const getGoalForMonth = (
+export const getThemeForMonth = (
     year: number,
     month: number,
 ) => {
-    return fetch(`${apiurl}/goals/month?year=${year}&month=${month}`, {
+    return fetch(`${apiurl}/themes/month?year=${year}&month=${month}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
@@ -48,20 +48,20 @@ export const getGoalForMonth = (
 }
 
 
-export const postGoalForMonth = (
+export const postThemeForMonth = (
     year: number,
     month: number,
-    goal: string
+    theme: string
 ) => {
 
-    return fetch(`${apiurl}/goals/month`, {
+    return fetch(`${apiurl}/themes/month`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.token}`
         },
         body: JSON.stringify({
-            year, month, goal
+            year, month, theme
         })})
     .catch(console.error);
 }
