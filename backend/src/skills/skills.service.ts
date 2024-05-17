@@ -3,9 +3,9 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Skill } from './skill.entity';
-import { SkillCategory } from './skillCategory.entity';
+import { SkillCategory } from './skill-category.entity';
 import { SkillDto } from './skill.dto';
-import { SkillCategoryDto } from './skillCategory.dto';
+import { SkillCategoryDto } from './skill-category.dto';
 
 
 @Injectable()

@@ -13,10 +13,10 @@ import { ThemeForYear } from './themes/theme-for-year.entity';
 import { ThemesModule } from './themes/themes.module';
 import { RecordsModule } from './records/records.module';
 import { Record } from './records/record.entity';
-import { DailyRecord } from './records/dailyRecord.entity';
+import { DailyRecord } from './records/daily-record.entity';
 import { SkillsModule } from './skills/skills.module';
 import { Skill } from './skills/skill.entity';
-import { SkillCategory } from './skills/skillCategory.entity';
+import { SkillCategory } from './skills/skill-category.entity';
 
 
 @Module({

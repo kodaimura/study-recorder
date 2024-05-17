@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SkillsController } from './skills.controller';
 import { SkillsService } from './skills.service';
 import { Skill } from './skill.entity';
-import { SkillCategory } from './skillCategory.entity';
+import { SkillCategory } from './skill-category.entity';
 
 
 @Module({

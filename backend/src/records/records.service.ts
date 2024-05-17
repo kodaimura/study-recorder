@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Record } from './record.entity';
-import { DailyRecord } from './dailyRecord.entity';
+import { DailyRecord } from './daily-record.entity';
 import { RecordDto } from './record.dto';
 import { CommentDto } from './comment.dto';
 

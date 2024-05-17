@@ -18,7 +18,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { SkillsService } from './skills.service';
 import { SkillDto } from './skill.dto';
-import { SkillCategoryDto } from './skillCategory.dto';
+import { SkillCategoryDto } from './skill-category.dto';
 
 
 @Controller('skills')
