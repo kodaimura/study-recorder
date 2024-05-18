@@ -48,7 +48,7 @@ export class RecordsService {
   		}
   	}
 
-  	async getRecordState(userNo: number): Promise<RecordWork> {
+  	async getRecordWork(userNo: number): Promise<RecordWork> {
   		return this.recordWorkRepository.findOne({
   			select: ['startTime', 'stopTime'],
   			where: {userNo}

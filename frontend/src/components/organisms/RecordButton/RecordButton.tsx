@@ -6,7 +6,7 @@ import StopIcon from '@mui/icons-material/Stop';
 
 import {
 	requestRecord,
-	getRecordState
+	getRecordWork
 } from '../../../apis/records.api';
 
 
@@ -29,7 +29,7 @@ export const RecordButton = () => {
 	}
 
 	useEffect(() => {
-    	getRecordState().then(data => {
+    	getRecordWork().then(data => {
       		if (data && data.startTime > data.stopTime) {
    				let startDate = new Date(data.startTime);
         		setStartTime(startDate.toLocaleDateString() + " " 

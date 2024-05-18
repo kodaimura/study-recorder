@@ -26,10 +26,10 @@ export class RecordsController {
 		return this.recordsService.record(req.user.userNo);
 	} 
 
-	@Get('state')
+	@Get('work')
 	@UseGuards(AuthGuard('jwt'))
-	async getState(@Request() req: any) {
-		return this.recordsService.getRecordState(req.user.userNo);
+	async getWork(@Request() req: any) {
+		return this.recordsService.getRecordWork(req.user.userNo);
 	}
 
 	@Get()
