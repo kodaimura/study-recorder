@@ -19,6 +19,6 @@ export class Record {
 	@Column({default: 0})
 	minuteTime: number;
 
-	@Column({nullable: true})
-	comment: string | null;
+	@Column({default: ''})
+	comment: string;
 }

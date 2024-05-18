@@ -48,9 +48,9 @@ export class RecordsService {
   		}
   	}
 
-  	async getStartTime(userId: number): Promise<{[key:string]:number | null}> {
+  	async getStartTime(userId: number): Promise<{[key:string]:number}> {
   		const row = await this.recordWorkRepository.findOne({where: {userId}});
-		return { startTime : (row)? row.startTime : null };
+		return { startTime : (row)? row.startTime : 0 };
   	}
 
   	async getRecords(
