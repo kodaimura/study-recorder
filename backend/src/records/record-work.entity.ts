@@ -2,7 +2,7 @@ import {Entity, Column, PrimaryColumn} from 'typeorm';
 
 
 @Entity()
-export class DailyRecord {
+export class RecordWork {
 	
 	@PrimaryColumn()
 	userNo: number;

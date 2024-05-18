@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Record } from './record.entity';
-import { DailyRecord } from './daily-record.entity';
+import { RecordWork } from './record-work.entity';
 import { RecordDto } from './record.dto';
 import { CommentDto } from './comment.dto';
 
@@ -14,27 +14,27 @@ export class RecordsService {
 	constructor(
     	@InjectRepository(Record)
     	private readonly recordRepository: Repository<Record>,
-    	@InjectRepository(DailyRecord)
-    	private readonly dailyRecordRepository: Repository<DailyRecord>,
+    	@InjectRepository(RecordWork)
+    	private readonly recordWorkRepository: Repository<RecordWork>,
   	) {}
 
-  	async record(userNo: DailyRecord['userNo'])
-  	: Promise<{stopTime:DailyRecord['stopTime']} | {startTime:DailyRecord['startTime']}>{ 
-  		const dailyRecord = await this.dailyRecordRepository.findOne({where:{userNo}});
+  	async record(userNo: RecordWork['userNo'])
+  	: Promise<{stopTime:RecordWork['stopTime']} | {startTime:RecordWork['startTime']}>{ 
+  		const recordWork = await this.recordWorkRepository.findOne({where:{userNo}});
   		const now = Date.now();
 
-  		if (!dailyRecord || dailyRecord.stopTime >= dailyRecord.startTime) {
+  		if (!recordWork || recordWork.stopTime >= recordWork.startTime) {
 
-  			await this.dailyRecordRepository.save({userNo, startTime: now});
+  			await this.recordWorkRepository.save({userNo, startTime: now});
   			return {startTime: now};
 
   		}else {
 
-  			await this.dailyRecordRepository.save({userNo, stopTime: now});
-  			const minuteTime = Math.round((now - dailyRecord.startTime) / 60000);
+  			await this.recordWorkRepository.save({userNo, stopTime: now});
+  			const minuteTime = Math.round((now - recordWork.startTime) / 60000);
 
   			//UTCの時間に9時間足して getUTC* で日本時間をとる
-  			const startDate = new Date(dailyRecord.startTime + 540 * 60000);
+  			const startDate = new Date(recordWork.startTime + 540 * 60000);
   			const year = startDate.getUTCFullYear();
   			const month = startDate.getUTCMonth() + 1;
   			const day = startDate.getUTCDate();
@@ -50,8 +50,8 @@ export class RecordsService {
   		}
   	}
 
-  	async getRecordState(userNo: DailyRecord['userNo']) {
-  		return this.dailyRecordRepository.findOne({
+  	async getRecordState(userNo: RecordWork['userNo']) {
+  		return this.recordWorkRepository.findOne({
   			select: ['startTime', 'stopTime'],
   			where: {userNo}
   		});
