@@ -19,9 +19,10 @@ export class User {
 	@Column()
 	password: string;
 
-	@CreateDateColumn({ precision: 0 })
+	@CreateDateColumn({ type: 'timestamp' })
 	createAt: string;
 
-	@UpdateDateColumn({ precision: 0 })
+	@UpdateDateColumn({ type: 'timestamp' })
 	updateAt: string;
+	
 }

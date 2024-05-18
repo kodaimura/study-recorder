@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn} from 'typeorm';
+import {Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 
 @Entity()
@@ -15,5 +15,11 @@ export class Theme {
 
 	@Column({ length: 100 })
 	theme: string;
+
+	@CreateDateColumn({ type: 'timestamp' })
+	createdAt: Date;
+
+	@UpdateDateColumn({ type: 'timestamp' })
+	updatedAt: Date;
 
 }

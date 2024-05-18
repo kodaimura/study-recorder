@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn} from 'typeorm';
+import {Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 
 @Entity()
@@ -21,4 +21,10 @@ export class Record {
 
 	@Column({default: ''})
 	comment: string;
+
+	@CreateDateColumn({ type: 'timestamp' })
+	createdAt: Date;
+
+	@UpdateDateColumn({ type: 'timestamp' })
+	updatedAt: Date;
 }
