@@ -20,29 +20,14 @@ export class RecordsController {
 
 	constructor(private recordsService: RecordsService) {}
 
-	@Post('record')
-	@UseGuards(AuthGuard('jwt'))
-	async record(@Request() req: any) {
-		return this.recordsService.record(req.user.userNo);
-	} 
-
-	@Get('work')
-	@UseGuards(AuthGuard('jwt'))
-	async getWork(@Request() req: any) {
-		return this.recordsService.getRecordWork(req.user.userNo);
-	}
-
 	@Get()
 	@UseGuards(AuthGuard('jwt'))
 	async getRecords(
 		@Query('year', YearPipe) year: number,
 		@Query('month', MonthPipe) month: number,
-		@Query('day', DayPipe) day: number,
 		@Request() req: any
 	) {
-		return this.recordsService.getRecords(
-			req.user.userNo, year, month, day
-		);
+		return this.recordsService.getRecords(req.user.userNo, year, month);
 	} 
 
 	@Post()
@@ -54,4 +39,16 @@ export class RecordsController {
 		dto.userNo = req.user.userNo;
 		return this.recordsService.registerRecord(dto);
 	} 
+
+	@Post('record')
+	@UseGuards(AuthGuard('jwt'))
+	async record(@Request() req: any) {
+		return this.recordsService.record(req.user.userNo);
+	} 
+
+	@Get('record/start_time')
+	@UseGuards(AuthGuard('jwt'))
+	async getWork(@Request() req: any) {
+		return this.recordsService.getStartTime(req.user.userNo);
+	}
 }

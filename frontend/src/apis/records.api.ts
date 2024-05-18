@@ -41,8 +41,8 @@ export const requestRecord = () => {
 }
 
 
-export const getRecordWork = () => {
-  	return fetch(`${apiurl}/records/work`, {
+export const getRecordStartTime = () => {
+  	return fetch(`${apiurl}/records/record/start_time`, {
       	headers: {
         	"Content-Type": "application/json",
         	Authorization: `Bearer ${localStorage.token}`

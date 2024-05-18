@@ -30,7 +30,7 @@ export const RecordButton = () => {
 
 	useEffect(() => {
     	getRecordStartTime().then(data => {
-      		if (data && data.startTime > data.stopTime) {
+      		if (data && data.startTime) {
    				let startDate = new Date(data.startTime);
         		setStartTime(startDate.toLocaleDateString() + " " 
         			+ startDate.toLocaleTimeString() + "~");

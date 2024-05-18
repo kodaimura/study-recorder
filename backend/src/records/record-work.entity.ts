@@ -9,7 +9,5 @@ export class RecordWork {
 
 	@Column()
 	startTime: number;
-
-	@Column({default: 0})
-	stopTime: number;
+	
 }
