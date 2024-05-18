@@ -8,8 +8,7 @@ import { AppService } from './app.service';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ThemeForMonth } from './themes/theme-for-month.entity';
-import { ThemeForYear } from './themes/theme-for-year.entity';
+import { Theme } from './themes/theme.entity';
 import { ThemesModule } from './themes/themes.module';
 import { RecordsModule } from './records/records.module';
 import { Record } from './records/record.entity';
@@ -32,8 +31,7 @@ import { SkillCategory } from './skills/skill-category.entity';
       		type: 'sqlite',
       		database: 'study-recorder.db',
       		synchronize: false,  
-      		entities: [User, ThemeForMonth, ThemeForYear, Record, RecordWork,
-      					Skill, SkillCategory],
+      		entities: [User, Theme, Record, RecordWork, Skill, SkillCategory],
     	}),
     	RecordsModule,
     	SkillsModule,

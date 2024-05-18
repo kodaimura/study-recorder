@@ -15,10 +15,8 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 
-import { MonthPipe, YearPipe } from '../app.pipe';
 import { ThemesService } from './themes.service';
-import { ThemeForYearDto } from './theme-for-year.dto';
-import { ThemeForMonthDto } from './theme-for-month.dto';
+import { ThemeDto } from './theme.dto';
 
 
 @Controller('themes')
@@ -26,44 +24,25 @@ export class ThemesController {
 
 	constructor(private themesService: ThemesService) {}
 
-	@Get('year')
+	@Get()
 	@UseGuards(AuthGuard('jwt'))
-	async getThemeForYear(
-		@Query('year', YearPipe) year, 
-		@Request() req,
+	async getThemes(
+		@Query('year') year: number, 
+		@Query('month') month: number, 
+		@Request() req: any,
 	) {
-		return this.themesService.getThemeForYear(req.user.userNo, year);
-	}
-
-	@Get('month')
-	@UseGuards(AuthGuard('jwt'))
-	async getThemeForMonth(
-		@Query('year', YearPipe) year, 
-		@Query('month', MonthPipe) month, 
-		@Request() req,
-	) {
-		return this.themesService.getThemeForMonth(
+		return this.themesService.getThemes(
 			req.user.userNo, year, month
 		);
 	}
 
-	@Post('year')
+	@Post()
 	@UseGuards(AuthGuard('jwt'))
-	async registerThemeForYear(
-		@Request() req,
-		@Body() themeForYearDto: ThemeForYearDto,
+	async postTheme(
+		@Request() req: any,
+		@Body() dto: ThemeDto,
 	) {
-		themeForYearDto.userNo = req.user.userNo;
-		return this.themesService.registerThemeForYear(themeForYearDto);
-	}
-
-	@Post('month')
-	@UseGuards(AuthGuard('jwt'))
-	async registerThemeForMonth(
-		@Request() req,
-		@Body() themeForMonthDto: ThemeForMonthDto,
-	) {
-		themeForMonthDto.userNo = req.user.userNo;
-		return this.themesService.registerThemeForMonth(themeForMonthDto);
+		dto.userNo = req.user.userNo;
+		return this.themesService.registerTheme(dto);
 	}
 }

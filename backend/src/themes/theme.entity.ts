@@ -2,7 +2,7 @@ import {Entity, Column, PrimaryColumn} from 'typeorm';
 
 
 @Entity()
-export class ThemeForMonth {
+export class Theme {
 
 	@PrimaryColumn()
 	userNo: number;
