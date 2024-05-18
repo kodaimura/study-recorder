@@ -17,7 +17,7 @@ export const RecordButton = () => {
 	const record = () => {
 		requestRecord()
 		.then(data => {
-      		if (data && data.startTime) {
+      		if (data && data.startTime !== 0) {
    				let startDate = new Date(data.startTime);
         		setStartTime(startDate.toLocaleDateString() + " " 
         			+ startDate.toLocaleTimeString() + "~");
@@ -30,7 +30,7 @@ export const RecordButton = () => {
 
 	useEffect(() => {
     	getRecordStartTime().then(data => {
-      		if (data && data.stopTime) {
+      		if (data && data.startTime !== 0) {
    				let startDate = new Date(data.startTime);
         		setStartTime(startDate.toLocaleDateString() + " " 
         			+ startDate.toLocaleTimeString() + "~");

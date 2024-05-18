@@ -7,7 +7,7 @@ export class RecordWork {
 	@PrimaryColumn()
 	userId: number;
 
-	@Column()
+	@Column({default: 0})
 	startTime: number;
 
 }

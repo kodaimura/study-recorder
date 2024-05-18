@@ -17,12 +17,12 @@ export class RecordsService {
     	private readonly recordWorkRepository: Repository<RecordWork>,
   	) {}
 
-  	async record(userId: number): Promise<{[key:string]:number | null}> { 
+  	async record(userId: number): Promise<{[key:string]:number}> { 
   		const recordWork = await this.recordWorkRepository.findOne({where:{userId}});
   		const now = Date.now();
 
   		if (recordWork && recordWork.startTime) {
-			await this.recordWorkRepository.save({userId, startTime: null});
+			await this.recordWorkRepository.save({userId, startTime: 0});
   			const minuteTime = Math.round((now - recordWork.startTime) / 60000);
 
   			//UTCの時間に9時間足して getUTC* で日本時間をとる
@@ -40,7 +40,7 @@ export class RecordsService {
 					this.registerRecord(dto);
 				}
 			});
-  			return { startTime : null };
+  			return { startTime : 0 };
 
   		}else {
 			this.recordWorkRepository.save({userId, startTime: now});

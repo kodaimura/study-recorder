@@ -27,7 +27,7 @@ import { RecordWork } from './records/record-work.entity';
     	TypeOrmModule.forRoot({
       		type: 'sqlite',
       		database: 'study-recorder.db',
-      		synchronize: false,  
+      		synchronize: true,  //本番環境ではfalseとする
       		entities: [User, Theme, Record, RecordWork],
     	}),
     	RecordsModule,
