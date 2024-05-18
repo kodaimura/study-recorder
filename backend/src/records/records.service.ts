@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Record } from './record.entity';
 import { RecordWork } from './record-work.entity';
 import { RecordDto } from './record.dto';
-import { CommentDto } from './comment.dto';
 
 
 @Injectable()
@@ -18,8 +17,7 @@ export class RecordsService {
     	private readonly recordWorkRepository: Repository<RecordWork>,
   	) {}
 
-  	async record(userNo: RecordWork['userNo'])
-  	: Promise<{stopTime:RecordWork['stopTime']} | {startTime:RecordWork['startTime']}>{ 
+  	async record(userNo: number): Promise<{[key:string]:number}>{ 
   		const recordWork = await this.recordWorkRepository.findOne({where:{userNo}});
   		const now = Date.now();
 
@@ -50,7 +48,7 @@ export class RecordsService {
   		}
   	}
 
-  	async getRecordState(userNo: RecordWork['userNo']) {
+  	async getRecordState(userNo: number): Promise<RecordWork> {
   		return this.recordWorkRepository.findOne({
   			select: ['startTime', 'stopTime'],
   			where: {userNo}
@@ -58,68 +56,22 @@ export class RecordsService {
   	}
 
   	async getRecords(
-  		userNo: Record['userNo'],
-  		year: Record['year'] | undefined,
-  		month: Record['month'] | undefined,
-  		day: Record['day'] | undefined,
-  	): Promise<Record[] | Record> {
+  		userNo: number,
+  		year: number | undefined,
+  		month: number | undefined,
+  		day: number | undefined,
+  	): Promise<Record[]> {
   		let cond: any = {userNo};
   		if (year) cond.year = year;
 		if (month) cond.month = month;
 		if (day) cond.day = day;
 
-  		return this.recordRepository.find({
-  			where: cond
-  		});
+  		return this.recordRepository.find({where: cond});
   	}
 
-  	async getMinuteTimes(
-  		userNo: Record['userNo'],
-  		year: Record['year'] | undefined,
-  		month: Record['month'] | undefined,
-  		day: Record['day'] | undefined,
-  	): Promise<Record[] | Record> {
-  		let cond: any = {userNo};
-  		if (year) cond.year = year;
-		if (month) cond.month = month;
-		if (day) cond.day = day;
-
-  		return this.recordRepository.find({
-  			select:['year','month','day','minuteTime'],
-  			where: cond
-  		});
-  	}
-
-  	async getComments(
-  		userNo: Record['userNo'],
-  		year: Record['year'] | undefined,
-  		month: Record['month'] | undefined,
-  		day: Record['day'] | undefined,
-  	): Promise<Record[] | Record> {
-  		let cond: any = {userNo};
-  		if (year) cond.year = year;
-		if (month) cond.month = month;
-		if (day) cond.day = day;
-
-  		return this.recordRepository.find({
-  			select:['year','month','day','comment'],
-  			where: cond
-  		});
-  	}
-
-  	async registerRecord(
-  		recordDto: RecordDto
-  	): Promise<void> {
-  		await this.recordRepository.save(recordDto);
+  	async registerRecord(dto: RecordDto): Promise<void> {
+  		await this.recordRepository.save(dto);
   		return;
   	}
-
-  	async registerComment(
-  		commentDto: CommentDto
-  	): Promise<void> {
-  		await this.recordRepository.save(commentDto);
-  		return;
-  	}
-
 
 }

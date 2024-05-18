@@ -1,13 +1,11 @@
 import { 
 	Controller, 
 	Request,
-	Param,
 	Query,
 	Body, 
 	Get, 
 	Post, 
 	UseGuards,
-	ParseIntPipe,
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
@@ -15,7 +13,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { DayPipe, MonthPipe, YearPipe } from '../app.pipe';
 import { RecordsService } from './records.service';
 import { RecordDto } from './record.dto';
-import { CommentDto } from './comment.dto';
 
 
 @Controller('records')
@@ -23,79 +20,38 @@ export class RecordsController {
 
 	constructor(private recordsService: RecordsService) {}
 
-	@Get('record')
+	@Post('record')
 	@UseGuards(AuthGuard('jwt'))
-	async record(@Request() req) {
+	async record(@Request() req: any) {
 		return this.recordsService.record(req.user.userNo);
 	} 
 
 	@Get('state')
 	@UseGuards(AuthGuard('jwt'))
-	async getState(@Request() req) {
+	async getState(@Request() req: any) {
 		return this.recordsService.getRecordState(req.user.userNo);
 	}
 
 	@Get()
 	@UseGuards(AuthGuard('jwt'))
 	async getRecords(
-		@Query('year', YearPipe) year,
-		@Query('month', MonthPipe) month,
-		@Query('day', DayPipe) day,
-		@Request() req
+		@Query('year', YearPipe) year: number,
+		@Query('month', MonthPipe) month: number,
+		@Query('day', DayPipe) day: number,
+		@Request() req: any
 	) {
 		return this.recordsService.getRecords(
 			req.user.userNo, year, month, day
 		);
 	} 
 
-	@Get('minute-times')
-	@UseGuards(AuthGuard('jwt'))
-	async getMinuteTimes(
-		@Query('year', YearPipe) year,
-		@Query('month', MonthPipe) month,
-		@Query('day', DayPipe) day,
-		@Request() req
-	) {
-		return this.recordsService.getMinuteTimes(
-			req.user.userNo, year, month, day
-		);
-	} 
-
-	@Get('comments')
-	@UseGuards(AuthGuard('jwt'))
-	async getComments(
-		@Query('year', YearPipe) year,
-		@Query('month', MonthPipe) month,
-		@Query('day', DayPipe) day,
-		@Request() req
-	) {
-		return this.recordsService.getComments(
-			req.user.userNo, year, month, day
-		);
-	} 
-
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
-	async registerRecords(
-		@Body() recordDto: RecordDto, 
-		@Request() req
+	async postRecords(
+		@Body() dto: RecordDto, 
+		@Request() req: any
 	) {
-		recordDto.userNo = req.user.userNo;
-		return this.recordsService.registerRecord(
-			recordDto
-		);
+		dto.userNo = req.user.userNo;
+		return this.recordsService.registerRecord(dto);
 	} 
-
-	@Post('comments')
-	@UseGuards(AuthGuard('jwt'))
-	async registerComment(
-		@Body() commentDto: CommentDto, 
-		@Request() req
-	) {
-		commentDto.userNo = req.user.userNo;
-		return this.recordsService.registerComment(
-			commentDto
-		);
-	}
-
 }

@@ -30,6 +30,7 @@ export const postRecord = (
 
 export const requestRecord = () => {
   	return fetch(`${apiurl}/records/record`, {
+		method: "POST",
       	headers: {
         	"Content-Type": "application/json",
         	Authorization: `Bearer ${localStorage.token}`
