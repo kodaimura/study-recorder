@@ -13,9 +13,6 @@ import { ThemesModule } from './themes/themes.module';
 import { RecordsModule } from './records/records.module';
 import { Record } from './records/record.entity';
 import { RecordWork } from './records/record-work.entity';
-import { SkillsModule } from './skills/skills.module';
-import { Skill } from './skills/skill.entity';
-import { SkillCategory } from './skills/skill-category.entity';
 
 
 @Module({
@@ -31,10 +28,9 @@ import { SkillCategory } from './skills/skill-category.entity';
       		type: 'sqlite',
       		database: 'study-recorder.db',
       		synchronize: false,  
-      		entities: [User, Theme, Record, RecordWork, Skill, SkillCategory],
+      		entities: [User, Theme, Record, RecordWork],
     	}),
     	RecordsModule,
-    	SkillsModule,
   	],
   	controllers: [AppController],
   	providers: [AppService],

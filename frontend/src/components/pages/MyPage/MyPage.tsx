@@ -11,7 +11,6 @@ import {
 	RecordCalendar,
 	Graph,
 	RecordTable,
-	Skills
 } from '../../organisms'
 import HeaderMenu from '../../shared/HeaderMenu';
 
@@ -52,11 +51,9 @@ export const MyPage = () => {
 	const Content = () => {
 		if (mode === "calendar") {
 			return <RecordCalendar year={year} month={month} timeUnit={timeUnit}/>;
-		}else if (mode === "graph") {
+		} else if (mode === "graph") {
 			return <Graph year={year} month={month} timeUnit={timeUnit}/>;
-		}else if (mode === "skill") {
-			return <Skills />;
-		}else {
+		} else {
 			return (
 				<>
 				<ThemeTable year={year} month={month} /><br/>
@@ -90,7 +87,7 @@ export const MyPage = () => {
 		<hr/>
 		
 		<RightBox>
-		{(mode === "graph" || mode === "skill")? "" :
+		{(mode === "graph")? "" :
 		<SelectDate 
 			year={year} 
 			month={month} 

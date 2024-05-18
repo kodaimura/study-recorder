@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 
 
-//content: "calendar" | "graph" | "edit" | "skill"
+//content: "calendar" | "graph" | "edit"
 const ContentMenu = (props: {
 	setContent: (content: string) => void
 }) => {
@@ -35,14 +35,6 @@ const ContentMenu = (props: {
 			onClick={() => props.setContent("graph")}
 			startIcon={<ShowChartIcon />}>
 		Graph
-		</Button>
-		<Button 
-			variant="contained" 
-			color="warning" 
-			size="large" 
-			onClick={() => props.setContent("skill")} 
-			startIcon={<SchoolIcon />}>
-		Skill
 		</Button>
 		</>
 		);
