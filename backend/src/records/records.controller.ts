@@ -10,7 +10,9 @@ import {
 
 import { AuthGuard } from '@nestjs/passport';
 
-import { DayPipe, MonthPipe, YearPipe } from '../app.pipe';
+import { Payload  } from 'src/auth/auth.decorator';
+import { JwtPayload } from 'src/auth/jwt.payload';
+import { MonthPipe, YearPipe } from '../app.pipe';
 import { RecordsService } from './records.service';
 import { RecordDto } from './record.dto';
 
@@ -25,30 +27,30 @@ export class RecordsController {
 	async getRecords(
 		@Query('year', YearPipe) year: number,
 		@Query('month', MonthPipe) month: number,
-		@Request() req: any
+		@Payload() pl: JwtPayload
 	) {
-		return this.recordsService.getRecords(req.user.userId, year, month);
+		return this.recordsService.getRecords(pl.userId, year, month);
 	} 
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
 	async postRecords(
 		@Body() dto: RecordDto, 
-		@Request() req: any
+		@Payload() pl: JwtPayload
 	) {
-		dto.userId = req.user.userId;
+		dto.userId = pl.userId;
 		return this.recordsService.registerRecord(dto);
 	} 
 
 	@Post('record')
 	@UseGuards(AuthGuard('jwt'))
-	async record(@Request() req: any) {
-		return this.recordsService.record(req.user.userId);
+	async record(@Payload() pl: JwtPayload) {
+		return this.recordsService.record(pl.userId);
 	} 
 
 	@Get('record/start_time')
 	@UseGuards(AuthGuard('jwt'))
-	async getWork(@Request() req: any) {
-		return this.recordsService.getStartTime(req.user.userId);
+	async getWork(@Payload() pl: JwtPayload) {
+		return this.recordsService.getStartTime(pl.userId);
 	}
 }

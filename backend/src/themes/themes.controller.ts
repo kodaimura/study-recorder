@@ -1,20 +1,16 @@
 import { 
 	Controller, 
-	Request,
-	Param,
 	Query,
-	Headers,
 	Body, 
 	Get, 
 	Post, 
 	UseGuards,
-	ParseIntPipe,
-	UsePipes,
-	ValidationPipe
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
 
+import { Payload } from 'src/auth/auth.decorator';
+import { JwtPayload } from 'src/auth/jwt.payload';
 import { ThemesService } from './themes.service';
 import { ThemeDto } from './theme.dto';
 
@@ -29,20 +25,20 @@ export class ThemesController {
 	async getThemes(
 		@Query('year') year: number, 
 		@Query('month') month: number, 
-		@Request() req: any,
+		@Payload() pl: JwtPayload
 	) {
 		return this.themesService.getThemes(
-			req.user.userId, year, month
+			pl.userId, year, month
 		);
 	}
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
 	async postTheme(
-		@Request() req: any,
 		@Body() dto: ThemeDto,
+		@Payload() pl: JwtPayload
 	) {
-		dto.userId = req.user.userId;
+		dto.userId = pl.userId;
 		return this.themesService.registerTheme(dto);
 	}
 }
