@@ -5,7 +5,7 @@ import {Entity, Column, PrimaryColumn} from 'typeorm';
 export class Theme {
 
 	@PrimaryColumn()
-	userNo: number;
+	userId: number;
 
 	@PrimaryColumn()
 	year: number;

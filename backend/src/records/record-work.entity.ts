@@ -5,9 +5,9 @@ import {Entity, Column, PrimaryColumn} from 'typeorm';
 export class RecordWork {
 	
 	@PrimaryColumn()
-	userNo: number;
+	userId: number;
 
 	@Column()
 	startTime: number;
-	
+
 }

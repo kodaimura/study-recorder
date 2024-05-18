@@ -27,7 +27,7 @@ export class RecordsController {
 		@Query('month', MonthPipe) month: number,
 		@Request() req: any
 	) {
-		return this.recordsService.getRecords(req.user.userNo, year, month);
+		return this.recordsService.getRecords(req.user.userId, year, month);
 	} 
 
 	@Post()
@@ -36,19 +36,19 @@ export class RecordsController {
 		@Body() dto: RecordDto, 
 		@Request() req: any
 	) {
-		dto.userNo = req.user.userNo;
+		dto.userId = req.user.userId;
 		return this.recordsService.registerRecord(dto);
 	} 
 
 	@Post('record')
 	@UseGuards(AuthGuard('jwt'))
 	async record(@Request() req: any) {
-		return this.recordsService.record(req.user.userNo);
+		return this.recordsService.record(req.user.userId);
 	} 
 
 	@Get('record/start_time')
 	@UseGuards(AuthGuard('jwt'))
 	async getWork(@Request() req: any) {
-		return this.recordsService.getStartTime(req.user.userNo);
+		return this.recordsService.getStartTime(req.user.userId);
 	}
 }

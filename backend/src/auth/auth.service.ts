@@ -27,7 +27,7 @@ export class AuthService {
 
   	//jwtを返す
   	async login(user: PasswordOmitUser) {
-    	const payload = { userNo: user.userNo, username: user.username };
+    	const payload = { userId: user.userId, username: user.username };
     	return {
       		access_token: this.jwtService.sign(payload),
     	};

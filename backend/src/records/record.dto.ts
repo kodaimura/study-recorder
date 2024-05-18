@@ -3,7 +3,7 @@ import {IsInt, Min, Max} from 'class-validator';
 
 export class RecordDto {
 
-	userNo: number;
+	userId: number;
 
 	@IsInt()
 	@Min(2000)

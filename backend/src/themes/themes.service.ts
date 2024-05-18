@@ -15,11 +15,11 @@ export class ThemesService {
   	) {}
 
   	async getThemes(
-  		userNo: number,
+  		userId: number,
   		year: number | undefined,
   		month: number | undefined
   	): Promise<Theme[]> {
-  		let cond: any = {userNo};
+  		let cond: any = {userId};
 		if (year) cond.year = year;
 		if (month) cond.month = month;
 		

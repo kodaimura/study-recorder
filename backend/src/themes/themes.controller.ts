@@ -32,7 +32,7 @@ export class ThemesController {
 		@Request() req: any,
 	) {
 		return this.themesService.getThemes(
-			req.user.userNo, year, month
+			req.user.userId, year, month
 		);
 	}
 
@@ -42,7 +42,7 @@ export class ThemesController {
 		@Request() req: any,
 		@Body() dto: ThemeDto,
 	) {
-		dto.userNo = req.user.userNo;
+		dto.userId = req.user.userId;
 		return this.themesService.registerTheme(dto);
 	}
 }

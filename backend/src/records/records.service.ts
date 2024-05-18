@@ -17,12 +17,12 @@ export class RecordsService {
     	private readonly recordWorkRepository: Repository<RecordWork>,
   	) {}
 
-  	async record(userNo: number): Promise<{[key:string]:number | null}> { 
-  		const recordWork = await this.recordWorkRepository.findOne({where:{userNo}});
+  	async record(userId: number): Promise<{[key:string]:number | null}> { 
+  		const recordWork = await this.recordWorkRepository.findOne({where:{userId}});
   		const now = Date.now();
 
   		if (recordWork && recordWork.startTime) {
-			await this.recordWorkRepository.save({userNo, startTime: null});
+			await this.recordWorkRepository.save({userId, startTime: null});
   			const minuteTime = Math.round((now - recordWork.startTime) / 60000);
 
   			//UTCの時間に9時間足して getUTC* で日本時間をとる
@@ -30,35 +30,35 @@ export class RecordsService {
   			const year = startDate.getUTCFullYear();
   			const month = startDate.getUTCMonth() + 1;
   			const day = startDate.getUTCDate();
-  			this.getRecord(userNo, year, month, day)
+  			this.getRecord(userId, year, month, day)
 			.then((record: Record) => {
 				if (record) {
 					record.minuteTime += minuteTime;
 					this.registerRecord(record);
 				} else {
-					const dto: RecordDto = { userNo, year, month, day, minuteTime, comment: '' };
+					const dto: RecordDto = { userId, year, month, day, minuteTime, comment: '' };
 					this.registerRecord(dto);
 				}
 			});
   			return { startTime : null };
 
   		}else {
-			this.recordWorkRepository.save({userNo, startTime: now});
+			this.recordWorkRepository.save({userId, startTime: now});
   			return { startTime : now };
   		}
   	}
 
-  	async getStartTime(userNo: number): Promise<{[key:string]:number | null}> {
-  		const row = await this.recordWorkRepository.findOne({where: {userNo}});
+  	async getStartTime(userId: number): Promise<{[key:string]:number | null}> {
+  		const row = await this.recordWorkRepository.findOne({where: {userId}});
 		return { startTime : (row)? row.startTime : null };
   	}
 
   	async getRecords(
-  		userNo: number,
+  		userId: number,
   		year: number | undefined,
   		month: number | undefined,
   	): Promise<Record[]> {
-  		let cond: any = {userNo};
+  		let cond: any = {userId};
   		if (year) cond.year = year;
 		if (month) cond.month = month;
 
@@ -66,12 +66,12 @@ export class RecordsService {
   	}
 
 	async getRecord(
-		userNo: number,
+		userId: number,
 		year: number,
 		month: number,
 		day: number,
 	): Promise<Record> {
-		return this.recordRepository.findOne({where:{userNo, year, month, day}});
+		return this.recordRepository.findOne({where:{userId, year, month, day}});
 	}
 
   	async registerRecord(dto: RecordDto): Promise<void> {

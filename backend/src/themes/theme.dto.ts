@@ -3,7 +3,7 @@ import {IsInt, IsString, Min, Max, Length} from 'class-validator';
 
 export class ThemeDto {
 
-	userNo: number;
+	userId: number;
 
 	@IsInt()
 	@Min(2000)
