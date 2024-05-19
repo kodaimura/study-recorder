@@ -18,19 +18,22 @@ export class RecordsService {
   	) {}
 
   	async record(userId: number): Promise<{[key:string]:number}> { 
-  		const recordWork = await this.recordWorkRepository.findOne({where:{userId}});
+  		const startTime = await this.getStartTime(userId);
   		const now = Date.now();
 
-  		if (recordWork && recordWork.startTime) {
-			await this.recordWorkRepository.save({userId, startTime: 0});
-  			const minuteTime = Math.round((now - recordWork.startTime) / 60000);
-
-  			//UTCの時間に9時間足して getUTC* で日本時間をとる
-  			const startDate = new Date(recordWork.startTime + 540 * 60000);
-  			const year = startDate.getUTCFullYear();
-  			const month = startDate.getUTCMonth() + 1;
-  			const day = startDate.getUTCDate();
-  			this.getRecord(userId, year, month, day)
+  		if (startTime === 0) {
+			this.recordWorkRepository.save({userId, startTime: now.toString()});
+  			return { startTime : now };
+  		} else {
+			await this.recordWorkRepository.save({userId, startTime: '0'});
+			const minuteTime = Math.round((now - startTime) / 60000);
+  
+			//UTCの時間に9時間足して getUTC* で日本時間をとる
+			const startDate = new Date(startTime + 540 * 60000);
+			const year = startDate.getUTCFullYear();
+			const month = startDate.getUTCMonth() + 1;
+			const day = startDate.getUTCDate();
+			this.getRecord(userId, year, month, day)
 			.then((record: Record) => {
 				if (record) {
 					record.minuteTime += minuteTime;
@@ -40,17 +43,13 @@ export class RecordsService {
 					this.registerRecord(dto);
 				}
 			});
-  			return { startTime : 0 };
-
-  		}else {
-			this.recordWorkRepository.save({userId, startTime: now});
-  			return { startTime : now };
+			return { startTime : 0 };
   		}
   	}
 
-  	async getStartTime(userId: number): Promise<{[key:string]:number}> {
+  	async getStartTime(userId: number): Promise<number> {
   		const row = await this.recordWorkRepository.findOne({where: {userId}});
-		return { startTime : (row)? row.startTime : 0 };
+		return (row)? parseInt(row.startTime) : 0;
   	}
 
   	async getRecords(

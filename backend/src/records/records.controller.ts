@@ -51,6 +51,7 @@ export class RecordsController {
 	@Get('record/start_time')
 	@UseGuards(AuthGuard('jwt'))
 	async getWork(@Payload() pl: JwtPayload) {
-		return this.recordsService.getStartTime(pl.userId);
+		const startTime: number = await this.recordsService.getStartTime(pl.userId);
+		return { startTime: startTime };
 	}
 }

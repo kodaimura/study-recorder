@@ -21,7 +21,7 @@ export const RecordButton = () => {
    				let startDate = new Date(data.startTime);
         		setStartTime(startDate.toLocaleDateString() + " " 
         			+ startDate.toLocaleTimeString() + "~");
-      		}else {
+      		} else {
       			setStartTime("");
       			navigate(0);
       		}
