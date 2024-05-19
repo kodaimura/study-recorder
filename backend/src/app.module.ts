@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -33,6 +34,7 @@ import { RecordWork } from './records/record-work.entity';
 			password: 'postgres',
       		entities: [User, Theme, Record, RecordWork],
 			synchronize: true,  //本番環境ではfalseとする
+			namingStrategy: new SnakeNamingStrategy(),
     	}),
     	RecordsModule,
   	],
