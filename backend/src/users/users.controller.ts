@@ -7,11 +7,11 @@ import {
 	UseGuards, 
 	Request
 } from '@nestjs/common';
-
 import { AuthGuard } from '@nestjs/passport';
 
 import { Payload } from 'src/auth/auth.decorator';
 import { JwtPayload } from 'src/auth/jwt.payload';
+
 import { UsersService } from './users.service';
 import { SignupDto, PutPasswordDto } from './users.dto';
 

@@ -7,12 +7,12 @@ import {
 	Post, 
 	UseGuards,
 } from '@nestjs/common';
-
 import { AuthGuard } from '@nestjs/passport';
 
 import { Payload  } from 'src/auth/auth.decorator';
 import { JwtPayload } from 'src/auth/jwt.payload';
-import { MonthPipe, YearPipe } from '../app.pipe';
+import { MonthPipe, YearPipe } from 'src/app.pipe';
+
 import { RecordsService } from './records.service';
 import { RecordDto } from './record.dto';
 

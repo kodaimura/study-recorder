@@ -1,4 +1,10 @@
-import {IsInt, IsString, Min, Max, Length} from 'class-validator';
+import {
+    IsInt, 
+    IsString, 
+    Min, 
+    Max, 
+    Length
+} from 'class-validator';
 
 
 export class ThemeDto {

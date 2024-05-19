@@ -1,19 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { User } from './users/user.entity';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { Theme } from './themes/theme.entity';
-import { ThemesModule } from './themes/themes.module';
-import { RecordsModule } from './records/records.module';
-import { Record } from './records/record.entity';
-import { RecordWork } from './records/record-work.entity';
+import { User } from 'src/users/user.entity';
+import { UsersModule } from 'src/users/users.module';
+import { AuthModule } from 'src/auth/auth.module';
+import { Theme } from 'src/themes/theme.entity';
+import { ThemesModule } from 'src/themes/themes.module';
+import { RecordsModule } from 'src/records/records.module';
+import { Record } from 'src/records/record.entity';
+import { RecordWork } from 'src/records/record-work.entity';
 
 
 @Module({

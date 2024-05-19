@@ -1,4 +1,8 @@
-import {IsInt, Min, Max} from 'class-validator';
+import {
+	IsInt, 
+	Min, 
+	Max
+} from 'class-validator';
 
 
 export class RecordDto {

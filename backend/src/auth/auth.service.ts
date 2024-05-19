@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/user.entity';
+
 import { JwtPayload } from './jwt.payload';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/user.entity';
 
 
 export type PasswordOmitUser = Omit<User, 'password'>;

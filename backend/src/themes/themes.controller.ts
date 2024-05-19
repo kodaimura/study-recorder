@@ -6,11 +6,11 @@ import {
 	Post, 
 	UseGuards,
 } from '@nestjs/common';
-
 import { AuthGuard } from '@nestjs/passport';
 
 import { Payload } from 'src/auth/auth.decorator';
 import { JwtPayload } from 'src/auth/jwt.payload';
+
 import { ThemesService } from './themes.service';
 import { ThemeDto } from './theme.dto';
 
