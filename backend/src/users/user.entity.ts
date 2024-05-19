@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 
-@Entity()
+@Entity('users')
 export class User {
 
 	@PrimaryGeneratedColumn()
@@ -20,9 +20,9 @@ export class User {
 	password: string;
 
 	@CreateDateColumn({ type: 'timestamp' })
-	createAt: string;
+	createdAt: Date;
 
 	@UpdateDateColumn({ type: 'timestamp' })
-	updateAt: string;
-	
+	updatedAt: Date;
+
 }

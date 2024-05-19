@@ -16,5 +16,8 @@ front:
 back:
 	docker exec -i -t backend bash
 
+db:
+	docker exec -i -t db bash
+
 build:
 	docker compose build --no-cache

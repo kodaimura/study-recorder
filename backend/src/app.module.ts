@@ -25,10 +25,14 @@ import { RecordWork } from './records/record-work.entity';
     	UsersModule,
     	ThemesModule,
     	TypeOrmModule.forRoot({
-      		type: 'sqlite',
-      		database: 'study-recorder.db',
-      		synchronize: true,  //本番環境ではfalseとする
+      		type: 'postgres',
+			host: 'db',
+			port: 5432,
+			database: 'studyrecorder',
+			username: 'postgres',
+			password: 'postgres',
       		entities: [User, Theme, Record, RecordWork],
+			synchronize: true,  //本番環境ではfalseとする
     	}),
     	RecordsModule,
   	],

@@ -27,4 +27,15 @@ services:
     environment:
       - ENV=docker
 
+  db:
+    container_name: db
+    image: postgres:16.1
+    environment:
+      POSTGRES_DB: studyrecorder
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+      - ./data:/var/lib/postgresql/data 
+
   
