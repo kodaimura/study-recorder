@@ -11,8 +11,6 @@ services:
       - ./backend:/usr/src/app
     working_dir: /usr/src/app
     tty: true
-    environment:
-      - ENV=docker
 
   frontend:
     container_name: frontend
@@ -24,8 +22,6 @@ services:
       - ./frontend:/usr/src/app
     working_dir: /usr/src/app
     tty: true
-    environment:
-      - ENV=docker
 
   db:
     container_name: db

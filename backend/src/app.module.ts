@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { AppController } from './app.controller';
@@ -20,22 +21,26 @@ import { RecordWork } from 'src/records/record-work.entity';
   	imports: [
   		ConfigModule.forRoot({
   			isGlobal: true,
-      		envFilePath: '.env'
+      		envFilePath: process.env.ENV === 'local' ? '.env.local' : '.env',
   		}),
     	AuthModule, 
     	UsersModule,
     	ThemesModule,
-    	TypeOrmModule.forRoot({
-      		type: 'postgres',
-			host: 'db',
-			port: 5432,
-			database: 'studyrecorder',
-			username: 'postgres',
-			password: 'postgres',
-      		entities: [User, Theme, Record, RecordWork],
-			synchronize: true,  //本番環境ではfalseとする
-			namingStrategy: new SnakeNamingStrategy(),
-    	}),
+    	TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+      		useFactory: async (config: ConfigService) => ({
+        		type: 'postgres',
+        		host: config.get<string>('DB_HOST'),
+        		port: config.get<number>('DB_PORT'),
+        		database: config.get<string>('DB_NAME'),
+        		username: config.get<string>('DB_USER'),
+        		password: config.get<string>('DB_PASSWORD'),
+        		entities: [User, Theme, Record, RecordWork],
+        		synchronize: config.get<string>('ENV') !== 'production',  // 本番環境ではfalseにする
+        		namingStrategy: new SnakeNamingStrategy(),
+      		}),
+			  inject: [ConfigService],
+		}),
     	RecordsModule,
   	],
   	controllers: [AppController],
