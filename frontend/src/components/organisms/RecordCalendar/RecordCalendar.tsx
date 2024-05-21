@@ -40,7 +40,7 @@ const fillUpData = (
       		newData.push(data[0]);
       		data.shift();
   		}else {
-      		newData.push({year, month, day: i, minuteTime: 0});
+      		newData.push({year, month, day: i, minuteTime: 0, comment: ''});
   		}
 	}
 	return newData;
@@ -55,7 +55,7 @@ const fillUpCalendarFirstWeek = (
 	const firstDayOfWeek = (new Date(year, month - 1, 1)).getDay();
 
 	for (let i = 0; i < firstDayOfWeek; i++) {
-        data.unshift({year, month, day: 0, minuteTime: 0});
+        data.unshift({year, month, day: 0, minuteTime: 0, comment: ''});
     }
 
     return data;
@@ -198,7 +198,7 @@ export const RecordCalendar = (props: {
 	const year = props.year;
     const month = props.month;
     const timeUnit = props.timeUnit;
-    const [data, setData] = useState([[{year: 0, month: 0, day:0, minuteTime:0}]]);
+    const [data, setData] = useState([[{year: 0, month: 0, day:0, minuteTime:0, comment:''}]]);
     const [total, setTotal] = useState(0);
 
 

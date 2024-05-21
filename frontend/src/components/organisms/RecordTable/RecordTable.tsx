@@ -67,8 +67,8 @@ export const RecordTable = (props:{
 	const [data, setData] = useState(fillUpData(year, month, []));
 	const [reload, setReload] = useState(1);
 	const [target, setTarget] = useState(NaN);
-	const [comment, setComment] = useState<string | undefined>("");
-	const [minuteTime, setMinuteTime] = useState("")
+	const [comment, setComment] = useState("");
+	const [minuteTime, setMinuteTime] = useState(0)
 
 
 	useEffect(() => {
@@ -111,7 +111,7 @@ export const RecordTable = (props:{
             			shrink: true,
           			}}
             		defaultValue={record.minuteTime} 
-            		onChange={(e) => setMinuteTime(e.target.value)}
+            		onChange={(e) => setMinuteTime(parseInt(e.target.value))}
             	/> 
             	: record.minuteTime} 
             </TableCell>
@@ -150,7 +150,7 @@ export const RecordTable = (props:{
            			onClick={() => {
            				if (target !== index) {
            					setTarget(index);
-           					setMinuteTime(record.minuteTime.toString());
+           					setMinuteTime(record.minuteTime);
  	 						setComment(record.comment);
            				} else {
            					setTarget(NaN)

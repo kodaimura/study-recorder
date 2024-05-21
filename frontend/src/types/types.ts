@@ -3,5 +3,5 @@ export type Record = {
 	month: number,
 	day: number,
 	minuteTime: number,
-	comment?: string,
+	comment: string,
 }

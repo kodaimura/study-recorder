@@ -1,4 +1,4 @@
-import {responseFilter} from '../utils/utils';
+import {handleResponse, handleError} from '../utils/utils';
 import {apiurl} from '../utils/constants';
 
 
@@ -43,7 +43,7 @@ export const signup = (
 ) => {
 	if (password !== passwordConfirm && setError) {
 		setError("Confirmation passwords do not match.");
-		return
+		return;
 	}
 
 	fetch(`${apiurl}/signup`, {
@@ -99,14 +99,16 @@ export const changePassword = (
 }
 
 
-export const getProfile = () => {
-	return fetch(`${apiurl}/account/profile`, {
+export const getProfile = async () => {
+	const response = await fetch(`${apiurl}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`
 	}})
-	.then(responseFilter)
-	.catch(console.error);
+	.then(handleResponse)
+	.catch(handleError);
+
+	return await response.json();
 }
 
 
