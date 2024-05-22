@@ -20,14 +20,15 @@ const apiFetch = async (endpoint: string, method: string, body: any): Promise<an
             error.status = response.status;
             throw error;
         }
-        return await response.json();
+        const data = await response.json();
+        return data;
     } catch (error) {
         throw error;
     }
 };
 
 export const apiGet = async (endpoint: string) => {
-    return apiFetch(endpoint, 'GET', {});
+    return apiFetch(endpoint, 'GET', null);
 };
 
 export const apiPost = async (endpoint: string, body: any) => {
@@ -39,5 +40,5 @@ export const apiPut = async (endpoint: string, body: any) => {
 };
 
 export const apiDelete = async (endpoint: string) => {
-    return apiFetch(endpoint, 'DELETE', {});
+    return apiFetch(endpoint, 'DELETE', null);
 };

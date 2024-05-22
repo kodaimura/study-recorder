@@ -100,15 +100,13 @@ export const changePassword = (
 
 
 export const getProfile = async () => {
-	const response = await fetch(`${apiurl}/account/profile`, {
+	return fetch(`${apiurl}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`
 	}})
 	.then(handleResponse)
 	.catch(handleError);
-
-	return await response.json();
 }
 
 
