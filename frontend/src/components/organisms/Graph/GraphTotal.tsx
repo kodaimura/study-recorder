@@ -12,9 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import {toHour, msToHs, getMinuteTotal} from '../../../utils/utils';
 import {Record} from '../../../types/types';
 
-import {
-    getRecords,
-} from '../../../apis/records.api'
+import { apiGet } from '../../../utils/api';
 
 
 const compareDate = (
@@ -191,12 +189,12 @@ const GraphTotal = (props: {
 
 
  	useEffect(() => {
- 		getRecords()
- 		.then(records => {
+        (async () => {
+            const records = await apiGet('records');
             setTotal(getMinuteTotal(records));
             records.sort(compareDate);
             setData(records);
-        });
+        })();
 	}, []);
 
 

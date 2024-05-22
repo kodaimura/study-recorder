@@ -9,12 +9,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {toHour, msToHs, getMinuteTotal} from '../../../utils/utils';
+import { toHour, msToHs } from '../../../utils/utils';
 import {Record} from '../../../types/types';
 
-import {
-    getRecords,
-} from '../../../apis/records.api'
+import { apiGet } from '../../../utils/api';
 
 
 const compareDate = (
@@ -178,11 +176,12 @@ const GraphMonthly = (props: {
 
 
     useEffect(() => {
-        getRecords()
-        .then(records => {
+        (async () => {
+            const records = await apiGet('records');
             records.sort(compareDate);
             setData(records);
-        });
+        })();
+        
     }, []);
 
     useEffect(() => {

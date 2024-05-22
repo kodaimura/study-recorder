@@ -13,9 +13,7 @@ import { styled } from '@mui/material/styles';
 import {Record} from '../../../types/types';
 import {toHour, getMinuteTotal} from '../../../utils/utils';
 
-import {
-    getRecordsByYearMonth
-} from '../../../apis/records.api'
+import { apiGet } from '../../../utils/api'
 
 
 const compareDate = (
@@ -203,16 +201,16 @@ export const RecordCalendar = (props: {
 
 
   	useEffect(() => {
-    	getRecordsByYearMonth(year, month)
-    	.then(records => {
+		(async () => {
+			const records = await apiGet(`records?year=${year}&month=${month}`);
     		if (records) {
-    			setTotal(getMinuteTotal(records));
-    			setData(makeCalendarData(year, month, records));
-    		} else {
-    			setTotal(0);
-    			setData([]);
-    		}
-    	});
+				setTotal(getMinuteTotal(records));
+				setData(makeCalendarData(year, month, records));
+			} else {
+				setTotal(0);
+				setData([]);
+			}
+		})();
 	}, [year, month]);
 
 

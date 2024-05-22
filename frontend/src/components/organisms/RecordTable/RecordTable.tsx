@@ -17,10 +17,7 @@ import { styled } from '@mui/material/styles';
 
 import {Record} from '../../../types/types';
 
-import {
-    getRecordsByYearMonth,
-    postRecord
-} from '../../../apis/records.api'
+import { apiGet, apiPost } from '../../../utils/api'
 
 
 const compareDate = (
@@ -72,9 +69,10 @@ export const RecordTable = (props:{
 
 
 	useEffect(() => {
-		getRecordsByYearMonth(year, month)
- 	 	.then(data => setData(fillUpData(year, month, data)));
-
+		(async () => {
+			const data = await apiGet(`records?year=${year}&month=${month}`);
+ 	 		setData(fillUpData(year, month, data));
+		})();
   		setTarget(NaN);
 	}, [year, month, reload]);
 
@@ -132,15 +130,14 @@ export const RecordTable = (props:{
             		size="small"
             		startIcon={<SaveIcon/>} 
             		onClick={() => {
-            			postRecord(
-            				year, 
-          					month, 
-            				record.day,
-            				comment,
-            				minuteTime
-            			).then(response => {
-            				setReload(reload * (-1));
-         				});
+						apiPost('records', {
+							year: year, 
+          					month: month, 
+            				day: record.day,
+            				comment: comment,
+            				minuteTime: Number.isNaN(minuteTime)? 0 : minuteTime,
+						});
+            			setReload(reload * (-1));
         			}}>Save</Button> 
            		: ""}
             </TableCell>

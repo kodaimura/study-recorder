@@ -14,13 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import {
-    getThemeForYear,
-    getThemeForMonth,
-    postThemeForYear,
-    postThemeForMonth,
-    
-} from '../../../apis/themes.api';
+import { apiGet, apiPost } from '../../../utils/api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
@@ -40,24 +34,19 @@ export const ThemeTable = (props:{
 
 
 	useEffect(() => {
-		getThemeForYear(year)
- 	 	.then(data => {
-            (data && data.length)? 
-            setThemeForYear(data[0].theme) 
-            : setThemeForYear("")
-        });
+        (async () => {
+            const data = await apiGet(`themes?year=${year}&month=0`);
+            setThemeForYear((data && data.length)? data[0].theme : "");
+        })();
         setTarget("");
     }, [year]);
 
 
     useEffect(() => {
-        getThemeForMonth(year, month)
-        .then(data => {
-            (data && data.length)? 
-            setThemeForMonth(data[0].theme) 
-            : setThemeForMonth("")
-        });
-
+        (async () => {
+            const data = await apiGet(`themes?year=${year}&month=${month}`);
+            setThemeForMonth((data && data.length)? data[0].theme : "");
+        })();
   		setTarget("");
 	}, [year, month]);
 
@@ -97,12 +86,12 @@ export const ThemeTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        postThemeForYear(
-                            year, 
-                            themeForYear
-                        ).then(response => { 
-                            setTarget("");
+                        apiPost('themes', {
+                            year: year,
+                            month: 0,
+                            theme: themeForYear
                         });
+                        setTarget("");
                     }}>Save</Button> 
                 : ""}
             </TableCell>
@@ -135,13 +124,12 @@ export const ThemeTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        postThemeForMonth(
-                            year, 
-                            month,
-                            themeForMonth
-                        ).then(response => {
-                            setTarget("");
+                        apiPost('themes', {
+                            year: year,
+                            month: month,
+                            theme: themeForMonth
                         });
+                        setTarget("");
                     }}>Save</Button> 
                 : ""}
             </TableCell>

@@ -6,6 +6,7 @@ import {
 	Get, 
 	Post, 
 	UseGuards,
+	HttpCode
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -34,12 +35,13 @@ export class RecordsController {
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
+	@HttpCode(204)
 	async postRecords(
 		@Body() dto: RecordDto, 
 		@Payload() pl: JwtPayload
 	) {
 		dto.userId = pl.userId;
-		return this.recordsService.registerRecord(dto);
+		this.recordsService.registerRecord(dto);
 	} 
 
 	@Post('record')

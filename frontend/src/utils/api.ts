@@ -14,13 +14,24 @@ const apiFetch = async (endpoint: string, method: string, body: any): Promise<an
             header.body = JSON.stringify(body);
         }
         const response = await fetch(`${BASE_URL}/${endpoint}`, header);
+
         if (!response.ok) {
             const errorData = await response.json();
             const error = new Error(errorData.message || 'An error occurred') as any;
             error.status = response.status;
             throw error;
         }
-        const data = await response.json();
+
+        let data;
+        try {
+            data = await response.json();
+        } catch (error) {
+            if (response.status !== 204 && response.status !== 200) {
+                const error = new Error('Error parsing JSON') as any;
+                error.status = response.status;
+                throw error;
+            }
+        }
         return data;
     } catch (error) {
         throw error;

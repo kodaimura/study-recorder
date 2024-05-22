@@ -4,38 +4,32 @@ import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
-import {
-	requestRecord,
-	getRecordStartTime
-} from '../../../apis/records.api';
+import { apiGet, apiPost } from '../../../utils/api';
 
 
 export const RecordButton = () => {
 	const [startTime, setStartTime ] = useState("");
 	const navigate = useNavigate();
 
-	const record = () => {
-		requestRecord()
-		.then(data => {
-      		if (data && data.startTime !== 0) {
-   				let startDate = new Date(data.startTime);
-        		setStartTime(startDate.toLocaleDateString() + " " 
-        			+ startDate.toLocaleTimeString() + "~");
-      		} else {
-      			setStartTime("");
-      			navigate(0);
-      		}
-   		 });
+	const record = async () => {
+		const data = await apiPost('records/record', {});
+		if (data && data.startTime !== 0) {
+			let startDate = new Date(data.startTime);
+			setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");
+		} else {
+		   setStartTime("");
+		   navigate(0);
+		}
 	}
 
 	useEffect(() => {
-    	getRecordStartTime().then(data => {
-      		if (data && data.startTime !== 0) {
-   				let startDate = new Date(data.startTime);
-        		setStartTime(startDate.toLocaleDateString() + " " 
-        			+ startDate.toLocaleTimeString() + "~");
-      		}
-   		 });
+		(async () => {
+			const data = await apiGet('records/record/start_time');
+			if (data && data.startTime !== 0) {
+				let startDate = new Date(data.startTime);
+				setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");
+			}
+		})();
  	}, [])
 
 

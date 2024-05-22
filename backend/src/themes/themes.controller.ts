@@ -5,6 +5,7 @@ import {
 	Get, 
 	Post, 
 	UseGuards,
+	HttpCode
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -27,18 +28,17 @@ export class ThemesController {
 		@Query('month') month: number, 
 		@Payload() pl: JwtPayload
 	) {
-		return this.themesService.getThemes(
-			pl.userId, year, month
-		);
+		return this.themesService.getThemes(pl.userId, year, month);
 	}
 
 	@Post()
 	@UseGuards(AuthGuard('jwt'))
+	@HttpCode(204)
 	async postTheme(
 		@Body() dto: ThemeDto,
 		@Payload() pl: JwtPayload
 	) {
 		dto.userId = pl.userId;
-		return this.themesService.registerTheme(dto);
+		this.themesService.registerTheme(dto);
 	}
 }
