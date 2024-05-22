@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import {Record} from '../../../types/types';
 import {toHour, getMinuteTotal} from '../../../utils/utils';
 
-import { apiGet } from '../../../utils/api'
+import { apiGet } from '../../../apis/api'
 
 
 const compareDate = (

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
-import { apiGet, apiPost } from '../../../utils/api';
+import { apiGet, apiPost } from '../../../apis/api';
 
 
 export const RecordButton = () => {

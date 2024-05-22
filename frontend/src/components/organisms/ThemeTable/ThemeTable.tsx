@@ -14,7 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import { apiGet, apiPost } from '../../../utils/api';
+import { apiGet, apiPost } from '../../../apis/api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",

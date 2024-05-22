@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles';
 
 import {Record} from '../../../types/types';
 
-import { apiGet, apiPost } from '../../../utils/api'
+import { apiGet, apiPost } from '../../../apis/api'
 
 
 const compareDate = (

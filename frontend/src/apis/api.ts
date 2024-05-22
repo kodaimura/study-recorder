@@ -1,4 +1,4 @@
-const BASE_URL = 'api';
+export const BASE_URL = 'api';
 
 const apiFetch = async (endpoint: string, method: string, body: any): Promise<any> => {
     try {
@@ -53,3 +53,29 @@ export const apiPut = async (endpoint: string, body: any) => {
 export const apiDelete = async (endpoint: string) => {
     return apiFetch(endpoint, 'DELETE', null);
 };
+
+export const getErrorStatus = (error: any) => {
+    const match = error.message.match(/HTTP Status: (\d+)/);
+    const status = match? match[1] : "0";
+    return parseInt(status);
+}
+
+export const handleResponse = (response: Response) => {
+    if (!response.ok) {
+        throw new Error(`HTTP Status: ${response.status}`);
+    } else {
+        return response.json();
+    }
+}
+
+export const handleError = (error: any) => {
+    const status = getErrorStatus(error);
+    if (status === 0) {
+        console.error(error);
+    }
+
+	if (status === 401) {
+		document.location.href = "/login";
+	}
+    throw error;
+}

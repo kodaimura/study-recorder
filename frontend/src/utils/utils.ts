@@ -1,29 +1,3 @@
-export const getErrorStatus = (error: any) => {
-    const match = error.message.match(/HTTP Status: (\d+)/);
-    const status = match? match[1] : "0";
-    return parseInt(status);
-}
-
-export const handleResponse = (response: Response) => {
-    if (!response.ok) {
-        throw new Error(`HTTP Status: ${response.status}`);
-    } else {
-        return response.json();
-    }
-}
-
-export const handleError = (error: any) => {
-    const status = getErrorStatus(error);
-    if (status === 0) {
-        console.error(error);
-    }
-
-	if (status === 401) {
-		document.location.href = "/login";
-	}
-    throw error;
-}
-
 export const msToHs = (
     minutes: number[]
 ) => {

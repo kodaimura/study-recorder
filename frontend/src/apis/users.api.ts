@@ -1,5 +1,4 @@
-import {handleResponse, handleError} from '../utils/utils';
-import {apiurl} from '../utils/constants';
+import {handleResponse, handleError, BASE_URL} from './api';
 
 
 export const login = (
@@ -7,7 +6,7 @@ export const login = (
 	password: string,
 	setError?: (message: string) => void 
 ) => {
-	fetch(`${apiurl}/login`, {
+	fetch(`${BASE_URL}/login`, {
 		method: "POST",
 		headers: {"Content-Type": "application/json"},
 		body: JSON.stringify({username, password})
@@ -46,7 +45,7 @@ export const signup = (
 		return;
 	}
 
-	fetch(`${apiurl}/signup`, {
+	fetch(`${BASE_URL}/signup`, {
 		method: "POST",
 		headers: {"Content-Type": "application/json"},
 		body: JSON.stringify({
@@ -79,7 +78,7 @@ export const changePassword = (
 		return
 	}
 
-	fetch(`${apiurl}/account/password`, {
+	fetch(`${BASE_URL}/account/password`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
@@ -100,7 +99,7 @@ export const changePassword = (
 
 
 export const getProfile = async () => {
-	return fetch(`${apiurl}/account/profile`, {
+	return fetch(`${BASE_URL}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`
@@ -111,7 +110,7 @@ export const getProfile = async () => {
 
 
 export const checkAuth = () => {
-	return fetch(`${apiurl}/account/profile`, {
+	return fetch(`${BASE_URL}/account/profile`, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${localStorage.token}`

@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import { toHour, msToHs } from '../../../utils/utils';
 import {Record} from '../../../types/types';
 
-import { apiGet } from '../../../utils/api';
+import { apiGet } from '../../../apis/api';
 
 
 const compareDate = (
