@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
-import { apiGet, apiPost } from '../../../apis/api';
+import { api } from '../../../apis/api';
 
 
 export const RecordButton = () => {
@@ -12,7 +12,7 @@ export const RecordButton = () => {
 	const navigate = useNavigate();
 
 	const record = async () => {
-		const data = await apiPost('records/record', {});
+		const data = await api.post('records/record', {});
 		if (data && data.startTime !== 0) {
 			let startDate = new Date(data.startTime);
 			setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");
@@ -24,7 +24,7 @@ export const RecordButton = () => {
 
 	useEffect(() => {
 		(async () => {
-			const data = await apiGet('records/record/start_time');
+			const data = await api.get('records/record/start_time');
 			if (data && data.startTime !== 0) {
 				let startDate = new Date(data.startTime);
 				setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");

@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import { toHour, msToHs } from '../../../utils/utils';
 import {Record} from '../../../types/types';
 
-import { apiGet } from '../../../apis/api';
+import { api } from '../../../apis/api';
 
 
 const compareDate = (
@@ -177,7 +177,7 @@ const GraphMonthly = (props: {
 
     useEffect(() => {
         (async () => {
-            const records = await apiGet('records');
+            const records = await api.get('records');
             records.sort(compareDate);
             setData(records);
         })();

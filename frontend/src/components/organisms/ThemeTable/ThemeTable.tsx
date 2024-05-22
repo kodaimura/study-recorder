@@ -14,7 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import { apiGet, apiPost } from '../../../apis/api';
+import { api } from '../../../apis/api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
@@ -35,7 +35,7 @@ export const ThemeTable = (props:{
 
 	useEffect(() => {
         (async () => {
-            const data = await apiGet(`themes?year=${year}&month=0`);
+            const data = await api.get(`themes?year=${year}&month=0`);
             setThemeForYear((data && data.length)? data[0].theme : "");
         })();
         setTarget("");
@@ -44,7 +44,7 @@ export const ThemeTable = (props:{
 
     useEffect(() => {
         (async () => {
-            const data = await apiGet(`themes?year=${year}&month=${month}`);
+            const data = await api.get(`themes?year=${year}&month=${month}`);
             setThemeForMonth((data && data.length)? data[0].theme : "");
         })();
   		setTarget("");
@@ -86,7 +86,7 @@ export const ThemeTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        apiPost('themes', {
+                        api.post('themes', {
                             year: year,
                             month: 0,
                             theme: themeForYear
@@ -124,7 +124,7 @@ export const ThemeTable = (props:{
                     size="small"
                     startIcon={<SaveIcon/>} 
                     onClick={() => {
-                        apiPost('themes', {
+                        api.post('themes', {
                             year: year,
                             month: month,
                             theme: themeForMonth

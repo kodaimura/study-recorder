@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles';
 
 import {Record} from '../../../types/types';
 
-import { apiGet, apiPost } from '../../../apis/api'
+import { api } from '../../../apis/api'
 
 
 const compareDate = (
@@ -70,7 +70,7 @@ export const RecordTable = (props:{
 
 	useEffect(() => {
 		(async () => {
-			const data = await apiGet(`records?year=${year}&month=${month}`);
+			const data = await api.get(`records?year=${year}&month=${month}`);
  	 		setData(fillUpData(year, month, data));
 		})();
   		setTarget(NaN);
@@ -130,7 +130,7 @@ export const RecordTable = (props:{
             		size="small"
             		startIcon={<SaveIcon/>} 
             		onClick={() => {
-						apiPost('records', {
+						api.post('records', {
 							year: year, 
           					month: month, 
             				day: record.day,
