@@ -4,17 +4,17 @@ import Header from '../../layouts/Header';
 import PasswordForm from '../../forms/PasswordForm';
 import HeaderMenu from '../../shared/HeaderMenu';
 
-import {getProfile} from '../../../apis/users.api';
+import { api } from '../../../apis/api';
 
 
 export const PasswordPage = () => {
 	const [username, setUsername] = useState("");
 
 	useEffect(() => {
-		getProfile()
-		.then(data => {
+		(async () => {
+			const data = await api.get('account/profile');
 			if (data && data.username) setUsername(data.username);
-		});
+		})();
 	}, [])
 
 	return (

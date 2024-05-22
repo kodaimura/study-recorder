@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {changePassword} from '../../apis/users.api';
+import { api } from '../../apis/api';
 
 
 const ErrorMessage = styled("div") ({
@@ -73,7 +73,21 @@ const PasswordChangeForm = () => {
 			size="large" 
 			variant="contained" 
 			color="primary" 
-			onClick={() => changePassword(password, newPassword, newPasswordConfirm, setErrorMsg)}
+			onClick={async () => {
+				if (newPassword !== newPasswordConfirm) {
+					setErrorMsg("Confirmation passwords do not match.");
+					return;
+				}
+				try {
+					await api.put('account/password', {
+						password: password, 
+						newPassword: newPassword,
+					});
+					document.location.href = "/logout";
+				} catch (error) {
+					setErrorMsg('Failed.');
+				}
+			}}
 		>Change</ Button>
 		</Grid>
 		<Grid item>

@@ -12,11 +12,7 @@ export class SignupDto {
 }
 
 
-export class PutPasswordDto {
-
-	@IsNotEmpty()
-	username: string;
-	
+export class PutPasswordDto {	
 	@IsNotEmpty()
 	password: string;
 

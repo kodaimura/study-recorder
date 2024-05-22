@@ -1,4 +1,4 @@
-import {handleResponse, handleError, BASE_URL} from './api';
+import { BASE_URL } from './api';
 
 
 export const login = (
@@ -64,60 +64,4 @@ export const signup = (
 		}
 		document.location.href = "/";
 	}).catch(console.error);
-}
-
-
-export const changePassword = (
-	password: string,
-	newPassword: string,
-	newPasswordConfirm: string,
-	setError?: (message: string) => void 
-) => {
-	if (newPassword !== newPasswordConfirm && setError) {
-		setError("Confirmation passwords do not match.");
-		return
-	}
-
-	fetch(`${BASE_URL}/account/password`, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${localStorage.token}`
-		},
-		body: JSON.stringify({password, newPassword})
-	})
-	.then(response => {
-		if (!response.ok) {
-			if (setError) {
-				setError("Failed.");
-			}
-			throw new Error(response.statusText);
-		}
-		document.location.href = "/logout";
-	}).catch(console.error);
-}
-
-
-export const getProfile = async () => {
-	return fetch(`${BASE_URL}/account/profile`, {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${localStorage.token}`
-	}})
-	.then(handleResponse)
-	.catch(handleError);
-}
-
-
-export const checkAuth = () => {
-	return fetch(`${BASE_URL}/account/profile`, {
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${localStorage.token}`
-	}})
-	.then(response => {
-		return (response.ok)? true : false;
-	}).catch(() => {
-		return false
-	});
 }

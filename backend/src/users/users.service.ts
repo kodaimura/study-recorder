@@ -47,7 +47,7 @@ export class UsersService {
   		const user = await this.getByUsername(username);
  
  		if (user && user.password === this.hashPassword(dto.password)) {
-			user.password = this.hashPassword(dto.password);
+			user.password = this.hashPassword(dto.newPassword);
  			await this.userRepository.save(user);
     	} else {
     		throw new BadRequestException();

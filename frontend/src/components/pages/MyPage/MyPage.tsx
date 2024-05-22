@@ -17,7 +17,7 @@ import HeaderMenu from '../../shared/HeaderMenu';
 import ContentMenu from './ContentMenu';
 import SelectDate from './SelectDate';
 
-import {getProfile} from '../../../apis/users.api';
+import { api } from '../../../apis/api';
 
 
 const Box = styled('div') ({
@@ -41,11 +41,11 @@ export const MyPage = () => {
 	const [timeUnit, setTimeUnit] = useState("h");
 
 	useEffect(() => {
-		getProfile()
-		.then(data => {
+		(async () => {
+			const data = await api.get('account/profile');
 			if (data && data.username) setUsername(data.username);
-		});
-	}, [])
+		})();
+	}, []);
 
 
 	const Content = () => {

@@ -56,9 +56,6 @@ class Api {
     };
 }
 
-
-
-
 export const getErrorStatus = (error: any) => {
     const match = error.message.match(/HTTP Status: (\d+)/);
     const status = match? match[1] : "0";
