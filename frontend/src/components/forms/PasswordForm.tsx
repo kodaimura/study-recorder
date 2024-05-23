@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
 import { api } from '../../apis/api';
+import { logout } from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({
@@ -83,7 +84,7 @@ const PasswordChangeForm = () => {
 						password: password, 
 						newPassword: newPassword,
 					});
-					document.location.href = "/logout";
+					logout();
 				} catch (error) {
 					setErrorMsg('Failed.');
 				}
