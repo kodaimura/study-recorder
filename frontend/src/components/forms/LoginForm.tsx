@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {login} from '../../apis/users.api';
+import { login } from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({
@@ -57,7 +57,13 @@ const LoginForm = () => {
 			size="large"
 			variant="contained" 
 			color="primary" 
-			onClick={() => login(username, password, setErrorMsg)}
+			onClick={async () => {
+				try {
+					await login(username, password);
+				} catch (error: any) {
+					setErrorMsg("Login failed.");
+				}
+			}}
 		>Login</ Button>
 		</Grid>
 		<Grid item>

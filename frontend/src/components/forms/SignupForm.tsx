@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {signup} from '../../apis/users.api';
+import { signup } from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({
@@ -70,7 +70,17 @@ const SignupForm = () => {
 			size="large" 
 			variant="contained" 
 			color="primary" 
-			onClick={() => signup(username, password, passwordConfirm, setErrorMsg)}
+			onClick={async () => {
+				try {
+					if (password !== passwordConfirm) {
+						setErrorMsg("Confirmation passwords do not match.");
+					} else {
+						await signup(username, password);
+					}
+				} catch (error: any) {
+					setErrorMsg((error.status === 409)? "That Username is already in use." : "Signup failed.");
+				}
+			}}
 		>Signup</ Button>
 		</Grid>
 		<Grid item>
