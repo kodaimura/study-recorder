@@ -9,8 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import { toHour, msToHs } from '../../../utils/utils';
-import {Record} from '../../../types/types';
+import { minuteToHour } from '../../../utils/utils';
+import { Record } from '../../../types/types';
 
 import { api } from '../../../apis/api';
 
@@ -111,7 +111,7 @@ const makePlotData = (
     month: number
 ) => {
     if (timeUnit === "h") {
-        data = data.map(d => msToHs(d))
+        data = data.map(d => d.map(minuteToHour))
     } 
     let d = makeDatasets(data, year, month);
 
@@ -221,7 +221,7 @@ const GraphMonthly = (props: {
         	<CustomTableCell >
         	{year}-{month} Total: {
                 (timeUnit === "m")? total :
-                 toHour(total)}[{timeUnit}]
+                 minuteToHour(total)}[{timeUnit}]
         	</CustomTableCell >
         </TableRow>
         </TableHead>

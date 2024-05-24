@@ -7,11 +7,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-import {Record} from '../../../types/types';
-import {toHour, getMinuteTotal} from '../../../utils/utils';
+import { Record } from '../../../types/types';
+import { minuteToHour } from '../../../utils/utils';
 
 import { api } from '../../../apis/api'
 
@@ -204,7 +203,7 @@ export const RecordCalendar = (props: {
 		(async () => {
 			const records = await api.get(`records?year=${year}&month=${month}`);
     		if (records) {
-				setTotal(getMinuteTotal(records));
+				setTotal(records.reduce((sum: number, row: Record) => sum + row.minuteTime, 0));
 				setData(makeCalendarData(year, month, records));
 			} else {
 				setTotal(0);
@@ -223,7 +222,7 @@ export const RecordCalendar = (props: {
         <CustomTableCell colSpan={7}>
         Monthly Total: {
         	(timeUnit === "m")? total 
-      		: toHour(total)} [{timeUnit}]
+      		: minuteToHour(total)} [{timeUnit}]
       	</CustomTableCell>
         </TableRow>
         <TableRow>

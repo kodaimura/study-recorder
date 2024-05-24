@@ -9,8 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import {toHour, msToHs, getMinuteTotal} from '../../../utils/utils';
-import {Record} from '../../../types/types';
+import { minuteToHour } from '../../../utils/utils';
+import { Record } from '../../../types/types';
 
 import { api } from '../../../apis/api';
 
@@ -137,8 +137,8 @@ const makePlotData = (
     timeUnit: string
 ) => {
     if (timeUnit === "h") {
-        dataMonthly = msToHs(dataMonthly)
-        dataCumulative = msToHs(dataCumulative)
+        dataMonthly = dataMonthly.map(minuteToHour)
+        dataCumulative = dataCumulative.map(minuteToHour)
     } 
 
     return {
@@ -191,7 +191,7 @@ const GraphTotal = (props: {
  	useEffect(() => {
         (async () => {
             const records = await api.get('records');
-            setTotal(getMinuteTotal(records));
+            setTotal(records.reduce((sum: number, row: Record) => sum + row.minuteTime, 0));
             records.sort(compareDate);
             setData(records);
         })();
@@ -221,7 +221,7 @@ const GraphTotal = (props: {
         <TableHead>
         <TableRow>
             <CustomTableCell>
-            Total: {(timeUnit === "m")? total : toHour(total)}[{timeUnit}]
+            Total: {(timeUnit === "m")? total : minuteToHour(total)}[{timeUnit}]
             </CustomTableCell>
         </TableRow>
         </TableHead>
