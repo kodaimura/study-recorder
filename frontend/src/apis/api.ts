@@ -1,3 +1,5 @@
+const BASE_URL = 'api';
+
 class HttpError extends Error{
     public status: number;
 
@@ -47,11 +49,12 @@ class Api {
             }
             return data;
         } catch (error: any) {
-            if (error.status === 401) {
-                document.location.href = "/login";
+            if (error instanceof HttpError) {
+                this.handleHttpError(error);
             } else {
-                throw error;
+                console.error(error);
             }
+            throw error;
         }
     };
 
@@ -70,8 +73,17 @@ class Api {
     public delete = async (endpoint: string): Promise<any> => {
         return this.apiFetch(endpoint, 'DELETE', null);
     };
+
+    public handleHttpError = (error: HttpError): void => {
+        console.error(error);
+    };
 }
 
-export const BASE_URL = 'api';
+const api = new Api(BASE_URL);
+api.handleHttpError = (error: HttpError) => {
+    if (error.status === 401) {
+        document.location.href = "/login";
+    }
+}
 
-export const api = new Api(BASE_URL);
+export { HttpError, Api, BASE_URL, api };
