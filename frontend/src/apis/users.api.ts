@@ -9,7 +9,7 @@ export const signup = async (username: string, password: string): Promise<any> =
 	});
 
 	if (response.ok) {
-		document.location.href = "/";
+		window.location.replace('/login');
 	} else {
 		const errorData = await response.json();
 		throw new HttpError(response.status, errorData.message);
@@ -27,7 +27,7 @@ export const login = async (username: string, password: string): Promise<any> =>
 	if (response.ok) {
 		const data = await response.json();
 		localStorage.setItem("token", data.access_token);
-		document.location.href = "/";
+		window.location.replace('/');
 	} else {
 		const errorData = await response.json();
 		throw new HttpError(response.status, errorData.message);
@@ -37,5 +37,5 @@ export const login = async (username: string, password: string): Promise<any> =>
 
 export const logout = async () => {
 	localStorage.removeItem("token");
-	document.location.href = "/";
+	window.location.replace('/login');
 }

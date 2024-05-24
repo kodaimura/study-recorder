@@ -54,7 +54,6 @@ class Api {
             } else {
                 console.error(error);
             }
-            throw error;
         }
     };
 
@@ -76,13 +75,16 @@ class Api {
 
     public handleHttpError = (error: HttpError): void => {
         console.error(error);
+        throw error;
     };
 }
 
 const api = new Api(BASE_URL);
 api.handleHttpError = (error: HttpError) => {
     if (error.status === 401) {
-        document.location.href = "/login";
+        window.location.replace('/login');
+    } else {
+        throw error;
     }
 }
 
