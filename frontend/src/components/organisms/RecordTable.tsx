@@ -102,7 +102,7 @@ const RecordTable = (props:{
             {(target === index)? 
             	<Input
                     type="number"
-            		value={record.minuteTime} 
+            		value={minuteTime} 
             		onChange={(e) => setMinuteTime(parseInt(e.target.value))}
             	/> 
             	: record.minuteTime} 
@@ -111,7 +111,7 @@ const RecordTable = (props:{
             {(target === index)? 
             	<Input 
             		placeholder="free comment"
-            		value={record.comment} 
+            		value={comment} 
             		onChange={(e) => setComment(e.target.value)}
             	/> 
             	: record.comment}
