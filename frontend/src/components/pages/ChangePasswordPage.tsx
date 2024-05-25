@@ -5,6 +5,7 @@ import { PasswordForm } from '../organisms/PasswordForm';
 import HeaderMenu from '../molecules/HeaderMenu';
 
 import { api } from '../../apis/api';
+import Container from '../layouts/Container';
 
 
 export const ChangePasswordPage = () => {
@@ -20,7 +21,9 @@ export const ChangePasswordPage = () => {
 	return (
 		<>
 		<Header rightContent={<HeaderMenu username={username}/>}/>
-		<PasswordForm />
+        <Container className='mt-5'>
+		    <PasswordForm />
+        </Container>
 		</>
 		)
 }

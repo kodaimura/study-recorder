@@ -4,6 +4,7 @@ import Button from '../atoms/Button';
 
 import Header from '../layouts/Header';
 import { SignupForm } from '../organisms/SignupForm';
+import Container from '../layouts/Container';
 
 
 export const SignupPage = () => {
@@ -19,7 +20,9 @@ export const SignupPage = () => {
 				>LOGIN</Button>
 			}
 		/>
-		<SignupForm />
+        <Container className='mt-5'>
+		    <SignupForm />
+        </Container>
 		</>
 		)
 }

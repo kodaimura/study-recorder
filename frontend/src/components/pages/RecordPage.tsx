@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Grid from "@mui/material/Grid";
 import Button from '../atoms/Button';
 
 import { RecordTemplate } from '../templates/RecordTemplate';
@@ -44,24 +43,24 @@ export const RecordPage = () => {
 
 	return (
 		<RecordTemplate>
-			<Grid container>
-				<Grid item xs={9}>
+			<div className='d-flex justify-content-between'>
+				<div>
 					<SelectDate 
 						year={year} 
 						month={month} 
 						setYear={setYear}
 						setMonth={setMonth}
 					/>
-				</Grid>
-				<Grid item xs= {3}>
+				</div>
+				<div>
 					<Button 
-						className='btn-lg btn-outline-secondary'
+						className='btn-outline-secondary'
 						onClick={()=> setTimeUnit((timeUnit === "m")? "h" : "m")} 
 					>
 					{(timeUnit === "m")? "m → h" : "h → m"}
 					</Button>
-				</Grid>
-			</Grid>
+				</div>
+			</div>
             <Content/>
         </RecordTemplate>
 	);

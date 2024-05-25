@@ -4,11 +4,11 @@ import Button from '../atoms/Button';
 
 import Header from '../layouts/Header';
 import { LoginForm } from '../organisms/LoginForm';
+import Container from '../layouts/Container';
 
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
-
 
 	return (
 		<>
@@ -19,7 +19,9 @@ export const LoginPage = () => {
 					onClick={() => navigate('/signup')}
 				>SIGNUP</Button>}
 		/>
-		<LoginForm/>
+        <Container className='mt-5'>
+            <LoginForm/>
+        </Container>
 		</>
 		)
 }

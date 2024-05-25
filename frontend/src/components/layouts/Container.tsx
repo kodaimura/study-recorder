@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
 
 type Props = {
-    children: ReactNode
+    children: ReactNode;
+    className?: string;
 }
 
-const Header: React.FC<Props> = (props) => {
+const Container: React.FC<Props> = (props) => {
     return (
-        <div className='container'>{props.children}</div>
+        <div className={`container ${props.className}`} >{props.children}</div>
     );
 }
 
-export default Header;
+export default Container;
