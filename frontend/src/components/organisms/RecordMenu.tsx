@@ -16,7 +16,7 @@ const RecordMenu = () => {
 			variant="contained"
 			color="secondary" 
 			size="large" 
-            onClick={() => navigate("/records/calendar")}
+            onClick={() => navigate("/calendar")}
 			startIcon={<CalendarViewMonthIcon />}>
 		Calendar
 		</Button>
@@ -24,7 +24,7 @@ const RecordMenu = () => {
 			variant="contained" 
 			color="success" 
 			size="large" 
-			onClick={() => navigate("/records/edit")} 
+			onClick={() => navigate("/edit")} 
 			startIcon={<EditIcon />}>
 		Edit
 		</Button>
@@ -32,7 +32,7 @@ const RecordMenu = () => {
 			variant="contained" 
 			color="primary" 
 			size="large" 
-			onClick={() => navigate("/records/graph")}
+			onClick={() => navigate("/graph")}
 			startIcon={<ShowChartIcon />}>
 		Graph
 		</Button>
