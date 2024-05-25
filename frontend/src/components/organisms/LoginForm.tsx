@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import { signup } from '../../apis/users.api';
+import { login } from '../../apis/users.api';
 
 
 const ErrorMessage = styled("div") ({
@@ -15,16 +15,15 @@ const TextInput = styled(TextField) ({
 	width: 300
 })
 
-
-const SignupForm = () => {
+const LoginForm = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfig] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
 
 	return (
+		<>
 		<Grid 
-			container
+			container 
 			direction="column" 
 			alignItems="center" 
 			justifyContent="center" 
@@ -33,55 +32,39 @@ const SignupForm = () => {
 		>
 		<Grid item>
 			<em>
-			Create a new account.
+			Login to StudyRecorder.
 			</em>
 		</Grid>
 		<Grid item>
 		<TextInput 
-			label="Username"
 			required 
-			fullWidth 
+			label="Username" 
 			variant="filled"
 			onChange={(e) => setUsername(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
 		<TextInput 
+			required 
 			label="Password" 
-			required 
-			fullWidth 
 			type="password" 
 			variant="filled"
-			onChange={(e) => setPassword(e.target.value)}
-		/>
-		</Grid>
-		<Grid item>
-		<TextInput 
-			label="Confirmation Password" 
-			required 
-			fullWidth  
-			type="password" 
-			variant="filled"
-			onChange={(e) => setPasswordConfig(e.target.value)}
+			onChange={(e) => setPassword(e.target.value)} 
 		/>
 		</Grid>
 		<Grid item>
 		<Button 
-			size="large" 
+			size="large"
 			variant="contained" 
 			color="primary" 
 			onClick={async () => {
 				try {
-					if (password !== passwordConfirm) {
-						setErrorMsg("Confirmation passwords do not match.");
-					} else {
-						await signup(username, password);
-					}
+					await login(username, password);
 				} catch (error: any) {
-					setErrorMsg((error.status === 409)? "That Username is already in use." : "Signup failed.");
+					setErrorMsg("Login failed.");
 				}
 			}}
-		>Signup</ Button>
+		>Login</ Button>
 		</Grid>
 		<Grid item>
 		<ErrorMessage>
@@ -89,7 +72,8 @@ const SignupForm = () => {
 		</ErrorMessage>
 		</Grid>
 		</Grid>
+		</>
 		)
 }
 
-export default SignupForm;
+export { LoginForm };

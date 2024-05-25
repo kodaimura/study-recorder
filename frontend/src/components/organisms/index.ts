@@ -6,3 +6,5 @@ export { RecordTable } from './RecordTable';
 export { RecordGraph } from './RecordGraph';
 export { RecordMenu } from './RecordMenu';
 export { SelectDate } from './SelectDate';
+export { LoginForm } from './LoginForm';
+export { PasswordForm } from './PasswordForm';

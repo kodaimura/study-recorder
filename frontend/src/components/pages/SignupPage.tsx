@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 import Header from '../layouts/Header';
-import SignupForm from '../forms/SignupForm';
+import { SignupForm } from '../organisms/SignupForm';
 
 
 export const SignupPage = () => {

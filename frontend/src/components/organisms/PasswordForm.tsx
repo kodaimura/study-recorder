@@ -17,7 +17,7 @@ const TextInput = styled(TextField) ({
 })
 
 
-const PasswordChangeForm = () => {
+const PasswordForm = () => {
 	const [password, setPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
@@ -100,4 +100,4 @@ const PasswordChangeForm = () => {
 		)
 }
 
-export default PasswordChangeForm;
+export { PasswordForm };

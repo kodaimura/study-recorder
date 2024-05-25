@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import Header from '../layouts/Header';
-import PasswordForm from '../forms/PasswordForm';
+import { PasswordForm } from '../organisms/PasswordForm';
 import HeaderMenu from '../shared/HeaderMenu';
 
 import { api } from '../../apis/api';
