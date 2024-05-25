@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Button from '../atoms/Button';
 import Grid from '@mui/material/Grid';
-import PasswordField from '../atoms/PasswordField';
+import Input from '../atoms/Input';
 
 import { api } from '../../apis/api';
 import { logout } from '../../apis/users.api';
@@ -30,21 +30,24 @@ const PasswordForm = () => {
 		<Grid item>
 		</Grid>
 		<Grid item>
-		<PasswordField
+		<Input
+            type="password"
 			placeholder="Old Password" 
 			required
 			onChange={(e) => setPassword(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
-		<PasswordField
+		<Input
+            type="password"
 			placeholder="New Password" 
 			required
 			onChange={(e) => setNewPassword(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
-		<PasswordField
+		<Input
+            type="password"
 			placeholder="Confirmation New Password" 
 			required
 			onChange={(e) => setNewPasswordConfirm(e.target.value)}

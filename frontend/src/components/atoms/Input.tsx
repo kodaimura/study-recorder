@@ -1,8 +1,9 @@
 import React, { ChangeEvent } from 'react';
 
 type Props = {
+    type?: string;
     placeholder?: string;
-    value?: number;
+    value?: number | string;
     onInput?: (e: ChangeEvent<HTMLInputElement>) => void;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     className?: string;
@@ -11,10 +12,10 @@ type Props = {
 
 }
 
-const NumberField: React.FC<Props> = (props) => {
+const Input: React.FC<Props> = (props) => {
     return (
         <input 
-            type="number" 
+            type={props.type?? 'text'} 
             placeholder={props.placeholder} 
             value={props.value} 
             onChange={props.onChange} 
@@ -26,4 +27,4 @@ const NumberField: React.FC<Props> = (props) => {
     );
 };
 
-export default NumberField;
+export default Input;

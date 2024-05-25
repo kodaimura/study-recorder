@@ -10,9 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '../atoms/Button';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import Input from '@mui/material/Input';
-import TextField from '../atoms/TextField';
-import NumberField from '../atoms/NumberField';
+import Input from '../atoms/Input';
 import { styled } from '@mui/material/styles';
 
 import {Record} from '../../types/types';
@@ -102,7 +100,8 @@ const RecordTable = (props:{
             <TableCell>{record.day}</TableCell>
             <TableCell>
             {(target === index)? 
-            	<NumberField
+            	<Input
+                    type="number"
             		value={record.minuteTime} 
             		onChange={(e) => setMinuteTime(parseInt(e.target.value))}
             	/> 
@@ -110,7 +109,7 @@ const RecordTable = (props:{
             </TableCell>
             <TableCell>
             {(target === index)? 
-            	<TextField 
+            	<Input 
             		placeholder="free comment"
             		value={record.comment} 
             		onChange={(e) => setComment(e.target.value)}
