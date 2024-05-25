@@ -1,10 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import EditIcon from '@mui/icons-material/Edit';
-import SchoolIcon from '@mui/icons-material/School';
+import Button from '../atoms/Button';
 
 
 const RecordMenu = () => {
@@ -13,27 +9,18 @@ const RecordMenu = () => {
 	return (
 		<>
 		<Button 
-			variant="contained"
-			color="secondary" 
-			size="large" 
-            onClick={() => navigate("/calendar")}
-			startIcon={<CalendarViewMonthIcon />}>
+			className='btn-secondary btn-lg'
+            onClick={() => navigate("/calendar")}>
 		Calendar
 		</Button>
 		<Button 
-			variant="contained" 
-			color="success" 
-			size="large" 
-			onClick={() => navigate("/edit")} 
-			startIcon={<EditIcon />}>
+			className='btn-success btn-lg'
+			onClick={() => navigate("/edit")}>
 		Edit
 		</Button>
 		<Button 
-			variant="contained" 
-			color="primary" 
-			size="large" 
-			onClick={() => navigate("/graph")}
-			startIcon={<ShowChartIcon />}>
+			className='btn-primary btn-lg'
+			onClick={() => navigate("/graph")}>
 		Graph
 		</Button>
 		</>

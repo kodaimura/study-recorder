@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
+import Button from '../atoms/Button';
 
 import Header from '../layouts/Header';
 import { LoginForm } from '../organisms/LoginForm';
@@ -15,6 +15,7 @@ export const LoginPage = () => {
 		<Header
 			rightContent={
 				<Button 
+                    className='btn-outline-light'
 					onClick={() => navigate('/signup')}
 				>SIGNUP</Button>}
 		/>

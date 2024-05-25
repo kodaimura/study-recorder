@@ -12,7 +12,7 @@ import {
   registerables as registerablesJS
 } from 'chart.js';
 
-import Button from '@mui/material/Button';
+import Button from '../../atoms/Button';
 
 import GraphMonthly from './GraphMonthly';
 import GraphTotal from './GraphTotal';
@@ -41,8 +41,7 @@ const Graph = (props: {
 	return (
 		<>
 		<Button 
-			variant="text" 
-			size="large" 
+			className='btn-lg'
 			onClick={() => setMode(mode * (-1))} 
 		>
 		{(mode === 1)? "Total Graph" : "Monthly Graph"}

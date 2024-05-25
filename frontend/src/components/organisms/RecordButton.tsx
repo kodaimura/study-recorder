@@ -1,8 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import {useNavigate} from 'react-router';
-import Button from '@mui/material/Button';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
+import Button from '../atoms/Button';
 
 import { api } from '../../apis/api';
 
@@ -36,10 +34,8 @@ const RecordButton = () => {
 	return (
 		<>
 		<Button 
-			variant="contained" 
-			color="error" size="large" 
+            className='btn-danger btn-lg'
 			onClick={() => record()} 
-			endIcon={(startTime === "")? <PlayArrowIcon /> : <StopIcon />}
 		>
       	Record
      	</Button>

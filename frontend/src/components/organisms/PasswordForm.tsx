@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Button from '@mui/material/Button';
+import Button from '../atoms/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -71,9 +71,7 @@ const PasswordForm = () => {
 		</Grid>
 		<Grid item>
 		<Button 
-			size="large" 
-			variant="contained" 
-			color="primary" 
+            className='btn-primary btn-lg'
 			onClick={async () => {
 				if (newPassword !== newPasswordConfirm) {
 					setErrorMsg("Confirmation passwords do not match.");

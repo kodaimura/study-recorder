@@ -7,10 +7,9 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
+import Button from '../atoms/Button';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
@@ -83,8 +82,7 @@ const ThemeTable = (props:{
             <TableCell>
             {(target === "yearly")? 
                 <Button 
-                    size="small"
-                    startIcon={<SaveIcon/>} 
+                    className='btn-sm'
                     onClick={() => {
                         api.post('themes', {
                             year: year,
@@ -121,8 +119,7 @@ const ThemeTable = (props:{
             <TableCell>
             {(target === "monthly")? 
                 <Button 
-                    size="small"
-                    startIcon={<SaveIcon/>} 
+                    className='btn-sm'
                     onClick={() => {
                         api.post('themes', {
                             year: year,

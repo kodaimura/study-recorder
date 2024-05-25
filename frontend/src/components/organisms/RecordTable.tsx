@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
+import Button from '../atoms/Button';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -127,8 +127,7 @@ const RecordTable = (props:{
             <TableCell>
             {(target === index)? 
             	<Button 
-            		size="small"
-            		startIcon={<SaveIcon/>} 
+                    className='btn-sm'
             		onClick={() => {
 						api.post('records', {
 							year: year, 

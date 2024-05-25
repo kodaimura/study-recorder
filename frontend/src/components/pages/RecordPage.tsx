@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import Grid from "@mui/material/Grid";
-import Button from '@mui/material/Button';
+import Button from '../atoms/Button';
 
 import { RecordTemplate } from '../templates/RecordTemplate';
 import {
@@ -55,8 +55,7 @@ export const RecordPage = () => {
 				</Grid>
 				<Grid item xs= {3}>
 					<Button 
-						variant="outlined" 
-						size="large" 
+						className='btn-lg btn-outline-secondary'
 						onClick={()=> setTimeUnit((timeUnit === "m")? "h" : "m")} 
 					>
 					{(timeUnit === "m")? "m → h" : "h → m"}

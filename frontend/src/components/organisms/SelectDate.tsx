@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Button from '../atoms/Button';
 
 
 const SelectDate = (props: {
@@ -56,14 +54,12 @@ const SelectDate = (props: {
 			color="inherit" 
 			variant="contained" >
 		<Button 
-			endIcon={<ArrowBackIosNewIcon />}
-			size="small"
+			className='btn-sm'
 			onClick={() => subYear()} >
 		</Button>
 		<Button>{y}</Button>
 		<Button
-			startIcon={<ArrowForwardIosIcon />} 
-			size="small"
+			className='btn-sm'
 			onClick={() => addYear()} >
 		</Button>
 		</ButtonGroup>
@@ -72,15 +68,13 @@ const SelectDate = (props: {
 			color="inherit" 
 			variant="contained" >
 		<Button 
-			endIcon={<ArrowBackIosNewIcon />}
-			size="small"
+			className='btn-sm'
 			onClick={() => subMonth()} >
 		
 		</Button>
 		<Button>{m}</Button>
 		<Button 
-			startIcon={<ArrowForwardIosIcon />}
-			size="small"
+			className='btn-sm'
 			onClick={() => addMonth()} >
 		</Button>
 		</ButtonGroup>
