@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import Header from '../layouts/Header';
 import { PasswordForm } from '../organisms/PasswordForm';
-import HeaderMenu from '../shared/HeaderMenu';
+import HeaderMenu from '../molecules/HeaderMenu';
 
 import { api } from '../../apis/api';
 

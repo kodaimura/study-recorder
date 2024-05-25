@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Header from '../layouts/Header';
 
 import { RecordButton, RecordMenu } from '../organisms'
-import HeaderMenu from '../shared/HeaderMenu';
+import HeaderMenu from '../molecules/HeaderMenu';
 
 import { api } from '../../apis/api';
 
