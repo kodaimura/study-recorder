@@ -1,57 +1,37 @@
 import React, {useState, useEffect} from 'react';
-import { styled } from '@mui/material/styles';
+import { useParams } from 'react-router-dom';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 
-import Header from '../layouts/Header';
-
+import { RecordTemplate } from '../templates/RecordTemplate';
 import {
-	RecordButton,
 	ThemeTable,
 	RecordCalendar,
-	Graph,
+	RecordGraph,
 	RecordTable,
-	ContentMenu,
 	SelectDate
-} from '../organisms'
-import HeaderMenu from '../shared/HeaderMenu';
+} from '../organisms';
 
-import { api } from '../../apis/api';
-
-
-const Box = styled('div') ({
-	width:"90%", 
-	margin: "0 auto",
-	marginTop: "20px"
-})
-
-const RightBox = styled('div') ({
-	width:"100%", 
-	textAlign:"right"
-})
-
+type RouteParams = {
+    year: string | undefined;
+    month: string | undefined;
+    mode: string | undefined;
+}
 
 export const RecordPage = () => {
+    const params = useParams<RouteParams>();
+    const mode: string = params.mode?? "calendar";
+
 	const today = new Date();
 	const [year, setYear] = useState(today.getFullYear());
 	const [month, setMonth] = useState(today.getMonth()+1);
-	const [mode, setMode] = useState("calendar");
-	const [username, setUsername] = useState("");
 	const [timeUnit, setTimeUnit] = useState("h");
-
-	useEffect(() => {
-		(async () => {
-			const data = await api.get('account/profile');
-			if (data && data.username) setUsername(data.username);
-		})();
-	}, []);
-
 
 	const Content = () => {
 		if (mode === "calendar") {
 			return <RecordCalendar year={year} month={month} timeUnit={timeUnit}/>;
-		} else if (mode === "graph") {
-			return <Graph year={year} month={month} timeUnit={timeUnit}/>;
+		} else if (params.mode === "graph") {
+			return <RecordGraph year={year} month={month} timeUnit={timeUnit}/>;
 		} else {
 			return (
 				<>
@@ -63,40 +43,27 @@ export const RecordPage = () => {
 	}
 
 	return (
-		<>
-		<Header rightContent={<HeaderMenu username={username}/>} />
-		<Box>
-		<RecordButton />
-		<hr />
-		<Grid container>
-			<Grid item xs={6}>
-				<ContentMenu setContent={setMode} />
+		<RecordTemplate>
+			<Grid container>
+				<Grid item xs={9}>
+					<SelectDate 
+						year={year} 
+						month={month} 
+						setYear={setYear}
+						setMonth={setMonth}
+					/>
+				</Grid>
+				<Grid item xs= {3}>
+					<Button 
+						variant="outlined" 
+						size="large" 
+						onClick={()=> setTimeUnit((timeUnit === "m")? "h" : "m")} 
+					>
+					{(timeUnit === "m")? "m → h" : "h → m"}
+					</Button>
+				</Grid>
 			</Grid>
-			<Grid item xs= {6}>
-				<Button 
-					variant="outlined" 
-					size="large" 
-					onClick={()=> (timeUnit === "m")? setTimeUnit("h") : setTimeUnit("m")} 
-				>
-				{(timeUnit === "m")? "m → h" : "h → m"}
-				</Button>
-			</Grid>
-		</Grid>
-
-		<hr/>
-		
-		<RightBox>
-		{(mode === "graph")? "" :
-		<SelectDate 
-			year={year} 
-			month={month} 
-			setYear={setYear}
-			setMonth={setMonth}
-		/>
-		}
-		</RightBox>
-		<Content />
-		</Box>
-		</>
-		);
+            <Content/>
+        </RecordTemplate>
+	);
 }

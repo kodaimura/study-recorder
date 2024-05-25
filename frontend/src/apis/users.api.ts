@@ -27,7 +27,7 @@ export const login = async (username: string, password: string): Promise<any> =>
 	if (response.ok) {
 		const data = await response.json();
 		localStorage.setItem("token", data.access_token);
-		window.location.replace('/');
+		window.location.replace('/records');
 	} else {
 		const errorData = await response.json();
 		throw new HttpError(response.status, errorData.message);

@@ -1,4 +1,4 @@
-const BASE_URL = 'api';
+const BASE_URL = '/api';
 
 class HttpError extends Error{
     public status: number;
