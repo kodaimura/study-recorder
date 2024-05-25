@@ -4,10 +4,10 @@ import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 
-import { api } from '../../../apis/api';
+import { api } from '../../apis/api';
 
 
-export const RecordButton = () => {
+const RecordButton = () => {
 	const [startTime, setStartTime ] = useState("");
 	const navigate = useNavigate();
 
@@ -47,3 +47,5 @@ export const RecordButton = () => {
      	</> 
     )
 }
+
+export { RecordButton };

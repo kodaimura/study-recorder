@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 
-import Header from '../../layouts/Header';
-import PasswordForm from '../../forms/PasswordForm';
-import HeaderMenu from '../../shared/HeaderMenu';
+import Header from '../layouts/Header';
+import PasswordForm from '../forms/PasswordForm';
+import HeaderMenu from '../shared/HeaderMenu';
 
-import { api } from '../../../apis/api';
+import { api } from '../../apis/api';
 
 
-export const PasswordPage = () => {
+export const ChangePasswordPage = () => {
 	const [username, setUsername] = useState("");
 
 	useEffect(() => {

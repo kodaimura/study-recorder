@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 
-import Header from '../../layouts/Header';
+import Header from '../layouts/Header';
 
 import {
 	RecordButton,
@@ -11,13 +11,12 @@ import {
 	RecordCalendar,
 	Graph,
 	RecordTable,
-} from '../../organisms'
-import HeaderMenu from '../../shared/HeaderMenu';
+	ContentMenu,
+	SelectDate
+} from '../organisms'
+import HeaderMenu from '../shared/HeaderMenu';
 
-import ContentMenu from './ContentMenu';
-import SelectDate from './SelectDate';
-
-import { api } from '../../../apis/api';
+import { api } from '../../apis/api';
 
 
 const Box = styled('div') ({
@@ -32,7 +31,7 @@ const RightBox = styled('div') ({
 })
 
 
-export const MyPage = () => {
+export const RecordPage = () => {
 	const today = new Date();
 	const [year, setYear] = useState(today.getFullYear());
 	const [month, setMonth] = useState(today.getMonth()+1);

@@ -14,7 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import Input from '@mui/material/Input';
 import { styled } from '@mui/material/styles';
 
-import { api } from '../../../apis/api';
+import { api } from '../../apis/api';
 
 const CustomTableCell = styled(TableCell)({ 
     backgroundColor: "black",
@@ -22,7 +22,7 @@ const CustomTableCell = styled(TableCell)({
 })
 
 
-export const ThemeTable = (props:{
+const ThemeTable = (props:{
 	year: number,
 	month: number,
 }) => {
@@ -148,3 +148,5 @@ export const ThemeTable = (props:{
 		</>
 	);
 }
+
+export { ThemeTable };

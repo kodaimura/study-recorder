@@ -30,7 +30,7 @@ ChartJS.register(
 );
 
 
-export const Graph = (props: {
+const Graph = (props: {
 	year: number, 
 	month: number,
 	timeUnit: string
@@ -55,3 +55,5 @@ export const Graph = (props: {
 		</>
 	);
 }
+
+export { Graph };

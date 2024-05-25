@@ -88,5 +88,4 @@ const SelectDate = (props: {
 		);
 }
 
-
-export default SelectDate ;
+export { SelectDate };

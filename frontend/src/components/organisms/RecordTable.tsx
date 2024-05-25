@@ -15,9 +15,9 @@ import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-import {Record} from '../../../types/types';
+import {Record} from '../../types/types';
 
-import { api } from '../../../apis/api'
+import { api } from '../../apis/api'
 
 
 const compareDate = (
@@ -55,7 +55,7 @@ const CustomTableCell = styled(TableCell)({
 })
 
 
-export const RecordTable = (props:{
+const RecordTable = (props:{
 	year: number,
 	month: number,
 }) => {
@@ -165,3 +165,5 @@ export const RecordTable = (props:{
 		</>
 	);
 }
+
+export { RecordTable };

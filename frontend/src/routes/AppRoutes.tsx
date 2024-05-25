@@ -8,8 +8,8 @@ import {
 import {
     LoginPage,
     SignupPage,
-    MyPage,
-    PasswordPage
+    RecordPage,
+    ChangePasswordPage
 } from '../components/pages'
 
 import {
@@ -21,10 +21,10 @@ const AppRoutes = () => {
     return (
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<MyPage />}/>
+            <Route path="/" element={<RecordPage />}/>
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/signup" element={<SignupPage />}/>
-            <Route path="/password" element={<PasswordPage />}/>
+            <Route path="/password" element={<ChangePasswordPage />}/>
             <Route path="*" element={<NotFoundPage />}/>
         </Routes>
         </BrowserRouter>

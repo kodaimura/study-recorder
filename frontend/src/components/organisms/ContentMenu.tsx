@@ -40,5 +40,4 @@ const ContentMenu = (props: {
 		);
 }
 
-
-export default ContentMenu;
+export { ContentMenu };
