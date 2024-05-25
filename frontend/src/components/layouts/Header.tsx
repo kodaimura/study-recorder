@@ -1,29 +1,26 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+type Props = {
+    rightContent: ReactNode
+}
 
-
-const CustomAppBar = styled(AppBar) ({
-    backgroundColor: "black",
-});
-
-
-const Header = (props: {
-    rightContent: React.ReactNode
-}) => {
-
+const Header: React.FC<Props> = (props) => {
     return (
-        <CustomAppBar position="static">
-        <Toolbar>
-        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-        STUDY RECORDER
-        </Typography>
-        {props.rightContent}
-        </ Toolbar>
-        </CustomAppBar>
+        <>
+        <header>
+            <nav className='navbar fixed-top navbar-expand-sm bg-black'>
+                <div className='container-fluid'>
+                    <a className='navbar-brand px-3 text-light fw-bolder' href='/calendar'>
+                    STUDY RECORDER
+                    </a>
+                    <div className='d-flex justify-content-end'>
+                    {props.rightContent}
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div style={{width:'100%', height:'70px'}}></div>
+        </>
     );
 }
 

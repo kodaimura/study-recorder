@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useEffect} from 'react';
-import { styled } from '@mui/material/styles';
+import Container from '../layouts/Container';
 
 import Header from '../layouts/Header';
 
@@ -11,13 +11,6 @@ import { api } from '../../apis/api';
 type  Props = {
     children: ReactNode;
 };
-
-const Box = styled('div') ({
-	width:"90%", 
-	margin: "0 auto",
-	marginTop: "20px"
-});
-
 
 const RecordTemplate: React.FC<Props> = (props) => {
 	const [username, setUsername] = useState("");
@@ -32,14 +25,14 @@ const RecordTemplate: React.FC<Props> = (props) => {
 	return (
 		<>
 		<Header rightContent={<HeaderMenu username={username}/>} />
-		<Box>
+        <Container>
 		<RecordButton />
 		<hr />
 		<RecordMenu/>
 
 		<hr/>
 		{ props.children }
-		</Box>
+		</Container>
 		</>
 		);
 }
