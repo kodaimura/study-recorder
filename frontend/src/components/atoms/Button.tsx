@@ -7,14 +7,16 @@ type Props = {
     disabled?: boolean;
 }
 
-const Button: React.FC<Props> = (props) => (
-    <button 
-        className={`btn ${props.className}`} 
-        onClick={props.onClick} 
-        disabled={props.disabled}
-    >
+const Button: React.FC<Props> = (props) => {
+    return (
+        <button 
+            className={`btn ${props.className}`} 
+            onClick={props.onClick} 
+            disabled={props.disabled}
+        >
         {props.children}
-    </button>
-);
+        </button>
+    );
+};
 
 export default Button;
