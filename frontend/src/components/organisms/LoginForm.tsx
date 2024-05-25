@@ -1,19 +1,10 @@
 import React, {useState} from 'react';
 import Button from '../atoms/Button';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import TextField from '../atoms/TextField';
+import PasswordField from '../atoms/PasswordField';
 
 import { login } from '../../apis/users.api';
-
-
-const ErrorMessage = styled("div") ({
-	color: "red"
-})
-
-const TextInput = styled(TextField) ({
-	width: 300
-})
 
 const LoginForm = () => {
 	const [username, setUsername] = useState("");
@@ -36,19 +27,16 @@ const LoginForm = () => {
 			</em>
 		</Grid>
 		<Grid item>
-		<TextInput 
+		<TextField 
 			required 
-			label="Username" 
-			variant="filled"
+			placeholder="Username" 
 			onChange={(e) => setUsername(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
-		<TextInput 
+		<PasswordField 
 			required 
-			label="Password" 
-			type="password" 
-			variant="filled"
+			placeholder="Password"
 			onChange={(e) => setPassword(e.target.value)} 
 		/>
 		</Grid>
@@ -65,9 +53,7 @@ const LoginForm = () => {
 		>Login</ Button>
 		</Grid>
 		<Grid item>
-		<ErrorMessage>
-		{errorMsg}
-		</ErrorMessage>
+		<div className='text-danger'>{errorMsg}</div>
 		</Grid>
 		</Grid>
 		</>

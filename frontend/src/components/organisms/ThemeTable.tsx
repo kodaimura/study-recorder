@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '../atoms/Button';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import Input from '@mui/material/Input';
+import TextField from '../atoms/TextField';
 import { styled } from '@mui/material/styles';
 
 import { api } from '../../apis/api';
@@ -70,11 +70,9 @@ const ThemeTable = (props:{
             <TableCell>{year}</TableCell>
             <TableCell>
             {(target === "yearly")? 
-            	<Input 
-                    size="small"
+            	<TextField
             		placeholder="theme for year"
-            		fullWidth 
-            		defaultValue={themeForYear}
+            		value={themeForYear}
                     onChange={(e) => setThemeForYear(e.target.value)}
             	/> 
             	: themeForYear}
@@ -107,11 +105,9 @@ const ThemeTable = (props:{
             <TableCell>{month}</TableCell>
             <TableCell>
             {(target === "monthly")? 
-                <Input 
-                    size="small"
+                <TextField
                     placeholder="theme for Month"
-                    fullWidth 
-                    defaultValue={themeForMonth}
+                    value={themeForMonth}
                     onChange={(e) => setThemeForMonth(e.target.value)}
                 /> 
                 : themeForMonth}

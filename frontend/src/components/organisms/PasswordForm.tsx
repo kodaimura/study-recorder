@@ -1,20 +1,10 @@
 import React, {useState} from 'react';
 import Button from '../atoms/Button';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import PasswordField from '../atoms/PasswordField';
 
 import { api } from '../../apis/api';
 import { logout } from '../../apis/users.api';
-
-
-const ErrorMessage = styled("div") ({
-	color: "red"
-})
-
-const TextInput = styled(TextField) ({
-	width: 300
-})
 
 
 const PasswordForm = () => {
@@ -40,32 +30,23 @@ const PasswordForm = () => {
 		<Grid item>
 		</Grid>
 		<Grid item>
-		<TextInput 
-			label="Old Password" 
-			required 
-			fullWidth
-			type="password"   
-			variant="filled"
+		<PasswordField
+			placeholder="Old Password" 
+			required
 			onChange={(e) => setPassword(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
-		<TextInput 
-			label="New Password" 
-			required 
-			fullWidth 
-			type="password" 
-			variant="filled"
+		<PasswordField
+			placeholder="New Password" 
+			required
 			onChange={(e) => setNewPassword(e.target.value)}
 		/>
 		</Grid>
 		<Grid item>
-		<TextInput 
-			label="Confirmation New Password" 
-			required 
-			fullWidth  
-			type="password" 
-			variant="filled"
+		<PasswordField
+			placeholder="Confirmation New Password" 
+			required
 			onChange={(e) => setNewPasswordConfirm(e.target.value)}
 		/>
 		</Grid>
@@ -90,9 +71,7 @@ const PasswordForm = () => {
 		>Change</ Button>
 		</Grid>
 		<Grid item>
-		<ErrorMessage>
-		{errorMsg}
-		</ErrorMessage>
+		<div className='text-danger'>{errorMsg}</div>
 		</Grid>
 		</Grid>
 		)
