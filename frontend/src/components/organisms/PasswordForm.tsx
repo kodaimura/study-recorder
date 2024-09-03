@@ -6,7 +6,7 @@ import { api } from '../../apis/api';
 import { logout } from '../../apis/users.api';
 
 
-const PasswordForm = () => {
+const PasswordForm: React.FC = () => {
     const [password, setPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newPasswordConfirm, setNewPasswordConfirm] = useState("");

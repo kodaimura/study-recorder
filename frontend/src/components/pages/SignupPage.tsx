@@ -1,5 +1,5 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../atoms/Button';
 
 import Header from '../layouts/Header';
@@ -7,7 +7,7 @@ import { SignupForm } from '../organisms/SignupForm';
 import Container from '../layouts/Container';
 
 
-export const SignupPage = () => {
+export const SignupPage: React.FC = () => {
 	const navigate = useNavigate();
 	
 	return (

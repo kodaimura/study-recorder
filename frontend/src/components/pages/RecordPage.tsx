@@ -17,7 +17,7 @@ type RouteParams = {
     mode: string | undefined;
 }
 
-export const RecordPage = () => {
+export const RecordPage: React.FC = () => {
     const params = useParams<RouteParams>();
     const mode: string = params.mode?? "calendar";
 

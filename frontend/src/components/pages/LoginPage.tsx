@@ -7,7 +7,7 @@ import { LoginForm } from '../organisms/LoginForm';
 import Container from '../layouts/Container';
 
 
-export const LoginPage = () => {
+export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (

@@ -5,7 +5,7 @@ import Input from '../atoms/Input';
 import { signup } from '../../apis/users.api';
 
 
-const SignupForm = () => {
+const SignupForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfig] = useState("");

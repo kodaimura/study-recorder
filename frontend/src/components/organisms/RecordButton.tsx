@@ -5,7 +5,7 @@ import Button from '../atoms/Button';
 import { api } from '../../apis/api';
 
 
-const RecordButton = () => {
+const RecordButton: React.FC = () => {
 	const [startTime, setStartTime ] = useState("");
 	const navigate = useNavigate();
 

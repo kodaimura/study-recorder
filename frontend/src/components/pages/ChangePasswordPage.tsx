@@ -8,7 +8,7 @@ import { api } from '../../apis/api';
 import Container from '../layouts/Container';
 
 
-export const ChangePasswordPage = () => {
+export const ChangePasswordPage: React.FC = () => {
 	const [username, setUsername] = useState("");
 
 	useEffect(() => {
