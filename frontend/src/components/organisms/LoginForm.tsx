@@ -4,7 +4,7 @@ import Input from '../atoms/Input';
 
 import { login } from '../../apis/users.api';
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
