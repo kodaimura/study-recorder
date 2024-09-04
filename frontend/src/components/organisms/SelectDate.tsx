@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import React, { useState } from 'react';
 import Button from '../atoms/Button';
 
-
-const SelectDate = (props: {
+type Props = {
 	year?: number,
 	month?: number,
 	setYear: (year: number) => void,
 	setMonth: (month: number) => void,
-}) => {
+}
+const SelectDate: React.FC<Props> = (props) => {
 	const d = new Date();
-	const [y, setY] = useState((props.year === undefined)? d.getFullYear() : props.year);
-	const [m, setM] = useState((props.month === undefined)? d.getMonth()+1 : props.month);
+	const [y, setY] = useState((props.year === undefined) ? d.getFullYear() : props.year);
+	const [m, setM] = useState((props.month === undefined) ? d.getMonth() + 1 : props.month);
 
 	const addYear = () => {
 		props.setYear(y + 1);
@@ -29,7 +28,7 @@ const SelectDate = (props: {
 			setM(1);
 			props.setYear(y + 1);
 			setY(y + 1);
-		}else {
+		} else {
 			props.setMonth(m + 1);
 			setM(m + 1);
 		}
@@ -41,7 +40,7 @@ const SelectDate = (props: {
 			setM(12);
 			props.setYear(y - 1);
 			setY(y - 1);
-		}else {
+		} else {
 			props.setMonth(m - 1);
 			setM(m - 1);
 		}
@@ -50,36 +49,34 @@ const SelectDate = (props: {
 
 	return (
 		<>
-		<ButtonGroup 
-			color="inherit" 
-			variant="contained" >
-		<Button 
-			className='btn-sm'
-			onClick={() => subYear()} >
-		</Button>
-		<Button>{y}</Button>
-		<Button
-			className='btn-sm'
-			onClick={() => addYear()} >
-		</Button>
-		</ButtonGroup>
+			<div className="d-flex">
+				<div className="btn-group mb-3">
+					<Button
+						className='btn-sm'
+						onClick={() => subYear()} >
+					</Button>
+					<Button>{y}</Button>
+					<Button
+						className='btn-sm'
+						onClick={() => addYear()} >
+					</Button>
+				</div>
 
-		<ButtonGroup 
-			color="inherit" 
-			variant="contained" >
-		<Button 
-			className='btn-sm'
-			onClick={() => subMonth()} >
-		
-		</Button>
-		<Button>{m}</Button>
-		<Button 
-			className='btn-sm'
-			onClick={() => addMonth()} >
-		</Button>
-		</ButtonGroup>
+				<div className="btn-group mb-3">
+					<Button
+						className='btn-sm'
+						onClick={() => subMonth()} >
+
+					</Button>
+					<Button>{m}</Button>
+					<Button
+						className='btn-sm'
+						onClick={() => addMonth()} >
+					</Button>
+				</div>
+			</div>
 		</>
-		);
+	);
 }
 
 export { SelectDate };
