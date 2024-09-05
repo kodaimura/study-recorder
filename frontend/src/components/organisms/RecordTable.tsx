@@ -1,160 +1,145 @@
-import React, {useState, useEffect} from 'react';
-
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import Button from '../atoms/Button';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import Input from '../atoms/Input';
-import { styled } from '@mui/material/styles';
-
-import {Record} from '../../types/types';
-
-import { api } from '../../apis/api'
+import { Record } from '../../types/types';
+import { api } from '../../apis/api';
 
 
-const compareDate = (
-  	a: {day: number}, 
-  	b: {day: number}
-):number => {
-  	return (a.day < b.day)? -1 : 1;
-} 
+const compareDate = (a: { day: number }, b: { day: number }): number => {
+    return a.day - b.day;
+};
 
+const fillUpData = (year: number, month: number, data: Record[]): Record[] => {
+    const newData: Record[] = [];
+    data.sort(compareDate);
+    const lastDay = new Date(year, month, 0).getDate();
 
-const fillUpData = (
+    for (let i = 1; i <= lastDay; i++) {
+        if (data[0] && data[0].day === i) {
+            newData.push(data.shift()!);
+        } else {
+            newData.push({ year, month, day: i, minuteTime: 0, comment: '' });
+        }
+    }
+    return newData;
+};
+
+type Props = {
 	year: number,
 	month: number,
-	data: Record[]
-) => {
-	let newData = [];
-	data.sort(compareDate);
-	const lastDay = (new Date(year, month, 0)).getDate();
-
-	for (let i = 1; i <= lastDay; i++) {
-		if (data[0] && data[0].day === i) {
-			newData.push(data[0]);
-			data.shift();
-		}else {
-			newData.push({year, month, day: i, minuteTime: 0, comment:""});
-		}
-	}
-	return newData;
 }
+const RecordTable: React.FC<Props> = ({year, month}) => {
+    const [data, setData] = useState<Record[]>(fillUpData(year, month, []));
+    const [reload, setReload] = useState<number>(1);
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [comment, setComment] = useState<string>('');
+    const [minuteTime, setMinuteTime] = useState<number>(0);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const records = await api.get(`records?year=${year}&month=${month}`);
+            setData(fillUpData(year, month, records));
+        };
 
-const CustomTableCell = styled(TableCell)({ 
-	backgroundColor: "black",
-    color: "white", 
-})
+        fetchData();
+        resetEditState();
+    }, [year, month, reload]);
 
+    const handleSave = async (day: number) => {
+        await api.post('records', {
+            year,
+            month,
+            day,
+            comment,
+            minuteTime: Number.isNaN(minuteTime) ? 0 : minuteTime,
+        });
+        setReload(reload * -1);
+    };
 
-const RecordTable = (props:{
-	year: number,
-	month: number,
-}) => {
-	const year = props.year;
-  	const month = props.month;
-	const [data, setData] = useState(fillUpData(year, month, []));
-	const [reload, setReload] = useState(1);
-	const [target, setTarget] = useState(NaN);
-	const [comment, setComment] = useState("");
-	const [minuteTime, setMinuteTime] = useState(0)
+    const resetEditState = () => {
+        setEditingIndex(null);
+        setMinuteTime(0);
+        setComment('');
+    };
 
+    const handleEditClick = (index: number, record: Record) => {
+        if (editingIndex === index) {
+            resetEditState();
+        } else {
+            setEditingIndex(index);
+            setMinuteTime(record.minuteTime);
+            setComment(record.comment);
+        }
+    };
 
-	useEffect(() => {
-		(async () => {
-			const data = await api.get(`records?year=${year}&month=${month}`);
- 	 		setData(fillUpData(year, month, data));
-		})();
-  		setTarget(NaN);
-	}, [year, month, reload]);
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<any>>) => (event: ChangeEvent<HTMLInputElement>) => {
+        setter(event.target.value);
+    };
 
-
-	return (
-		<>
-		<TableContainer component={Paper}>
-		<Table size="small">
-        <TableHead>
-        <TableRow>
-        	<CustomTableCell width="120px">Year/Month</CustomTableCell>
-        	<CustomTableCell width="70px">Day</CustomTableCell>
-        	<CustomTableCell width="90px">Time [m]</CustomTableCell>
-        	<CustomTableCell>Comment</CustomTableCell>
-        	<CustomTableCell width="70px"></CustomTableCell>
-        	<CustomTableCell width="40px"></CustomTableCell>
-        </TableRow>
-        </TableHead>
-
-        <TableBody>
-        {data.map((record: Record, index: number) => (
-        	<TableRow
-            	key={index}
-            	sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-            <TableCell>{record.year}/{record.month}</TableCell>
-            <TableCell>{record.day}</TableCell>
-            <TableCell>
-            {(target === index)? 
-            	<Input
-                    type="number"
-            		value={minuteTime} 
-            		onChange={(e) => setMinuteTime(parseInt(e.target.value))}
-            	/> 
-            	: record.minuteTime} 
-            </TableCell>
-            <TableCell>
-            {(target === index)? 
-            	<Input 
-            		placeholder="free comment"
-            		value={comment} 
-            		onChange={(e) => setComment(e.target.value)}
-            	/> 
-            	: record.comment}
-            </TableCell>
-            <TableCell>
-            {(target === index)? 
-            	<Button 
-                    className='btn-sm'
-            		onClick={() => {
-						api.post('records', {
-							year: year, 
-          					month: month, 
-            				day: record.day,
-            				comment: comment,
-            				minuteTime: Number.isNaN(minuteTime)? 0 : minuteTime,
-						});
-            			setReload(reload * (-1));
-        			}}>Save</Button> 
-           		: ""}
-            </TableCell>
-            <TableCell>
-           		<IconButton 
-           			size="small"
-           			onClick={() => {
-           				if (target !== index) {
-           					setTarget(index);
-           					setMinuteTime(record.minuteTime);
- 	 						setComment(record.comment);
-           				} else {
-           					setTarget(NaN)
-           				}
-           			}}>
-           			<EditIcon />
-           		</IconButton>
-            </TableCell>
-            </TableRow>
-        ))}
-        </TableBody>
-
-      	</Table>
-    	</TableContainer>
-		</>
-	);
-}
+    return (
+        <div className="table-responsive">
+            <table className="table table-sm table-bordered">
+                <thead className="table-dark">
+                    <tr>
+                        <th style={{ width: "120px" }}>Year/Month</th>
+                        <th style={{ width: "70px" }}>Day</th>
+                        <th style={{ width: "90px" }}>Time [m]</th>
+                        <th>Comment</th>
+                        <th style={{ width: "70px" }}></th>
+                        <th style={{ width: "40px" }}></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data.map((record: Record, index: number) => (
+                        <tr key={index}>
+                            <td>{record.year}/{record.month}</td>
+                            <td>{record.day}</td>
+                            <td>
+                                {editingIndex === index ? (
+                                    <Input
+                                        type="number"
+                                        value={minuteTime}
+                                        onChange={handleInputChange(setMinuteTime)}
+                                    />
+                                ) : (
+                                    record.minuteTime
+                                )}
+                            </td>
+                            <td>
+                                {editingIndex === index ? (
+                                    <Input
+                                        placeholder="free comment"
+                                        value={comment}
+                                        onChange={handleInputChange(setComment)}
+                                    />
+                                ) : (
+                                    record.comment
+                                )}
+                            </td>
+                            <td>
+                                {editingIndex === index ? (
+                                    <Button
+                                        className="btn-sm"
+                                        onClick={() => handleSave(record.day)}
+                                    >
+                                        Save
+                                    </Button>
+                                ) : null}
+                            </td>
+                            <td>
+                                <button
+                                    className="btn btn-sm btn-outline-primary"
+                                    onClick={() => handleEditClick(index, record)}
+                                >
+                                    <i className="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
 
 export { RecordTable };
