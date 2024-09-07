@@ -1,8 +1,7 @@
-export { ThemeTable } from './ThemeTable';
 export { RecordGraph } from './RecordGraph/RecordGraph';
-export { RecordButton } from './RecordButton';
 export { RecordCalendar } from './RecordCalendar/RecordCalendar';
-export { RecordTable } from './RecordTable';
+export { RecordEditor } from './RecordEditor/RecordEditor';
+export { RecordButton } from './RecordButton';
 export { RecordMenu } from './RecordMenu';
 export { SelectDate } from './SelectDate';
 export { LoginForm } from './LoginForm';

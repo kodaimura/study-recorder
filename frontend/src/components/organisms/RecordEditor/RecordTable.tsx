@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
-import { Record } from '../../types/types';
-import { api } from '../../apis/api';
+import Button from '../../atoms/Button';
+import Input from '../../atoms/Input';
+import { Record } from '../../../types/types';
+import { api } from '../../../apis/api';
 
 
 const compareDate = (a: { day: number }, b: { day: number }): number => {
@@ -142,4 +142,4 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
     );
 };
 
-export { RecordTable };
+export default RecordTable;

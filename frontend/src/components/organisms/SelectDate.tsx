@@ -50,7 +50,7 @@ const SelectDate: React.FC<Props> = (props) => {
 	return (
 		<>
 			<div className="d-flex">
-				<div className="btn-group mb-3">
+				<div className="btn-group">
 					<Button
 						className='btn-sm'
 						onClick={() => subYear()} >
@@ -62,7 +62,7 @@ const SelectDate: React.FC<Props> = (props) => {
 					</Button>
 				</div>
 
-				<div className="btn-group mb-3">
+				<div className="btn-group">
 					<Button
 						className='btn-sm'
 						onClick={() => subMonth()} >

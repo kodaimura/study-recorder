@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
-import { api } from '../../apis/api';
+import Button from '../../atoms/Button';
+import Input from '../../atoms/Input';
+import { api } from '../../../apis/api';
 
 type Props = {
     year: number,
@@ -116,4 +116,4 @@ const ThemeTable: React.FC<Props> = (props) => {
     );
 }
 
-export { ThemeTable };
+export default ThemeTable;
