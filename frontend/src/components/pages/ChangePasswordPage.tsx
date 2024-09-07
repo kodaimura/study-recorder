@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Spinner } from 'react-bootstrap';
-import Header from '../layouts/Header';
-import { PasswordForm } from '../organisms/PasswordForm';
-import HeaderMenu from '../molecules/HeaderMenu';
-import { api } from '../../apis/api';
 
-export const ChangePasswordPage: React.FC = () => {
+import { Header, HeaderMenu } from 'components/common';
+import { PasswordForm } from 'components/features/change-password';
+
+import { api } from 'apis/api';
+
+const ChangePasswordPage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -48,3 +49,5 @@ export const ChangePasswordPage: React.FC = () => {
         </>
     );
 };
+
+export default ChangePasswordPage;

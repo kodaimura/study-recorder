@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-import { logout } from '../../apis/users.api';
+
+import { logout } from 'apis/users.api';
 
 type Props = {
     username: string
@@ -84,4 +85,4 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
     );
 };
 
-export default HeaderMenu;
+export { HeaderMenu };

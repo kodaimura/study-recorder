@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Table } from 'react-bootstrap';
-import { api } from '../../../apis/api';
+
+import { api } from 'apis/api';
 
 type Props = {
     year: number;

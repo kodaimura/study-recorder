@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 
-import Header from '../layouts/Header';
-import { LoginForm } from '../organisms/LoginForm';
+import { Header } from 'components/common';
+import { LoginForm } from 'components/features/login';
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
@@ -27,3 +27,5 @@ export const LoginPage: React.FC = () => {
         </>
     );
 }
+
+export default LoginPage;

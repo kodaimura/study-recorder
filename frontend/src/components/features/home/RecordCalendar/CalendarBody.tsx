@@ -1,6 +1,7 @@
 import React from 'react';
-import { Record } from '../../../types/types';
-import { CalendarCell } from './CalendarCell';
+
+import { Record } from 'types/types';
+import CalendarCell from './CalendarCell';
 
 type Props = {
     timeUnit: string;
@@ -24,4 +25,4 @@ const CalendarBody: React.FC<Props> = ({ timeUnit, records }) => (
     </tbody>
 );
 
-export { CalendarBody };
+export default CalendarBody;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
 import { Container, Spinner, Alert } from 'react-bootstrap';
-import Header from '../layouts/Header';
-import { RecordButton } from '../organisms';
-import HeaderMenu from '../molecules/HeaderMenu';
-import { api } from '../../apis/api';
-import { RecordCalendar, RecordGraph, RecordEditor, SelectDate } from '../organisms';
+
+import { Header, HeaderMenu } from 'components/common';
+import { RecordButton, RecordCalendar, RecordGraph, RecordEditor, SelectDate } from 'components/features/home';
+
+import { api } from 'apis/api';
 
 type RouteParams = {
     year: string | undefined;
@@ -13,7 +13,7 @@ type RouteParams = {
     mode: string | undefined;
 };
 
-export const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {
     const params = useParams<RouteParams>();
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -77,3 +77,5 @@ export const HomePage: React.FC = () => {
         </>
     );
 };
+
+export default HomePage;

@@ -14,4 +14,4 @@ const CalendarHeader: React.FC = () => (
     </thead>
 );
 
-export { CalendarHeader };
+export default CalendarHeader;

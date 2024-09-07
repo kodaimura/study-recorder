@@ -23,4 +23,4 @@ const Header: React.FC<Props> = ({ rightContent }) => {
     );
 }
 
-export default Header;
+export { Header };

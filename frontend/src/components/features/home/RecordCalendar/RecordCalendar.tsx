@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Alert } from 'react-bootstrap';
-import { Record } from '../../../types/types';
-import { minuteToHour } from '../../../utils/utils';
-import { api } from '../../../apis/api';
-import { CalendarBody } from './CalendarBody';
-import { CalendarHeader } from './CalendarHeader';
+
+import { Record } from 'types/types';
+import { minuteToHour } from 'utils/utils';
+import CalendarBody from './CalendarBody';
+import CalendarHeader from './CalendarHeader';
+
+import { api } from 'apis/api';
 
 const compareDate = (a: { day: number }, b: { day: number }): number => (a.day < b.day ? -1 : 1);
 

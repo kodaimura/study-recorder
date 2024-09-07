@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 
-import Header from '../layouts/Header';
-import { SignupForm } from '../organisms/SignupForm';
+import { Header } from 'components/common';
+import { SignupForm } from 'components/features/signup';
 
-export const SignupPage: React.FC = () => {
+const SignupPage: React.FC = () => {
     const navigate = useNavigate();
     
     return (
@@ -27,3 +27,5 @@ export const SignupPage: React.FC = () => {
         </>
     );
 }
+
+export default SignupPage;

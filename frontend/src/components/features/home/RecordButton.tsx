@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from 'react-bootstrap';
-import { api } from '../../apis/api';
+
+import { api } from 'apis/api';
 
 const RecordButton: React.FC = () => {
     const [startTime, setStartTime] = useState<string>("");

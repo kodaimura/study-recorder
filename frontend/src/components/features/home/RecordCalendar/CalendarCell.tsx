@@ -48,4 +48,4 @@ const CalendarCell: React.FC<Props> = ({ day, minuteTime, timeUnit }) => {
     );
 };
 
-export { CalendarCell };
+export default CalendarCell;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Form, Button, Table } from 'react-bootstrap';
-import { Record } from '../../../types/types';
-import { api } from '../../../apis/api';
+
+import { Record } from 'types/types';
+import { api } from 'apis/api';
 
 const compareDate = (a: { day: number }, b: { day: number }): number => {
     return a.day - b.day;

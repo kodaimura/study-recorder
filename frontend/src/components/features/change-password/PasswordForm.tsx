@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { api } from '../../apis/api';
-import { logout } from '../../apis/users.api';
+
+import { api } from 'apis/api';
+import { logout } from 'apis/users.api';
 
 const PasswordForm: React.FC = () => {
     const [password, setPassword] = useState("");

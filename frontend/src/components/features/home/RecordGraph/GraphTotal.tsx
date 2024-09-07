@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts';
-import { minuteToHour } from '../../../utils/utils';
-import { Record } from '../../../types/types';
-import { api } from '../../../apis/api';
+import { minuteToHour } from 'utils/utils';
+import { Record } from 'types/types';
+import { api } from 'apis/api';
 
 const compareDate = (a: { year: number; month: number; day: number }, b: { year: number; month: number; day: number }): number => {
   if (a.year < b.year) return -1;
