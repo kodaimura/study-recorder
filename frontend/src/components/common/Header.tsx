@@ -7,7 +7,7 @@ type Props = {
 
 const Header: React.FC<Props> = ({ rightContent }) => {
     return (
-        <>
+        <header>
             <Navbar bg="dark" variant="dark" fixed="top" expand="sm">
                 <Container fluid>
                     <Navbar.Brand href="/calendar">
@@ -19,7 +19,7 @@ const Header: React.FC<Props> = ({ rightContent }) => {
                 </Container>
             </Navbar>
             <div style={{ width: '100%', height: '70px' }}></div>
-        </>
+        </header>
     );
 }
 
