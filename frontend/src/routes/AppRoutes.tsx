@@ -8,7 +8,6 @@ import {
 import { LoginPage } from '../components/pages/LoginPage';
 import { SignupPage } from '../components/pages/SignupPage';
 import { RecordPage } from '../components/pages/RecordPage';
-import { HistoryPage } from '../components/pages/HistoryPage';
 import { SettingPage } from '../components/pages/SettingPage';
 import { ChangePasswordPage } from '../components/pages/ChangePasswordPage';
 
@@ -21,7 +20,6 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<RecordPage />}/>
             <Route path="/:mode" element={<RecordPage />}/>
-            <Route path="/history/:mode" element={<HistoryPage />}/>
             <Route path="/setting" element={<SettingPage />}/>
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/signup" element={<SignupPage />}/>
