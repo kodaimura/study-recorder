@@ -72,7 +72,7 @@ type Props = {
   timeUnit: string;
 };
 
-const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
+const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
   const [data, setData] = useState<Record[]>([]);
   const [plotData, setPlotData] = useState<(string[] | [string, number, number])[]>([['Month', 'Monthly Time', 'Total Time']]);
   const [total, setTotal] = useState(0);
@@ -141,4 +141,4 @@ const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
   );
 };
 
-export default GraphTotal;
+export { RecordGraphTotal };

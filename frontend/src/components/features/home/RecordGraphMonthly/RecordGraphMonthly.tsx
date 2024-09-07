@@ -89,7 +89,7 @@ type Props = {
     timeUnit: string;
 };
 
-const GraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
+const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
     const [data, setData] = useState<Record[]>([]);
     const [plotData, setPlotData] = useState<any[][]>([]);
     const [plotOptions, setPlotOptions] = useState<any>({});
@@ -148,4 +148,4 @@ const GraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
     );
 };
 
-export default GraphMonthly;
+export { RecordGraphMonthly };
