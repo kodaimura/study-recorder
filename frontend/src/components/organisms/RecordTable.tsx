@@ -28,6 +28,7 @@ type Props = {
 	year: number,
 	month: number,
 }
+
 const RecordTable: React.FC<Props> = ({year, month}) => {
     const [data, setData] = useState<Record[]>(fillUpData(year, month, []));
     const [reload, setReload] = useState<number>(1);
@@ -36,14 +37,14 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
     const [minuteTime, setMinuteTime] = useState<number>(0);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const records = await api.get(`records?year=${year}&month=${month}`);
-            setData(fillUpData(year, month, records));
-        };
-
-        fetchData();
+        fetchData(year, month);
         resetEditState();
     }, [year, month, reload]);
+
+	const fetchData = async (year: number, month: number) => {
+		const records = await api.get(`records?year=${year}&month=${month}`);
+		setData(fillUpData(year, month, records));
+	};
 
     const handleSave = async (day: number) => {
         await api.post('records', {
@@ -51,7 +52,7 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
             month,
             day,
             comment,
-            minuteTime: Number.isNaN(minuteTime) ? 0 : minuteTime,
+            minuteTime,
         });
         setReload(reload * -1);
     };
@@ -70,10 +71,6 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
             setMinuteTime(record.minuteTime);
             setComment(record.comment);
         }
-    };
-
-    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<any>>) => (event: ChangeEvent<HTMLInputElement>) => {
-        setter(event.target.value);
     };
 
     return (
@@ -99,7 +96,10 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
                                     <Input
                                         type="number"
                                         value={minuteTime}
-                                        onChange={handleInputChange(setMinuteTime)}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+											const value = e.target.value === '' ? 0 : Number(e.target.value);
+											setMinuteTime(isNaN(value) ? 0 : value);
+										}}
                                     />
                                 ) : (
                                     record.minuteTime
@@ -110,7 +110,9 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
                                     <Input
                                         placeholder="free comment"
                                         value={comment}
-                                        onChange={handleInputChange(setComment)}
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+											setComment(e.target.value);
+										}}
                                     />
                                 ) : (
                                     record.comment

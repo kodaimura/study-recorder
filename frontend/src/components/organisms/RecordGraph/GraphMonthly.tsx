@@ -100,7 +100,7 @@ const GraphMonthly: React.FC<Props> = (props) => {
 
     useEffect(() => {
         setPlotData(makePlotData(dataMonthly, timeUnit, year, month));
-    }, [dataMonthly, timeUnit]);
+    }, [dataMonthly, timeUnit, year, month]);
 
     return (
         <div className="bg-white">
