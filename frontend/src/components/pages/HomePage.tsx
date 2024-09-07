@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Container, Spinner } from 'react-bootstrap';
 
 import { Header, HeaderMenu } from 'components/common';
@@ -15,17 +15,9 @@ import {
 import { api } from 'apis/api';
 import { logout } from 'apis/users.api';
 
-type RouteParams = {
-    year: string | undefined;
-    month: string | undefined;
-    mode: string | undefined;
-};
-
 const HomePage: React.FC = () => {
-    const params = useParams<RouteParams>();
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -40,7 +32,6 @@ const HomePage: React.FC = () => {
         })();
     }, []);
 
-    const mode = params.mode ?? "calendar";
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);

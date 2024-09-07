@@ -43,7 +43,6 @@ const formatData = (records: Record[], timeUnit: string): { [key: string]: numbe
 const transpose = (matrix: number[][]): number[][] => {
     if (!matrix.length) return [];
 
-    const numRows = matrix.length;
     const numColumns = matrix[0].length;
     return Array.from({ length: numColumns }, (_, i) => 
         matrix.map(row => row[i])
