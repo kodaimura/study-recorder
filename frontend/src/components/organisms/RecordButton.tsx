@@ -37,7 +37,7 @@ const RecordButton: React.FC = () => {
             className='btn-danger btn-lg'
 			onClick={() => record()} 
 		>
-      	Record
+      	{startTime == "" ? "START" : "STOP" }
      	</Button>
      	&nbsp;&nbsp;&nbsp;{startTime}
      	</> 

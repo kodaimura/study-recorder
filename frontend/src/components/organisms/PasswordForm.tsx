@@ -16,16 +16,12 @@ const PasswordForm: React.FC = () => {
         <div className='row justify-content-center'>
             <div className='col-md-6'>
                 <div>
-                    <em>
-                        Change password.
-                    </em>
-                </div>
-                <div>
+                    <div className='text-danger'>{errorMsg}</div>
                 </div>
                 <div className='input-group mb-3'>
                     <Input
                         type="password"
-                        placeholder="Old Password"
+                        placeholder="現在のパスワード"
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -33,7 +29,7 @@ const PasswordForm: React.FC = () => {
                 <div className='input-group mb-3'>
                     <Input
                         type="password"
-                        placeholder="New Password"
+                        placeholder="新しいパスワード"
                         required
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
@@ -41,7 +37,7 @@ const PasswordForm: React.FC = () => {
                 <div className='input-group mb-3'>
                     <Input
                         type="password"
-                        placeholder="Confirmation New Password"
+                        placeholder="新しいパスワード（確認用）"
                         required
                         onChange={(e) => setNewPasswordConfirm(e.target.value)}
                     />
@@ -51,7 +47,7 @@ const PasswordForm: React.FC = () => {
                         className='btn-primary w-100'
                         onClick={async () => {
                             if (newPassword !== newPasswordConfirm) {
-                                setErrorMsg("Confirmation passwords do not match.");
+                                setErrorMsg("確認用パスワードが一致していません。");
                                 return;
                             }
                             try {
@@ -60,14 +56,16 @@ const PasswordForm: React.FC = () => {
                                     newPassword: newPassword,
                                 });
                                 logout();
-                            } catch (error) {
-                                setErrorMsg('Failed.');
+                            } catch (error: any) {
+                                if (error.status === 400) {
+                                    setErrorMsg('現在のパスワードが誤っています。');
+                                } else {
+                                    setErrorMsg('パスワードの変更に失敗しました。');
+                                }
+                                
                             }
                         }}
-                    >Change</ Button>
-                </div>
-                <div>
-                    <div className='text-danger'>{errorMsg}</div>
+                    >変更</ Button>
                 </div>
             </div>
         </div>

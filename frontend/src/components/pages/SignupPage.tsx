@@ -17,7 +17,7 @@ export const SignupPage: React.FC = () => {
 				<Button
                     className='btn-outline-light'
 					onClick={() => navigate('/login')}
-				>LOGIN</Button>
+				>ログイン</Button>
 			}
 		/>
         <Container className='mt-5'>

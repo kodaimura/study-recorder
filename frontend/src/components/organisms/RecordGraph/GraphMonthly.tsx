@@ -76,7 +76,7 @@ const makePlotOptions = (plotData: any, timeUnit: string, year: number, month: n
             maxValue: 31,
         },
         vAxis: {
-            title: `Time ${timeUnit === 'm' ? '[ m ]' : '[ h ]'}`,
+            title: `時間 ${timeUnit === 'm' ? '[ m ]' : '[ h ]'}`,
             gridlines: { color: 'transparent' },
         },
         legend: { position: 'bottom' },
@@ -139,7 +139,7 @@ const GraphMonthly: React.FC<Props> = (props) => {
                     <thead>
                         <tr>
                             <th className="bg-dark text-white" style={{ fontSize: 20 }}>
-                                {year}-{month} Total: {
+                                {year}-{month} 合計： {
                                     timeUnit === "m" ? total :
                                     minuteToHour(total)}[{timeUnit}]
                             </th>

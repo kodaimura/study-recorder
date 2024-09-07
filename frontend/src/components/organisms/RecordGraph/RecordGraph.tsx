@@ -17,7 +17,7 @@ const RecordGraph: React.FC<Props> = (props) => {
     return (
         <>
             <Button className="btn-lg btn-primary" onClick={() => setMode(mode * -1)}>
-                {mode === 1 ? 'Total Graph' : 'Monthly Graph'}
+                {mode === 1 ? '累計グラフ' : '月毎グラフ'}
             </Button>
 
             {mode === 1 ? (

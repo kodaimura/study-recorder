@@ -11,17 +11,17 @@ const RecordMenu: React.FC = () => {
 		<Button 
 			className='btn-secondary btn-lg'
             onClick={() => navigate("/calendar")}>
-		Calendar
+		カレンダー
 		</Button>
 		<Button 
 			className='btn-success btn-lg'
 			onClick={() => navigate("/edit")}>
-		Edit
+		編集
 		</Button>
 		<Button 
 			className='btn-primary btn-lg'
 			onClick={() => navigate("/graph")}>
-		Graph
+		グラフ
 		</Button>
 		</>
 		);

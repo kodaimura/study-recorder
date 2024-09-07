@@ -59,7 +59,7 @@ const RecordCalendar: React.FC<Props> = (props) => {
     return (
         <>
             <div style={{ backgroundColor: 'black', color: 'white', fontSize: '20px', padding: '10px' }}>
-                Monthly Total: {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
+                合計： {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
             </div>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <CalendarHeader />

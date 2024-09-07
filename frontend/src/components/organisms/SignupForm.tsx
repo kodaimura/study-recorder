@@ -14,14 +14,12 @@ const SignupForm: React.FC = () => {
     return (
         <div className='row justify-content-center'>
             <div className='col-md-6'>
-                <div>
-                <em>
-                    Create a new account.
-                </em>
+            <div>
+                <div className='text-danger'>{errorMsg}</div>
             </div>
             <div className='input-group mb-3'>
                 <Input
-                    placeholder="Username"
+                    placeholder="アカウント名"
                     required
                     onChange={(e) => setUsername(e.target.value)}
                 />
@@ -29,7 +27,7 @@ const SignupForm: React.FC = () => {
             <div className='input-group mb-3'>
                 <Input
                     type="password"
-                    placeholder="Password"
+                    placeholder="パスワード"
                     required
                     onChange={(e) => setPassword(e.target.value)}
                 />
@@ -37,7 +35,7 @@ const SignupForm: React.FC = () => {
             <div className='input-group mb-3'>
                 <Input
                     type="password"
-                    placeholder="Confirmation Password"
+                    placeholder="パスワード（確認用）"
                     required
                     onChange={(e) => setPasswordConfig(e.target.value)}
                 />
@@ -48,18 +46,19 @@ const SignupForm: React.FC = () => {
                     onClick={async () => {
                         try {
                             if (password !== passwordConfirm) {
-                                setErrorMsg("Confirmation passwords do not match.");
+                                setErrorMsg("確認用パスワードが一致していません。");
                             } else {
                                 await signup(username, password);
                             }
                         } catch (error: any) {
-                            setErrorMsg((error.status === 409) ? "That Username is already in use." : "Signup failed.");
+                            if (error.status === 409) {
+                                setErrorMsg("アカウント名が既に利用されています。")
+                            } else {
+                                setErrorMsg("アカウント作成に失敗しました。")
+                            }
                         }
                     }}
-                >Signup</ Button>
-            </div>
-            <div>
-                <div className='text-danger'>{errorMsg}</div>
+                >アカウント作成</ Button>
             </div>
         </div>
         </div>

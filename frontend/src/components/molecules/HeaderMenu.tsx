@@ -49,7 +49,7 @@ const HeaderMenu: React.FC<Props> = (props) => {
 						<span className="me-2">
 							<i className="bi bi-key"></i>
 						</span>
-						Change Password
+						パスワード変更
 					</button>
 					<div className="dropdown-divider"></div>
 					<button
@@ -62,7 +62,7 @@ const HeaderMenu: React.FC<Props> = (props) => {
 						<span className="me-2">
 							<i className="bi bi-house-door"></i>
 						</span>
-						MyPage
+						マイページ
 					</button>
 					<button
 						className="dropdown-item d-flex align-items-center"
@@ -74,7 +74,7 @@ const HeaderMenu: React.FC<Props> = (props) => {
 						<span className="me-2">
 							<i className="bi bi-gear"></i>
 						</span>
-						Settings
+						設定
 					</button>
 					<div className="dropdown-divider"></div>
 					<button className="dropdown-item d-flex align-items-center" onClick={() => {
@@ -84,7 +84,7 @@ const HeaderMenu: React.FC<Props> = (props) => {
 						<span className="me-2">
 							<i className="bi bi-box-arrow-right"></i>
 						</span>
-						Logout
+						ログアウト
 					</button>
 				</div>
 			)}

@@ -97,13 +97,11 @@ const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
       dataMonthly[index] ? dataMonthly[index][0] : 0,
       dataCumulative[index] ? dataCumulative[index][0] : 0,
     ]);
-    setPlotData([['Month', 'Monthly Time', 'Total Time'], ...finalData]);
+    setPlotData([['', '月の合計', '累計'], ...finalData]);
   }, [data]);
 
   const options = {
-    title: 'Total and Monthly Time',
-    hAxis: { title: 'Month' },
-    vAxis: { title: `Time (${timeUnit})` },
+    vAxis: { title: `時間 [ ${timeUnit} ]` },
     seriesType: 'bars',
     series: { 1: { type: 'line' } },
   };
@@ -115,7 +113,7 @@ const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
           <thead>
             <tr>
               <th style={{ backgroundColor: 'black', color: 'white', fontSize: '20px' }}>
-                Total: {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
+                累計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
               </th>
             </tr>
           </thead>

@@ -35,8 +35,8 @@ const ThemeTable: React.FC<Props> = (props) => {
             <table className="table table-sm">
                 <thead>
                     <tr>
-                        <th className="bg-dark text-white" style={{ width: "70px" }}>Term</th>
-                        <th className="bg-dark text-white">Theme</th>
+                        <th className="bg-dark text-white" style={{ width: "70px" }}>期間</th>
+                        <th className="bg-dark text-white">テーマ</th>
                         <th className="bg-dark text-white" style={{ width: "70px" }}></th>
                         <th className="bg-dark text-white" style={{ width: "40px" }}></th>
                     </tr>
@@ -47,7 +47,7 @@ const ThemeTable: React.FC<Props> = (props) => {
                         <td>
                             {(target === "yearly") ?
                                 <Input
-                                    placeholder="theme for year"
+                                    placeholder="年のテーマ"
                                     value={themeForYear}
                                     onChange={(e) => setThemeForYear(e.target.value)}
                                 />
@@ -64,7 +64,7 @@ const ThemeTable: React.FC<Props> = (props) => {
                                             theme: themeForYear
                                         });
                                         setTarget("");
-                                    }}>Save</Button>
+                                    }}>保存</Button>
                                 : ""}
                         </td>
                         <td>
@@ -81,7 +81,7 @@ const ThemeTable: React.FC<Props> = (props) => {
                         <td>
                             {(target === "monthly") ?
                                 <Input
-                                    placeholder="theme for month"
+                                    placeholder="月のテーマ"
                                     value={themeForMonth}
                                     onChange={(e) => setThemeForMonth(e.target.value)}
                                 />
@@ -98,7 +98,7 @@ const ThemeTable: React.FC<Props> = (props) => {
                                             theme: themeForMonth
                                         });
                                         setTarget("");
-                                    }}>Save</Button>
+                                    }}>保存</Button>
                                 : ""}
                         </td>
                         <td>

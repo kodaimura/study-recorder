@@ -78,10 +78,10 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
             <table className="table table-sm table-bordered">
                 <thead className="table-dark">
                     <tr>
-                        <th style={{ width: "120px" }}>Year/Month</th>
-                        <th style={{ width: "70px" }}>Day</th>
-                        <th style={{ width: "90px" }}>Time [m]</th>
-                        <th>Comment</th>
+                        <th style={{ width: "120px" }}>年月</th>
+                        <th style={{ width: "70px" }}>日</th>
+                        <th style={{ width: "90px" }}>記録 [m]</th>
+                        <th>コメント</th>
                         <th style={{ width: "70px" }}></th>
                         <th style={{ width: "40px" }}></th>
                     </tr>
@@ -123,9 +123,7 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
                                     <Button
                                         className="btn-sm"
                                         onClick={() => handleSave(record.day)}
-                                    >
-                                        Save
-                                    </Button>
+                                    >保存</Button>
                                 ) : null}
                             </td>
                             <td>

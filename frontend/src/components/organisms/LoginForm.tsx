@@ -12,16 +12,14 @@ const LoginForm: React.FC = () => {
 
     return (
         <div className='row justify-content-center'>
+            <div>
+                <div className='text-danger text-center'>{errorMsg}</div>
+            </div>
             <div className='col-md-6'>
-                <div>
-                    <em>
-                        Login to StudyRecorder.
-                    </em>
-                </div>
                 <div className='input-group mb-3'>
                     <Input
                         required
-                        placeholder="Username"
+                        placeholder="アカウント名"
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
@@ -29,7 +27,7 @@ const LoginForm: React.FC = () => {
                     <Input
                         type="password"
                         required
-                        placeholder="Password"
+                        placeholder="パスワード"
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
@@ -40,14 +38,15 @@ const LoginForm: React.FC = () => {
                             try {
                                 await login(username, password);
                             } catch (error: any) {
-                                setErrorMsg("Login failed.");
+                                if (error.status === 401) {
+                                    setErrorMsg("アカウント名または、パスワードに誤りがあります。");
+                                } else {
+                                    setErrorMsg("ログインに失敗しました。");
+                                }
                             }
                         }}
-                    >Login</ Button>
+                    >ログイン</ Button>
                 </div>
-            </div>
-            <div>
-                <div className='text-danger'>{errorMsg}</div>
             </div>
         </div>
     )
