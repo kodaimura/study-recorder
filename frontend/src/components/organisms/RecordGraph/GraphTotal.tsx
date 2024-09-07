@@ -58,13 +58,13 @@ const makeLabels = (data: Record[]) => {
 
   for (let d of data) {
     if (year !== d.year || month !== d.month) {
-      labels.push(String(year) + '/' + String(month));
+      labels.push(`${year}/${month}`);
       year = d.year;
       month = d.month;
     }
   }
 
-  labels.push(String(year) + '/' + String(month));
+  labels.push(`${year}/${month}`);
   return labels;
 };
 
@@ -97,7 +97,6 @@ const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
       dataMonthly[index] ? dataMonthly[index][0] : 0,
       dataCumulative[index] ? dataCumulative[index][0] : 0,
     ]);
-  
     setPlotData([['Month', 'Monthly Time', 'Total Time'], ...finalData]);
   }, [data]);
 

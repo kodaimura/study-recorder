@@ -15,65 +15,107 @@ const compareDate = (
     return (a.day < b.day) ? -1 : 1;
 };
 
-const toCumulative = (ls: number[]) => {
-    for (let i = 2; i < 32; i++) {
-        ls[i] = ls[i - 1] + ls[i];
+const toCumulative = (arr: number[]) => {
+    for (let i = 1; i < arr.length; i++) {
+        arr[i] += arr[i - 1];
     }
-    return ls;
+    return arr;
 };
 
-const makeData = async (data: Record[]) => {
-    let plotData: number[][] = [];
-    let year = (data.length) ? data[0].year : 0;
-    let month = (year) ? data[0].month : 0;
+const formatData = (records: Record[], timeUnit: string) => {
+    let data: { [key: string]: number[] } = {};
+    let year = records.length ? records[0].year : 0;
+    let month = year ? records[0].month : 0;
 
-    let arr = await Array(32).fill(0);
+    let arr = Array(32).fill(0);
 
-    for (let d of data) {
+    for (let d of records) {
         if (year !== d.year || month !== d.month) {
-            plotData.push(toCumulative(arr));
+            data[`${year}/${month}`] = toCumulative(arr);
             year = d.year;
             month = d.month;
-            arr = await Array(32).fill(0);
+            arr = Array(32).fill(0);
         }
-        arr[d.day] = d.minuteTime;
+        arr[d.day] = (timeUnit === "m") ? d.minuteTime : minuteToHour(d.minuteTime);
     }
 
-    arr[0] = 1; // to differentiate months
-    plotData.push(toCumulative(arr));
-
-    return plotData;
+    data[`${year}/${month}`] = toCumulative(arr);
+    return data;
 };
 
-const makePlotData = (data: number[][], timeUnit: string, year: number, month: number) => {
-    const labels = [
-        "Day", "Monthly Time", "Total Time"
-    ];
+const transpose = (matrix: number[][]): number[][] => {
+    if (matrix.length === 0) return [];
 
-    let formattedData = data.map((d, idx) => {
-        return [
-            idx.toString(),
-            timeUnit === 'h' ? minuteToHour(d[idx]) : d[idx],
-            timeUnit === 'h' ? minuteToHour(d[d.length - 1]) : d[d.length - 1]
-        ];
-    });
+    const numRows = matrix.length;
+    const numColumns = matrix[0].length;
 
-    // Add labels to the beginning
-    return [labels, ...formattedData];
+    const result: number[][] = [];
+    for (let i = 0; i < numColumns; i++) {
+        const row: number[] = [];
+        for (let j = 0; j < numRows; j++) {
+            row.push(matrix[j][i]);
+        }
+        result.push(row);
+    }
+
+    return result;
+};
+
+const makePlotData = (records: Record[], timeUnit: string, year: number, month: number): any => {
+    const data = formatData(records, timeUnit);
+    const labels = Array.from({ length: 32 }, (_, i) => i);
+    const values = transpose(Object.values(data));
+    const keys = Object.keys(data);
+    return [['', ...keys], ...labels.map((label, index) => [label, ...values[index]])];
+};
+
+const makePlotOptions = (plotData: any, timeUnit: string, year: number, month: number): any => {
+    let options = {
+        hAxis: {
+            minValue: 0,
+            maxValue: 31,
+        },
+        vAxis: {
+            title: `Time ${timeUnit === 'm' ? '[ m ]' : '[ h ]'}`,
+            gridlines: { color: 'transparent' },
+        },
+        legend: { position: 'bottom' },
+        series: plotData[0].slice(1).map((ym: string) => {
+            if (ym === `${year}/${month}`) {
+                return { color: '#FF0000', visibleInLegend: true };
+            } else {
+                return { color: '#0000FF', visibleInLegend: false };
+            }
+        })
+    }
+
+    return options;
+};
+
+const getTotal = (records: Record[], year: number, month: number): number => {
+    records = records.filter((row: Record) => {
+        return row['year'] == year && row['month'] == month;
+    })
+    let total = 0;
+    for (let row of records) {
+        total += row['minuteTime'];
+    }
+
+    return total;
 };
 
 type Props = {
+    year: number,
+    month: number,
     timeUnit: string
 };
 
 const GraphMonthly: React.FC<Props> = (props) => {
-    const timeUnit = props.timeUnit;
-    const [data, setData] = useState([] as any[]);
-    const [dataMonthly, setDataMonthly] = useState([[]] as any[][]);
-    const [plotData, setPlotData] = useState([] as any[]);
+    const { timeUnit, year, month } = props;
+    const [data, setData] = useState<Record[]>([]);
+    const [plotData, setPlotData] = useState<any[][]>([]);
+    const [plotOptions, setPlotOptions] = useState<any>({});
     const [total, setTotal] = useState(0);
-    const [year, setYear] = useState(0);
-    const [month, setMonth] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -84,23 +126,11 @@ const GraphMonthly: React.FC<Props> = (props) => {
     }, []);
 
     useEffect(() => {
-        makeData(data).then(d => {
-            setDataMonthly(d);
-        });
-
-        if (data.length !== 0) {
-            setMonth(data.slice(-1)[0].month);
-            setYear(data.slice(-1)[0].year);
-        }
-    }, [data]);
-
-    useEffect(() => {
-        setTotal(dataMonthly.slice(-1)[0].slice(-1)[0]);
-    }, [dataMonthly]);
-
-    useEffect(() => {
-        setPlotData(makePlotData(dataMonthly, timeUnit, year, month));
-    }, [dataMonthly, timeUnit, year, month]);
+        const pd = makePlotData(data, timeUnit, year, month);
+        setPlotData(pd);
+        setPlotOptions(makePlotOptions(pd, timeUnit, year, month));
+        setTotal(getTotal(data, year, month));
+    }, [data, timeUnit, year, month]);
 
     return (
         <div className="bg-white">
@@ -110,8 +140,8 @@ const GraphMonthly: React.FC<Props> = (props) => {
                         <tr>
                             <th className="bg-dark text-white" style={{ fontSize: 20 }}>
                                 {year}-{month} Total: {
-                                    (timeUnit === "m") ? total :
-                                        minuteToHour(total)}[{timeUnit}]
+                                    timeUnit === "m" ? total :
+                                    minuteToHour(total)}[{timeUnit}]
                             </th>
                         </tr>
                     </thead>
@@ -124,19 +154,7 @@ const GraphMonthly: React.FC<Props> = (props) => {
                                         width="100%"
                                         height="400px"
                                         data={plotData}
-                                        options={{
-                                            hAxis: {
-                                                title: 'Day',
-                                            },
-                                            vAxis: {
-                                                title: `Time (${timeUnit === 'm' ? 'Minutes' : 'Hours'})`,
-                                                gridlines: { color: 'transparent' },
-                                            },
-                                            legend: { position: 'bottom' },
-                                            series: {
-                                                1: { curveType: 'function' }
-                                            }
-                                        }}
+                                        options={plotOptions}
                                     />
                                 </div>
                             </td>
