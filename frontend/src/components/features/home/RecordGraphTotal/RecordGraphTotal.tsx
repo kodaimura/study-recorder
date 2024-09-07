@@ -100,19 +100,20 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
       dataMonthly[index] ? dataMonthly[index][0] : 0,
       dataCumulative[index] ? dataCumulative[index][0] : 0,
     ]);
-    setPlotData([['', '月の合計', '累計'], ...finalData]);
+    setPlotData([['', '月合計', '累計'], ...finalData]);
   }, [data]);
 
   const options = {
     vAxis: { title: `時間 [ ${timeUnit} ]` },
     seriesType: 'bars',
     series: { 1: { type: 'line' } },
+    legend: { position: 'bottom' },
   };
 
   return (
     <div className="bg-white">
       <div className="table-responsive">
-        <table className="table table-sm">
+        <table className="table">
           <thead>
             <tr>
               <th style={{ backgroundColor: 'black', color: 'white', fontSize: '20px' }}>
@@ -122,16 +123,14 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
           </thead>
           <tbody>
             <tr>
-              <td>
-                <div style={{ position: 'relative', margin: 'auto', width: '95%' }}>
-                  <Chart
-                    chartType="ComboChart"
-                    width="100%"
-                    height="400px"
-                    data={plotData}
-                    options={options}
-                  />
-                </div>
+              <td style={{ margin: 0, padding: 0 }}>
+                <Chart
+                  chartType="ComboChart"
+                  width="100%"
+                  height="450px"
+                  data={plotData}
+                  options={options}
+                />
               </td>
             </tr>
           </tbody>

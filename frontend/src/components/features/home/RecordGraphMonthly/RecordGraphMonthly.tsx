@@ -116,7 +116,7 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
     return (
         <div className="bg-white">
             <div className="table-responsive">
-                <table className="table table-sm">
+                <table className="table">
                     <thead>
                         <tr>
                             <th className="bg-dark text-white" style={{ fontSize: 20 }}>
@@ -128,16 +128,14 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                <div style={{ position: "relative", margin: "auto", width: "95%" }}>
-                                    <Chart
-                                        chartType="LineChart"
-                                        width="100%"
-                                        height="400px"
-                                        data={plotData}
-                                        options={plotOptions}
-                                    />
-                                </div>
+                            <td style={{ margin: 0, padding: 0 }}>
+                                <Chart
+                                    chartType="LineChart"
+                                    width="100%"
+                                    height="450px"
+                                    data={plotData}
+                                    options={plotOptions}
+                                />
                             </td>
                         </tr>
                     </tbody>
