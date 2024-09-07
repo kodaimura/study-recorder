@@ -1,8 +1,6 @@
 import React, { ReactNode, useState, useEffect} from 'react';
-import Container from '../layouts/Container';
-
+import { Container } from 'react-bootstrap';
 import Header from '../layouts/Header';
-
 import { RecordButton, RecordMenu } from '../organisms'
 import HeaderMenu from '../molecules/HeaderMenu';
 

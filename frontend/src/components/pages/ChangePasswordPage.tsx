@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 
+import { Container } from 'react-bootstrap';
 import Header from '../layouts/Header';
 import { PasswordForm } from '../organisms/PasswordForm';
 import HeaderMenu from '../molecules/HeaderMenu';
 
 import { api } from '../../apis/api';
-import Container from '../layouts/Container';
 
 
 export const ChangePasswordPage: React.FC = () => {

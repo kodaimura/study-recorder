@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Button from '../../atoms/Button';
+import { Button } from 'react-bootstrap';
 import GraphMonthly from './GraphMonthly';
 import GraphTotal from './GraphTotal';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../atoms/Button';
+import { Button } from 'react-bootstrap';
 
 
 const RecordMenu: React.FC = () => {

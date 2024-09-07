@@ -1,6 +1,6 @@
-import React, {useState,useEffect} from 'react';
-import {useNavigate} from 'react-router';
-import Button from '../atoms/Button';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { Button } from 'react-bootstrap';
 
 import { api } from '../../apis/api';
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
+import { Form, Button } from 'react-bootstrap';
 
 import { login } from '../../apis/users.api';
 
@@ -17,19 +16,23 @@ const LoginForm: React.FC = () => {
             </div>
             <div className='col-md-6'>
                 <div className='input-group mb-3'>
-                    <Input
+                    <Form>
+                    <Form.Control
                         required
                         placeholder="アカウント名"
                         onChange={(e) => setUsername(e.target.value)}
                     />
+                    </Form>
                 </div>
                 <div className='input-group mb-3'>
-                    <Input
+                <Form>
+                    <Form.Control
                         type="password"
                         required
                         placeholder="パスワード"
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                </Form>
                 </div>
                 <div>
                     <Button

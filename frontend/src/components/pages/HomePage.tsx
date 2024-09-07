@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
-import Container from '../layouts/Container';
+import { Container } from 'react-bootstrap';
 import Header from '../layouts/Header';
 import { RecordButton } from '../organisms'
 import HeaderMenu from '../molecules/HeaderMenu';

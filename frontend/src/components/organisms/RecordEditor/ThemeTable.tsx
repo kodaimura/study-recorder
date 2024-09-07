@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../../atoms/Button';
-import Input from '../../atoms/Input';
+import { Form, Button } from 'react-bootstrap';
 import { api } from '../../../apis/api';
 
 type Props = {
@@ -46,11 +45,13 @@ const ThemeTable: React.FC<Props> = (props) => {
                         <td>{year}</td>
                         <td>
                             {(target === "yearly") ?
-                                <Input
+                                <Form>
+                                <Form.Control
                                     placeholder="年のテーマ"
                                     value={themeForYear}
                                     onChange={(e) => setThemeForYear(e.target.value)}
                                 />
+                                </Form>
                                 : themeForYear}
                         </td>
                         <td>
@@ -80,11 +81,13 @@ const ThemeTable: React.FC<Props> = (props) => {
                         <td>{month}</td>
                         <td>
                             {(target === "monthly") ?
-                                <Input
+                                <Form>
+                                <Form.Control
                                     placeholder="月のテーマ"
                                     value={themeForMonth}
                                     onChange={(e) => setThemeForMonth(e.target.value)}
                                 />
+                                </Form>
                                 : themeForMonth}
                         </td>
                         <td>

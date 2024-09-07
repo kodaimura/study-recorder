@@ -1,10 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../atoms/Button';
+import { Container, Button } from 'react-bootstrap';
 
 import Header from '../layouts/Header';
 import { LoginForm } from '../organisms/LoginForm';
-import Container from '../layouts/Container';
 
 
 export const LoginPage: React.FC = () => {

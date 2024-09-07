@@ -1,6 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import Button from '../../atoms/Button';
-import Input from '../../atoms/Input';
+import { Form, Button } from 'react-bootstrap';
 import { Record } from '../../../types/types';
 import { api } from '../../../apis/api';
 
@@ -93,27 +92,31 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
                             <td>{record.day}</td>
                             <td>
                                 {editingIndex === index ? (
-                                    <Input
-                                        type="number"
-                                        value={minuteTime}
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-											const value = e.target.value === '' ? 0 : Number(e.target.value);
-											setMinuteTime(isNaN(value) ? 0 : value);
-										}}
-                                    />
+                                    <Form>
+                                        <Form.Control
+                                            type="number"
+                                            value={minuteTime}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+									    		const value = e.target.value === '' ? 0 : Number(e.target.value);
+									    		setMinuteTime(isNaN(value) ? 0 : value);
+									    	}}
+                                        />
+                                    </Form>
                                 ) : (
                                     record.minuteTime
                                 )}
                             </td>
                             <td>
                                 {editingIndex === index ? (
-                                    <Input
-                                        placeholder="free comment"
-                                        value={comment}
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-											setComment(e.target.value);
-										}}
-                                    />
+                                    <Form>
+                                        <Form.Control
+                                            placeholder="free comment"
+                                            value={comment}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+									    		setComment(e.target.value);
+									    	}}
+                                        />
+                                    </Form>
                                 ) : (
                                     record.comment
                                 )}
@@ -121,7 +124,7 @@ const RecordTable: React.FC<Props> = ({year, month}) => {
                             <td>
                                 {editingIndex === index ? (
                                     <Button
-                                        className="btn-sm"
+                                        size="sm"
                                         onClick={() => handleSave(record.day)}
                                     >保存</Button>
                                 ) : null}

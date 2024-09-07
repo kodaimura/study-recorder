@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
+import { Form, Button } from 'react-bootstrap';
 
 import { api } from '../../apis/api';
 import { logout } from '../../apis/users.api';
@@ -19,28 +18,34 @@ const PasswordForm: React.FC = () => {
                     <div className='text-danger'>{errorMsg}</div>
                 </div>
                 <div className='input-group mb-3'>
-                    <Input
+                    <Form>
+                    <Form.Control
                         type="password"
                         placeholder="現在のパスワード"
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    </Form>
                 </div>
                 <div className='input-group mb-3'>
-                    <Input
+                <Form>
+                    <Form.Control
                         type="password"
                         placeholder="新しいパスワード"
                         required
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
+                </Form>
                 </div>
                 <div className='input-group mb-3'>
-                    <Input
+                <Form>
+                    <Form.Control
                         type="password"
                         placeholder="新しいパスワード（確認用）"
                         required
                         onChange={(e) => setNewPasswordConfirm(e.target.value)}
                     />
+                </Form>
                 </div>
                 <div>
                     <Button

@@ -1,10 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../atoms/Button';
+import { Container, Button } from 'react-bootstrap';
 
 import Header from '../layouts/Header';
 import { SignupForm } from '../organisms/SignupForm';
-import Container from '../layouts/Container';
 
 
 export const SignupPage: React.FC = () => {
