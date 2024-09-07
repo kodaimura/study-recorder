@@ -17,42 +17,31 @@ const getCellColor = (minuteTime: number): string => {
     return '#FFF';
 };
 
-
 type Props = {
     day: number;
     minuteTime: number;
     timeUnit: string;
 };
 
-const CalendarCell: React.FC<Props> = (props) => {
-    const displayTime = props.timeUnit === 'm' ? props.minuteTime : Math.round((props.minuteTime / 60) * 100) / 100;
+const CalendarCell: React.FC<Props> = ({ day, minuteTime, timeUnit }) => {
+    const displayTime = timeUnit === 'm' ? minuteTime : Math.round((minuteTime / 60) * 100) / 100;
 
     const cellStyle = {
-        backgroundColor: getCellColor(props.minuteTime),
+        backgroundColor: getCellColor(minuteTime),
         width: CELL_WIDTH,
         height: CELL_HEIGHT,
         borderRight: '1px solid rgba(224, 224, 224, 1)',
         textAlign: 'center' as const,
         verticalAlign: 'middle' as const,
-    };
-
-    const dayCellStyle = {
-        height: '20px',
-        fontSize: '1em',
-    };
-
-    const dataCellStyle = {
-        fontSize: '1.3em',
-        height: '60px',
-        lineHeight: '50px',
+        padding: '5px',
     };
 
     return (
         <td style={cellStyle}>
-            {props.day !== 0 && (
+            {day !== 0 && (
                 <>
-                    <div style={dayCellStyle}>{props.day}</div>
-                    <div style={dataCellStyle}>{displayTime}</div>
+                    <div style={{ height: '20px', fontSize: '1em' }}>{day}</div>
+                    <div style={{ fontSize: '1.3em', height: '60px', lineHeight: '50px' }}>{displayTime}</div>
                 </>
             )}
         </td>

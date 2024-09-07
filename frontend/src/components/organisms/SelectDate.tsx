@@ -2,81 +2,90 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 type Props = {
-	year?: number,
-	month?: number,
-	setYear: (year: number) => void,
-	setMonth: (month: number) => void,
+    year?: number,
+    month?: number,
+    setYear: (year: number) => void,
+    setMonth: (month: number) => void,
 }
+
 const SelectDate: React.FC<Props> = (props) => {
-	const d = new Date();
-	const [y, setY] = useState((props.year === undefined) ? d.getFullYear() : props.year);
-	const [m, setM] = useState((props.month === undefined) ? d.getMonth() + 1 : props.month);
+    const d = new Date();
+    const [y, setY] = useState(props.year !== undefined ? props.year : d.getFullYear());
+    const [m, setM] = useState(props.month !== undefined ? props.month : d.getMonth() + 1);
 
-	const addYear = () => {
-		props.setYear(y + 1);
-		setY(y + 1);
-	}
+    const addYear = () => {
+        const newYear = y + 1;
+        props.setYear(newYear);
+        setY(newYear);
+    }
 
-	const subYear = () => {
-		props.setYear(y - 1);
-		setY(y - 1);
-	}
+    const subYear = () => {
+        const newYear = y - 1;
+        props.setYear(newYear);
+        setY(newYear);
+    }
 
-	const addMonth = () => {
-		if (props.month === 12) {
-			props.setMonth(1);
-			setM(1);
-			props.setYear(y + 1);
-			setY(y + 1);
-		} else {
-			props.setMonth(m + 1);
-			setM(m + 1);
-		}
-	}
+    const addMonth = () => {
+        let newMonth = m + 1;
+        let newYear = y;
+        if (newMonth > 12) {
+            newMonth = 1;
+            newYear = y + 1;
+        }
+        props.setMonth(newMonth);
+        setM(newMonth);
+        props.setYear(newYear);
+        setY(newYear);
+    }
 
-	const subMonth = () => {
-		if (props.month === 1) {
-			props.setMonth(12);
-			setM(12);
-			props.setYear(y - 1);
-			setY(y - 1);
-		} else {
-			props.setMonth(m - 1);
-			setM(m - 1);
-		}
-	}
+    const subMonth = () => {
+        let newMonth = m - 1;
+        let newYear = y;
+        if (newMonth < 1) {
+            newMonth = 12;
+            newYear = y - 1;
+        }
+        props.setMonth(newMonth);
+        setM(newMonth);
+        props.setYear(newYear);
+        setY(newYear);
+    }
 
+    return (
+        <div className="d-flex">
+            <div className="btn-group me-2">
+                <Button
+                    className='btn-sm'
+                    onClick={subYear}
+                >
+                    &lt;&lt;
+                </Button>
+                <Button disabled>{y}</Button>
+                <Button
+                    className='btn-sm'
+                    onClick={addYear}
+                >
+                    &gt;&gt;
+                </Button>
+            </div>
 
-	return (
-		<>
-			<div className="d-flex">
-				<div className="btn-group">
-					<Button
-						className='btn-sm'
-						onClick={() => subYear()} >
-					</Button>
-					<Button>{y}</Button>
-					<Button
-						className='btn-sm'
-						onClick={() => addYear()} >
-					</Button>
-				</div>
-
-				<div className="btn-group">
-					<Button
-						className='btn-sm'
-						onClick={() => subMonth()} >
-
-					</Button>
-					<Button>{m}</Button>
-					<Button
-						className='btn-sm'
-						onClick={() => addMonth()} >
-					</Button>
-				</div>
-			</div>
-		</>
-	);
+            <div className="btn-group">
+                <Button
+                    className='btn-sm'
+                    onClick={subMonth}
+                >
+                    &lt;
+                </Button>
+                <Button disabled>{m}</Button>
+                <Button
+                    className='btn-sm'
+                    onClick={addMonth}
+                >
+                    &gt;
+                </Button>
+            </div>
+        </div>
+    );
 }
 
 export { SelectDate };

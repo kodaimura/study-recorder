@@ -1,122 +1,140 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Table } from 'react-bootstrap';
 import { api } from '../../../apis/api';
 
 type Props = {
-    year: number,
-    month: number,
+    year: number;
+    month: number;
 }
 
-const ThemeTable: React.FC<Props> = (props) => {
-    const year = props.year;
-    const month = props.month;
-    const [themeForYear, setThemeForYear] = useState("");
-    const [themeForMonth, setThemeForMonth] = useState("");
-    const [target, setTarget] = useState("");
+const ThemeTable: React.FC<Props> = ({ year, month }) => {
+    const [themeForYear, setThemeForYear] = useState<string>("");
+    const [themeForMonth, setThemeForMonth] = useState<string>("");
+    const [target, setTarget] = useState<string>("");
 
     useEffect(() => {
-        (async () => {
-            const data = await api.get(`themes?year=${year}&month=0`);
-            setThemeForYear((data && data.length) ? data[0].theme : "");
-        })();
+        const fetchYearlyTheme = async () => {
+            try {
+                const data = await api.get(`themes?year=${year}&month=0`);
+                setThemeForYear((data && data.length) ? data[0].theme : "");
+            } catch (error) {
+                console.error('Error fetching yearly theme:', error);
+            }
+        };
+        fetchYearlyTheme();
         setTarget("");
     }, [year]);
 
     useEffect(() => {
-        (async () => {
-            const data = await api.get(`themes?year=${year}&month=${month}`);
-            setThemeForMonth((data && data.length) ? data[0].theme : "");
-        })();
+        const fetchMonthlyTheme = async () => {
+            try {
+                const data = await api.get(`themes?year=${year}&month=${month}`);
+                setThemeForMonth((data && data.length) ? data[0].theme : "");
+            } catch (error) {
+                console.error('Error fetching monthly theme:', error);
+            }
+        };
+        fetchMonthlyTheme();
         setTarget("");
     }, [year, month]);
+
+    const handleSave = async (targetType: string, theme: string) => {
+        try {
+            await api.post('themes', {
+                year,
+                month: targetType === "monthly" ? month : 0,
+                theme
+            });
+            setTarget("");
+        } catch (error) {
+            console.error('Error saving theme:', error);
+        }
+    };
+
     return (
         <div className="mt-4">
-            <table className="table table-sm">
-                <thead>
+            <Table bordered striped hover size="sm">
+                <thead className="bg-dark text-white">
                     <tr>
-                        <th className="bg-dark text-white" style={{ width: "70px" }}>期間</th>
-                        <th className="bg-dark text-white">テーマ</th>
-                        <th className="bg-dark text-white" style={{ width: "70px" }}></th>
-                        <th className="bg-dark text-white" style={{ width: "40px" }}></th>
+                        <th style={{ width: "70px" }}>期間</th>
+                        <th>テーマ</th>
+                        <th style={{ width: "70px" }}></th>
+                        <th style={{ width: "40px" }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{year}</td>
                         <td>
-                            {(target === "yearly") ?
-                                <Form>
+                            {target === "yearly" ? (
                                 <Form.Control
                                     placeholder="年のテーマ"
                                     value={themeForYear}
                                     onChange={(e) => setThemeForYear(e.target.value)}
                                 />
-                                </Form>
-                                : themeForYear}
+                            ) : (
+                                themeForYear
+                            )}
                         </td>
                         <td>
-                            {(target === "yearly") ?
+                            {target === "yearly" && (
                                 <Button
-                                    className='btn-sm'
-                                    onClick={() => {
-                                        api.post('themes', {
-                                            year: year,
-                                            month: 0,
-                                            theme: themeForYear
-                                        });
-                                        setTarget("");
-                                    }}>保存</Button>
-                                : ""}
+                                    size="sm"
+                                    variant="primary"
+                                    onClick={() => handleSave("yearly", themeForYear)}
+                                >
+                                    保存
+                                </Button>
+                            )}
                         </td>
                         <td>
-                            <button
-                                className="btn btn-link btn-sm"
-                                onClick={() => setTarget((target === "yearly") ? "" : "yearly")}
+                            <Button
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={() => setTarget(target === "yearly" ? "" : "yearly")}
                             >
                                 <i className="bi bi-pencil"></i>
-                            </button>
+                            </Button>
                         </td>
                     </tr>
                     <tr>
                         <td>{month}</td>
                         <td>
-                            {(target === "monthly") ?
-                                <Form>
+                            {target === "monthly" ? (
                                 <Form.Control
                                     placeholder="月のテーマ"
                                     value={themeForMonth}
                                     onChange={(e) => setThemeForMonth(e.target.value)}
                                 />
-                                </Form>
-                                : themeForMonth}
+                            ) : (
+                                themeForMonth
+                            )}
                         </td>
                         <td>
-                            {(target === "monthly") ?
+                            {target === "monthly" && (
                                 <Button
-                                    className='btn-sm'
-                                    onClick={() => {
-                                        api.post('themes', {
-                                            year: year,
-                                            month: month,
-                                            theme: themeForMonth
-                                        });
-                                        setTarget("");
-                                    }}>保存</Button>
-                                : ""}
+                                    size="sm"
+                                    variant="primary"
+                                    onClick={() => handleSave("monthly", themeForMonth)}
+                                >
+                                    保存
+                                </Button>
+                            )}
                         </td>
                         <td>
-                            <button
-                                className="btn btn-link btn-sm"
-                                onClick={() => setTarget((target === "monthly") ? "" : "monthly")}
+                            <Button
+                                size="sm"
+                                variant="outline-primary"
+                                onClick={() => setTarget(target === "monthly" ? "" : "monthly")}
                             >
                                 <i className="bi bi-pencil"></i>
-                            </button>
+                            </Button>
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
-}
+};
 
 export default ThemeTable;

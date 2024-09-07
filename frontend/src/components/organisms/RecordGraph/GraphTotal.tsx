@@ -75,15 +75,18 @@ type Props = {
 const GraphTotal: React.FC<Props> = ({ timeUnit }) => {
   const [data, setData] = useState<Record[]>([]);
   const [plotData, setPlotData] = useState<(string[] | [string, number, number])[]>([['Month', 'Monthly Time', 'Total Time']]);
-
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     (async () => {
-      const records = await api.get('records');
-      setTotal(records.reduce((sum: number, row: Record) => sum + row.minuteTime, 0));
-      records.sort(compareDate);
-      setData(records);
+      try {
+        const records = await api.get('records');
+        setTotal(records.reduce((sum: number, row: Record) => sum + row.minuteTime, 0));
+        records.sort(compareDate);
+        setData(records);
+      } catch (error) {
+        console.error('Error fetching records:', error);
+      }
     })();
   }, []);
 

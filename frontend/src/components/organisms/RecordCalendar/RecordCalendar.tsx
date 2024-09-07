@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Table, Alert } from 'react-bootstrap';
 import { Record } from '../../../types/types';
 import { minuteToHour } from '../../../utils/utils';
 import { api } from '../../../apis/api';
@@ -44,11 +45,17 @@ const RecordCalendar: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const fetchRecords = async () => {
-            const records = await api.get(`records?year=${props.year}&month=${props.month}`);
-            if (records) {
-                setTotal(records.reduce((sum: number, record: Record) => sum + record.minuteTime, 0));
-                setData(makeCalendarData(props.year, props.month, records));
-            } else {
+            try {
+                const records = await api.get(`records?year=${props.year}&month=${props.month}`);
+                if (records) {
+                    setTotal(records.reduce((sum: number, record: Record) => sum + record.minuteTime, 0));
+                    setData(makeCalendarData(props.year, props.month, records));
+                } else {
+                    setTotal(0);
+                    setData([]);
+                }
+            } catch (error) {
+                console.error('Error fetching records:', error);
                 setTotal(0);
                 setData([]);
             }
@@ -58,13 +65,13 @@ const RecordCalendar: React.FC<Props> = (props) => {
 
     return (
         <>
-            <div style={{ backgroundColor: 'black', color: 'white', fontSize: '20px', padding: '10px' }}>
+            <Alert variant="dark" style={{ fontSize: '20px' }}>
                 合計： {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
-            </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            </Alert>
+            <Table bordered hover responsive="sm">
                 <CalendarHeader />
                 <CalendarBody timeUnit={props.timeUnit} records={data} />
-            </table>
+            </Table>
         </>
     );
 };

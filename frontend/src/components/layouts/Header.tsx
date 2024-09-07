@@ -1,25 +1,24 @@
 import React, { ReactNode } from 'react';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 
 type Props = {
     rightContent: ReactNode
 }
 
-const Header: React.FC<Props> = (props) => {
+const Header: React.FC<Props> = ({ rightContent }) => {
     return (
         <>
-        <header>
-            <nav className='navbar fixed-top navbar-expand-sm bg-black'>
-                <div className='container-fluid'>
-                    <a className='navbar-brand px-3 text-light fw-bolder' href='/calendar'>
-                    STUDY RECORDER
-                    </a>
-                    <div className='d-flex justify-content-end'>
-                    {props.rightContent}
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div style={{width:'100%', height:'70px'}}></div>
+            <Navbar bg="dark" variant="dark" fixed="top" expand="sm">
+                <Container fluid>
+                    <Navbar.Brand href="/calendar">
+                        STUDY RECORDER
+                    </Navbar.Brand>
+                    <Nav className="ml-auto">
+                        {rightContent}
+                    </Nav>
+                </Container>
+            </Navbar>
+            <div style={{ width: '100%', height: '70px' }}></div>
         </>
     );
 }

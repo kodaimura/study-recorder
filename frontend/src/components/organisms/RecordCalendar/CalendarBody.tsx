@@ -7,12 +7,17 @@ type Props = {
     records: Record[][];
 }
 
-const CalendarBody: React.FC<Props> = (props) => (
+const CalendarBody: React.FC<Props> = ({ timeUnit, records }) => (
     <tbody>
-        {props.records.map((weekRecord, index) => (
-            <tr key={index}>
-                {weekRecord.map((record, i) => (
-                    <CalendarCell key={i} day={record.day} minuteTime={record.minuteTime} timeUnit={props.timeUnit} />
+        {records.map((weekRecord, rowIndex) => (
+            <tr key={rowIndex}>
+                {weekRecord.map((record, cellIndex) => (
+                    <CalendarCell 
+                        key={cellIndex}
+                        day={record.day}
+                        minuteTime={record.minuteTime}
+                        timeUnit={timeUnit}
+                    />
                 ))}
             </tr>
         ))}

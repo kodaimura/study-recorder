@@ -1,29 +1,50 @@
-import React, {useState, useEffect} from 'react';
-
-import { Container } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Spinner } from 'react-bootstrap';
 import Header from '../layouts/Header';
 import { PasswordForm } from '../organisms/PasswordForm';
 import HeaderMenu from '../molecules/HeaderMenu';
-
 import { api } from '../../apis/api';
 
-
 export const ChangePasswordPage: React.FC = () => {
-	const [username, setUsername] = useState("");
+    const [username, setUsername] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-	useEffect(() => {
-		(async () => {
-			const data = await api.get('account/profile');
-			if (data && data.username) setUsername(data.username);
-		})();
-	}, [])
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await api.get('account/profile');
+                if (data && data.username) {
+                    setUsername(data.username);
+                }
+            } catch (err) {
+                setError('プロフィールの取得に失敗しました。');
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
 
-	return (
-		<>
-		<Header rightContent={<HeaderMenu username={username}/>}/>
-        <Container className='mt-5'>
-		    <PasswordForm />
-        </Container>
-		</>
-		)
-}
+    if (loading) {
+        return (
+            <Container className='mt-5 text-center'>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">読み込み中...</span>
+                </Spinner>
+            </Container>
+        );
+    }
+
+    return (
+        <>
+            <Header rightContent={username ? <HeaderMenu username={username} /> : null} />
+            <Container className='mt-5'>
+                {error ? (
+                    <div className='text-danger text-center'>{error}</div>
+                ) : (
+                    <PasswordForm />
+                )}
+            </Container>
+        </>
+    );
+};

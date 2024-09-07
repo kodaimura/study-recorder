@@ -8,69 +8,59 @@ const compareDate = (
     a: { year: number, month: number, day: number }, 
     b: { year: number, month: number, day: number }
 ): number => {
-    if (a.year < b.year) return -1;
-    if (a.year > b.year) return 1;
-    if (a.month < b.month) return -1;
-    if (a.month > b.month) return 1;
-    return (a.day < b.day) ? -1 : 1;
+    return a.year !== b.year ? a.year - b.year :
+           a.month !== b.month ? a.month - b.month :
+           a.day - b.day;
 };
 
-const toCumulative = (arr: number[]) => {
-    for (let i = 1; i < arr.length; i++) {
-        arr[i] += arr[i - 1];
-    }
-    return arr;
+const toCumulative = (arr: number[]): number[] => {
+    return arr.reduce((acc, val, idx) => {
+        acc.push(val + (acc[idx - 1] || 0));
+        return acc;
+    }, [] as number[]);
 };
 
-const formatData = (records: Record[], timeUnit: string) => {
-    let data: { [key: string]: number[] } = {};
+const formatData = (records: Record[], timeUnit: string): { [key: string]: number[] } => {
+    const data: { [key: string]: number[] } = {};
     let year = records.length ? records[0].year : 0;
     let month = year ? records[0].month : 0;
-
     let arr = Array(32).fill(0);
 
-    for (let d of records) {
+    records.forEach(d => {
         if (year !== d.year || month !== d.month) {
             data[`${year}/${month}`] = toCumulative(arr);
             year = d.year;
             month = d.month;
             arr = Array(32).fill(0);
         }
-        arr[d.day] = (timeUnit === "m") ? d.minuteTime : minuteToHour(d.minuteTime);
-    }
+        arr[d.day] = timeUnit === "m" ? d.minuteTime : minuteToHour(d.minuteTime);
+    });
 
     data[`${year}/${month}`] = toCumulative(arr);
     return data;
 };
 
 const transpose = (matrix: number[][]): number[][] => {
-    if (matrix.length === 0) return [];
+    if (!matrix.length) return [];
 
     const numRows = matrix.length;
     const numColumns = matrix[0].length;
-
-    const result: number[][] = [];
-    for (let i = 0; i < numColumns; i++) {
-        const row: number[] = [];
-        for (let j = 0; j < numRows; j++) {
-            row.push(matrix[j][i]);
-        }
-        result.push(row);
-    }
-
-    return result;
+    return Array.from({ length: numColumns }, (_, i) => 
+        matrix.map(row => row[i])
+    );
 };
 
-const makePlotData = (records: Record[], timeUnit: string, year: number, month: number): any => {
+const makePlotData = (records: Record[], timeUnit: string, year: number, month: number): any[][] => {
     const data = formatData(records, timeUnit);
     const labels = Array.from({ length: 32 }, (_, i) => i);
     const values = transpose(Object.values(data));
     const keys = Object.keys(data);
+
     return [['', ...keys], ...labels.map((label, index) => [label, ...values[index]])];
 };
 
-const makePlotOptions = (plotData: any, timeUnit: string, year: number, month: number): any => {
-    let options = {
+const makePlotOptions = (plotData: any[][], timeUnit: string, year: number, month: number): any => {
+    return {
         hAxis: {
             minValue: 0,
             maxValue: 31,
@@ -80,38 +70,26 @@ const makePlotOptions = (plotData: any, timeUnit: string, year: number, month: n
             gridlines: { color: 'transparent' },
         },
         legend: { position: 'bottom' },
-        series: plotData[0].slice(1).map((ym: string) => {
-            if (ym === `${year}/${month}`) {
-                return { color: '#FF0000', visibleInLegend: true };
-            } else {
-                return { color: '#0000FF', visibleInLegend: false };
-            }
-        })
-    }
-
-    return options;
+        series: plotData[0].slice(1).map((ym: string) => ({
+            color: ym === `${year}/${month}` ? '#FF0000' : '#0000FF',
+            visibleInLegend: ym === `${year}/${month}`
+        }))
+    };
 };
 
 const getTotal = (records: Record[], year: number, month: number): number => {
-    records = records.filter((row: Record) => {
-        return row['year'] == year && row['month'] == month;
-    })
-    let total = 0;
-    for (let row of records) {
-        total += row['minuteTime'];
-    }
-
-    return total;
+    return records
+        .filter(row => row.year === year && row.month === month)
+        .reduce((total, row) => total + row.minuteTime, 0);
 };
 
 type Props = {
-    year: number,
-    month: number,
-    timeUnit: string
+    year: number;
+    month: number;
+    timeUnit: string;
 };
 
-const GraphMonthly: React.FC<Props> = (props) => {
-    const { timeUnit, year, month } = props;
+const GraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
     const [data, setData] = useState<Record[]>([]);
     const [plotData, setPlotData] = useState<any[][]>([]);
     const [plotOptions, setPlotOptions] = useState<any>({});
@@ -119,9 +97,13 @@ const GraphMonthly: React.FC<Props> = (props) => {
 
     useEffect(() => {
         (async () => {
-            const records = await api.get('records');
-            records.sort(compareDate);
-            setData(records);
+            try {
+                const records = await api.get('records');
+                records.sort(compareDate);
+                setData(records);
+            } catch (error) {
+                console.error('Error fetching records:', error);
+            }
         })();
     }, []);
 

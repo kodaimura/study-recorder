@@ -1,95 +1,87 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import { logout } from '../../apis/users.api';
 
 type Props = {
     username: string
 }
 
-const HeaderMenu: React.FC<Props> = (props) => {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const navigate = useNavigate();
+const HeaderMenu: React.FC<Props> = ({ username }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
-	const handleClick = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
+    const handleLogout = () => {
+        logout();
+        setIsMenuOpen(false);
+    };
 
-	const handleClose = () => {
-		setIsMenuOpen(false);
-	};
+    return (
+        <Dropdown onToggle={(isOpen) => setIsMenuOpen(isOpen)} className="d-flex">
+            <Dropdown.Toggle
+                as="button"
+                variant="light"
+                id="dropdown-custom-components"
+                style={{ width: '36px', height: '36px', borderRadius: '50%' }}
+            >
+                <div className="d-flex align-items-center justify-content-center h-100 w-100">
+                    {username.charAt(0)}
+                </div>
+            </Dropdown.Toggle>
 
-	return (
-		<div className="d-flex align-items-center text-center position-relative">
-			<button
-				type="button"
-				className="btn btn-light rounded-circle"
-				onClick={handleClick}
-				style={{ width: '36px', height: '36px' }}
-			>
-				<div className="d-flex align-items-center justify-content-center h-100 w-100">
-					{props.username.charAt(0)}
-				</div>
-			</button>
-
-			{isMenuOpen && (
-				<div
-					className="dropdown-menu dropdown-menu-end mt-2 shadow-sm show"
-					style={{ position: 'absolute', top: '100%', right: 0 }}
-					onMouseLeave={handleClose}
-				>
-					<div className="dropdown-item-text">{props.username}</div>
-					<div className="dropdown-divider"></div>
-					<button
-						className="dropdown-item d-flex align-items-center"
-						onClick={() => {
-							navigate("/password");
-							handleClose();
-						}}
-					>
-						<span className="me-2">
-							<i className="bi bi-key"></i>
-						</span>
-						パスワード変更
-					</button>
-					<div className="dropdown-divider"></div>
-					<button
-						className="dropdown-item d-flex align-items-center"
-						onClick={() => {
-							navigate("/");
-							handleClose();
-						}}
-					>
-						<span className="me-2">
-							<i className="bi bi-house-door"></i>
-						</span>
-						マイページ
-					</button>
-					<button
-						className="dropdown-item d-flex align-items-center"
-						onClick={() => {
-							navigate("/settings");
-							handleClose();
-						}}
-					>
-						<span className="me-2">
-							<i className="bi bi-gear"></i>
-						</span>
-						設定
-					</button>
-					<div className="dropdown-divider"></div>
-					<button className="dropdown-item d-flex align-items-center" onClick={() => {
-						logout();
-						handleClose();
-					}}>
-						<span className="me-2">
-							<i className="bi bi-box-arrow-right"></i>
-						</span>
-						ログアウト
-					</button>
-				</div>
-			)}
-		</div>
-	);
+            <Dropdown.Menu
+                show={isMenuOpen}
+                className="shadow-sm"
+                align="end"
+                style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    minWidth: '200px',
+                }}
+                onMouseLeave={() => setIsMenuOpen(false)}
+            >
+                <Dropdown.ItemText>{username}</Dropdown.ItemText>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                    as="button"
+                    onClick={() => {
+                        navigate("/password");
+                        setIsMenuOpen(false);
+                    }}
+                >
+                    <i className="bi bi-key me-2"></i>
+                    パスワード変更
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                    as="button"
+                    onClick={() => {
+                        navigate("/");
+                        setIsMenuOpen(false);
+                    }}
+                >
+                    <i className="bi bi-house-door me-2"></i>
+                    マイページ
+                </Dropdown.Item>
+                <Dropdown.Item
+                    as="button"
+					disabled
+                >
+                    <i className="bi bi-gear me-2"></i>
+                    設定
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                    as="button"
+                    onClick={handleLogout}
+                >
+                    <i className="bi bi-box-arrow-right me-2"></i>
+                    ログアウト
+                </Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    );
 };
 
 export default HeaderMenu;
