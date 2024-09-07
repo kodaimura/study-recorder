@@ -5,11 +5,11 @@ import { Header, HeaderMenu } from 'components/common';
 import { PasswordForm } from 'components/features/change-password';
 
 import { api } from 'apis/api';
+import { logout } from 'apis/users.api';
 
 const ChangePasswordPage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -19,7 +19,7 @@ const ChangePasswordPage: React.FC = () => {
                     setUsername(data.username);
                 }
             } catch (err) {
-                setError('プロフィールの取得に失敗しました。');
+                logout();
             } finally {
                 setLoading(false);
             }
@@ -40,11 +40,7 @@ const ChangePasswordPage: React.FC = () => {
         <>
             <Header rightContent={username ? <HeaderMenu username={username} /> : null} />
             <Container className='mt-5'>
-                {error ? (
-                    <div className='text-danger text-center'>{error}</div>
-                ) : (
-                    <PasswordForm />
-                )}
+                <PasswordForm />
             </Container>
         </>
     );

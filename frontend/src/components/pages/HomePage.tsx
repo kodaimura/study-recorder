@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
-import { Container, Spinner, Alert } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 
 import { Header, HeaderMenu } from 'components/common';
 import { RecordButton, RecordCalendar, RecordGraph, RecordEditor, SelectDate } from 'components/features/home';
 
 import { api } from 'apis/api';
+import { logout } from 'apis/users.api';
 
 type RouteParams = {
     year: string | undefined;
@@ -17,7 +18,6 @@ const HomePage: React.FC = () => {
     const params = useParams<RouteParams>();
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
                 const data = await api.get('account/profile');
                 if (data && data.username) setUsername(data.username);
             } catch (err) {
-                setError('ユーザー情報の取得に失敗しました。');
+                logout();
             } finally {
                 setLoading(false);
             }
@@ -54,12 +54,6 @@ const HomePage: React.FC = () => {
             <Header rightContent={<HeaderMenu username={username || ''} />} />
             <Container>
                 <RecordButton />
-                <SelectDate
-                    year={year}
-                    month={month}
-                    setYear={setYear}
-                    setMonth={setMonth}
-                />
                 <nav>
                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <Link to="/calendar" className='nav-link'>カレンダー</Link>
@@ -67,7 +61,12 @@ const HomePage: React.FC = () => {
                         <Link to="/graph" className='nav-link'>グラフ</Link>
                     </div>
                 </nav>
-                {error && <Alert variant="danger">{error}</Alert>}
+                <SelectDate
+                    year={year}
+                    month={month}
+                    setYear={setYear}
+                    setMonth={setMonth}
+                />
                 <Routes>
                     <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
                     <Route path="editor" element={<RecordEditor year={year} month={month} />} />
