@@ -77,10 +77,18 @@ const HomePage: React.FC = () => {
 
 				<nav>
 					<div className="nav nav-tabs mt-2" role="tablist">
-						<NavLink to="/calendar" className='nav-link'>カレンダー</NavLink>
-						<NavLink to="/editor" className='nav-link'>編集</NavLink>
-						<NavLink to="/graph/monthly" className='nav-link'>月次グラフ</NavLink>
-						<NavLink to="/graph/total" className='nav-link'>累計グラフ</NavLink>
+						<NavLink to="/calendar" className='nav-link'>
+							<i className="bi bi-calendar me-2"></i> カレンダー
+						</NavLink>
+						<NavLink to="/editor" className='nav-link'>
+							<i className="bi bi-pencil-square me-2"></i> 編集
+						</NavLink>
+						<NavLink to="/graph/monthly" className='nav-link'>
+							<i className="bi bi-graph-up me-2"></i> 月次グラフ
+						</NavLink>
+						<NavLink to="/graph/total" className='nav-link'>
+							<i className="bi bi-bar-chart-line me-2"></i> 累計グラフ
+						</NavLink>
 					</div>
 				</nav>
 				<div className='d-flex justify-content-end mt-1 mb-1'>

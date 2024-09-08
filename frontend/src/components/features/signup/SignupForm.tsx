@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 
 import { signup } from 'apis/users.api';
 
@@ -10,7 +10,9 @@ const SignupForm: React.FC = () => {
     const [errorMsg, setErrorMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
         if (password !== passwordConfirm) {
             setErrorMsg("確認用パスワードが一致していません。");
             return;
@@ -34,37 +36,52 @@ const SignupForm: React.FC = () => {
         <div className='row justify-content-center'>
             <div className='col-md-6'>
                 <div className='text-danger mb-3'>{errorMsg}</div>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group className='mb-3'>
-                        <Form.Control
-                            placeholder="アカウント名"
-                            required
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
+                        <InputGroup>
+                            <InputGroup.Text>
+                                <i className="bi bi-person"></i>
+                            </InputGroup.Text>
+                            <Form.Control
+                                placeholder="アカウント名"
+                                required
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </InputGroup>
                     </Form.Group>
                     <Form.Group className='mb-3'>
-                        <Form.Control
-                            type="password"
-                            placeholder="パスワード"
-                            required
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <InputGroup>
+                            <InputGroup.Text>
+                                <i className="bi bi-lock"></i>
+                            </InputGroup.Text>
+                            <Form.Control
+                                type="password"
+                                placeholder="パスワード"
+                                required
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </InputGroup>
                     </Form.Group>
                     <Form.Group className='mb-3'>
-                        <Form.Control
-                            type="password"
-                            placeholder="パスワード（確認用）"
-                            required
-                            onChange={(e) => setPasswordConfirm(e.target.value)}
-                        />
+                        <InputGroup>
+                            <InputGroup.Text>
+                                <i className="bi bi-lock"></i>
+                            </InputGroup.Text>
+                            <Form.Control
+                                type="password"
+                                placeholder="パスワード（確認用）"
+                                required
+                                onChange={(e) => setPasswordConfirm(e.target.value)}
+                            />
+                        </InputGroup>
                     </Form.Group>
                     <Button
                         variant="success"
-                        className='w-100'
-                        onClick={handleSubmit}
+                        className='w-100 d-flex align-items-center justify-content-center'
+                        type="submit"
                         disabled={isLoading}
                     >
-                        {isLoading ? "処理中..." : "アカウント作成"}
+                        <i className="bi bi-person-plus me-2"></i> アカウント作成
                     </Button>
                 </Form>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 
 import { login } from 'apis/users.api';
 
@@ -29,27 +29,33 @@ const LoginForm: React.FC = () => {
             </div>
             <div className='col-md-6'>
                 <Form onSubmit={handleSubmit}>
-                    <div className='input-group mb-3'>
+                    <InputGroup className='mb-3'>
+                        <InputGroup.Text>
+                            <i className="bi bi-person"></i>
+                        </InputGroup.Text>
                         <Form.Control
                             required
                             placeholder="アカウント名"
                             onChange={(e) => setUsername(e.target.value)}
                         />
-                    </div>
-                    <div className='input-group mb-3'>
+                    </InputGroup>
+                    <InputGroup className='mb-3'>
+                        <InputGroup.Text>
+                            <i className="bi bi-lock"></i>
+                        </InputGroup.Text>
                         <Form.Control
                             type="password"
                             required
                             placeholder="パスワード"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
+                    </InputGroup>
                     <Button
                         variant="primary"
                         type="submit"
-                        className='w-100'
+                        className='w-100 d-flex align-items-center justify-content-center'
                     >
-                        ログイン
+                        <i className="bi bi-box-arrow-in-right me-2"></i> ログイン
                     </Button>
                 </Form>
             </div>

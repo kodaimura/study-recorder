@@ -17,7 +17,7 @@ const SignupPage: React.FC = () => {
                         onClick={() => navigate('/login')}
                         aria-label="ログインページへ移動"
                     >
-                        ログイン
+                        <i className="bi bi-box-arrow-in-right me-2"></i> ログイン
                     </Button>
                 }
             />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 
 import { api } from 'apis/api';
 import { logout } from 'apis/users.api';
@@ -40,36 +40,45 @@ const PasswordForm: React.FC = () => {
                     <div>
                         <div className='text-danger'>{errorMsg}</div>
                     </div>
-                    <div className='input-group mb-3'>
+                    <InputGroup className='mb-3'>
+                        <InputGroup.Text>
+                            <i className="bi bi-key"></i>
+                        </InputGroup.Text>
                         <Form.Control
                             type="password"
                             placeholder="現在のパスワード"
                             required
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
-                    <div className='input-group mb-3'>
+                    </InputGroup>
+                    <InputGroup className='mb-3'>
+                        <InputGroup.Text>
+                            <i className="bi bi-lock"></i>
+                        </InputGroup.Text>
                         <Form.Control
                             type="password"
                             placeholder="新しいパスワード"
                             required
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
-                    </div>
-                    <div className='input-group mb-3'>
+                    </InputGroup>
+                    <InputGroup className='mb-3'>
+                        <InputGroup.Text>
+                            <i className="bi bi-lock-fill"></i>
+                        </InputGroup.Text>
                         <Form.Control
                             type="password"
                             placeholder="新しいパスワード（確認用）"
                             required
                             onChange={(e) => setNewPasswordConfirm(e.target.value)}
                         />
-                    </div>
+                    </InputGroup>
                     <Button
                         variant="success"
                         type="submit"
-                        className='w-100'
+                        className='w-100 d-flex align-items-center justify-content-center'
                     >
-                        変更
+                        <i className="bi bi-save me-2"></i> 変更
                     </Button>
                 </Form>
             </div>

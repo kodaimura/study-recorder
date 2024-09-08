@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
                         onClick={() => navigate('/signup')}
                         aria-label="アカウント作成ページへ移動"
                     >
-                        アカウント作成
+                        <i className="bi bi-person-plus me-2"></i>アカウント作成
                     </Button>
                 }
             />

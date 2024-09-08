@@ -47,6 +47,7 @@ const RecordButton: React.FC = () => {
                 variant="danger"
                 onClick={record}
             >
+                {startedAt === "" ? <i className="bi bi-play me-2"></i> : <i className="bi bi-stop me-2"></i>}
                 {startedAt === "" ? "START" : "STOP"}
             </Button>
             &nbsp;&nbsp;&nbsp;{startedAt}
