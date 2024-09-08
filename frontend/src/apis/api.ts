@@ -1,6 +1,6 @@
 const BASE_URL = '/api';
 
-class HttpError extends Error{
+class HttpError extends Error {
     public status: number;
 
     constructor(status: number, message: string) {
@@ -15,7 +15,7 @@ class Api {
     constructor(url: string) {
         this.url = url;
     }
-    
+
     /**
      * @throws { HttpError } If an API error occurs.
     */
@@ -28,17 +28,17 @@ class Api {
                     Authorization: `Bearer ${localStorage.token}`
                 },
             };
-    
+
             if (body) {
                 header.body = JSON.stringify(body);
             }
             const response = await fetch(`${this.url}/${endpoint}`, header);
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new HttpError(response.status, errorData.message);
             }
-    
+
             let data;
             try {
                 data = await response.json();
@@ -60,15 +60,15 @@ class Api {
     public get = async (endpoint: string): Promise<any> => {
         return this.apiFetch(endpoint, 'GET', null);
     };
-    
+
     public post = async (endpoint: string, body: any): Promise<any> => {
         return this.apiFetch(endpoint, 'POST', body);
     };
-    
+
     public put = async (endpoint: string, body: any): Promise<any> => {
         return this.apiFetch(endpoint, 'PUT', body);
     };
-    
+
     public delete = async (endpoint: string): Promise<any> => {
         return this.apiFetch(endpoint, 'DELETE', null);
     };

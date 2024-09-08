@@ -9,25 +9,25 @@ import { ThemeDto } from './theme.dto';
 @Injectable()
 export class ThemesService {
 
-	constructor(
-    	@InjectRepository(Theme)
-    	private readonly themeRepository: Repository<Theme>,
-  	) {}
+    constructor(
+        @InjectRepository(Theme)
+        private readonly themeRepository: Repository<Theme>,
+    ) { }
 
-  	async getThemes(
-  		userId: number,
-  		year: number | undefined,
-  		month: number | undefined
-  	): Promise<Theme[]> {
-  		let cond: any = {userId};
-		if (year) cond.year = year;
-		if (month) cond.month = month;
-		
-		return this.themeRepository.find({where: cond});
-  	}
+    async getThemes(
+        userId: number,
+        year: number | undefined,
+        month: number | undefined
+    ): Promise<Theme[]> {
+        let cond: any = { userId };
+        if (year) cond.year = year;
+        if (month) cond.month = month;
 
-  	async registerTheme(dto: ThemeDto): Promise<void> {
-  		await this.themeRepository.save(dto);
-  		return;
-  	}
+        return this.themeRepository.find({ where: cond });
+    }
+
+    async registerTheme(dto: ThemeDto): Promise<void> {
+        await this.themeRepository.save(dto);
+        return;
+    }
 }

@@ -8,6 +8,6 @@ export const Payload = createParamDecorator(
         const request = ctx.switchToHttp().getRequest();
         const pl = request.user;
 
-        return data? pl?.[data] : pl;
+        return data ? pl?.[data] : pl;
     },
 );

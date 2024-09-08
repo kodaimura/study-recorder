@@ -8,9 +8,9 @@ import { RecordWork } from './record-work.entity';
 
 
 @Module({
-  	imports: [TypeOrmModule.forFeature([Record, RecordWork])], 
-  	controllers: [RecordsController],
-  	providers: [RecordsService]
+    imports: [TypeOrmModule.forFeature([Record, RecordWork])],
+    controllers: [RecordsController],
+    providers: [RecordsService]
 })
 
-export class RecordsModule {}
+export class RecordsModule { }

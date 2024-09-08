@@ -61,7 +61,7 @@ const SelectDate: React.FC<Props> = (props) => {
                     &lt;&lt;
                 </Button>
                 <Button
-                    variant="light" 
+                    variant="light"
                     disabled
                 >
                     {y}
@@ -81,9 +81,9 @@ const SelectDate: React.FC<Props> = (props) => {
                 >
                     &lt;
                 </Button>
-                <Button 
+                <Button
                     variant="light"
-                     disabled
+                    disabled
                 >
                     {m}
                 </Button>

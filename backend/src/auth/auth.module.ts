@@ -12,22 +12,22 @@ import { JwtStrategy } from './jwt.strategy';
 
 
 @Module({
- 	imports: [
-    	UsersModule, 
-    	PassportModule,
-    	JwtModule.registerAsync({
-    		inject: [ConfigService],
-    		useFactory: async (config: ConfigService) => {
-    			return {
-    				secret: config.get<string>('JWT_SECRET_KEY'),
-    				signOptions: { expiresIn: '1000h' },
-    			}
-    		},
-    	}),
-  	],
-  	providers: [AuthService, LocalStrategy, JwtStrategy],
-  	controllers: [AuthController],
-  	exports: [AuthService],
+    imports: [
+        UsersModule,
+        PassportModule,
+        JwtModule.registerAsync({
+            inject: [ConfigService],
+            useFactory: async (config: ConfigService) => {
+                return {
+                    secret: config.get<string>('JWT_SECRET_KEY'),
+                    signOptions: { expiresIn: '1000h' },
+                }
+            },
+        }),
+    ],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
+    controllers: [AuthController],
+    exports: [AuthService],
 })
 
-export class AuthModule {}
+export class AuthModule { }

@@ -7,9 +7,9 @@ import { Theme } from './theme.entity'
 
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Theme])], 
-	providers: [ThemesService],
-  	controllers: [ThemesController]
+    imports: [TypeOrmModule.forFeature([Theme])],
+    providers: [ThemesService],
+    controllers: [ThemesController]
 })
 
-export class ThemesModule {}
+export class ThemesModule { }

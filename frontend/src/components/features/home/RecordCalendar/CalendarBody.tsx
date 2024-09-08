@@ -13,7 +13,7 @@ const CalendarBody: React.FC<Props> = ({ timeUnit, records }) => (
         {records.map((weekRecord, rowIndex) => (
             <tr key={rowIndex}>
                 {weekRecord.map((record, cellIndex) => (
-                    <CalendarCell 
+                    <CalendarCell
                         key={cellIndex}
                         day={record.day}
                         minuteTime={record.minuteTime}

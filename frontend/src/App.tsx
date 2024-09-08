@@ -9,10 +9,10 @@ import { Footer } from 'components/common';
 function App() {
     return (
         <>
-        <AppRoutes />
-        <Footer />
+            <AppRoutes />
+            <Footer />
         </>
-       
+
     );
 }
 

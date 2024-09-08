@@ -15,13 +15,13 @@ import { NotFoundPage } from 'components/pages/errors';
 const AppRoutes = () => {
     return (
         <BrowserRouter>
-        <Routes>
-            <Route path="/*" element={<HomePage />}/>
-            <Route path="/login" element={<LoginPage />}/>
-            <Route path="/signup" element={<SignupPage />}/>
-            <Route path="/password" element={<ChangePasswordPage />}/>
-            <Route path="*" element={<NotFoundPage />}/>
-        </Routes>
+            <Routes>
+                <Route path="/*" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/password" element={<ChangePasswordPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
         </BrowserRouter>
     )
 }

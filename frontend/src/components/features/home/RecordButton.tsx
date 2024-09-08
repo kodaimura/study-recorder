@@ -11,8 +11,8 @@ const RecordButton: React.FC = () => {
 
     const record = async () => {
         try {
-            const localeTime = formatLocalDateTimeISO (new Date());
-            const data = await api.post('records/record', {localeTime});
+            const localeTime = formatLocalDateTimeISO(new Date());
+            const data = await api.post('records/record', { localeTime });
             if (data && data.startedAt) {
                 setStartedAt(formatLocalDateTime(new Date(data.startedAt)) + "~");
             } else {

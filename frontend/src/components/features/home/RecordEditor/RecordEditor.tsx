@@ -13,9 +13,9 @@ const RecordEditor: React.FC<Props> = (props) => {
 
     return (
         <>
-			<ThemeTable year={year} month={month} />
-			<RecordTable year={year} month={month} />
-		</>
+            <ThemeTable year={year} month={month} />
+            <RecordTable year={year} month={month} />
+        </>
     );
 };
 

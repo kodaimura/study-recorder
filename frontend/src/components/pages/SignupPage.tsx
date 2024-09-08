@@ -7,13 +7,13 @@ import { SignupForm } from 'components/features/signup';
 
 const SignupPage: React.FC = () => {
     const navigate = useNavigate();
-    
+
     return (
         <>
-            <Header 
+            <Header
                 rightContent={
                     <Button
-						variant="outline-light"
+                        variant="outline-light"
                         onClick={() => navigate('/login')}
                         aria-label="ログインページへ移動"
                     >

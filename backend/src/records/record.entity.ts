@@ -1,36 +1,36 @@
 import {
-	Entity, 
-	Column, 
-	PrimaryColumn, 
-	CreateDateColumn, 
-	UpdateDateColumn
+    Entity,
+    Column,
+    PrimaryColumn,
+    CreateDateColumn,
+    UpdateDateColumn
 } from 'typeorm';
 
 
 @Entity()
 export class Record {
-	
-	@PrimaryColumn()
-	userId: number;
 
-	@PrimaryColumn()
-	year: number;
+    @PrimaryColumn()
+    userId: number;
 
-	@PrimaryColumn()
-	month: number;
+    @PrimaryColumn()
+    year: number;
 
-	@PrimaryColumn()
-	day: number;
+    @PrimaryColumn()
+    month: number;
 
-	@Column({default: 0})
-	minuteTime: number;
+    @PrimaryColumn()
+    day: number;
 
-	@Column({default: ''})
-	comment: string;
+    @Column({ default: 0 })
+    minuteTime: number;
 
-	@CreateDateColumn({ type: 'timestamp' })
-	createdAt: Date;
+    @Column({ default: '' })
+    comment: string;
 
-	@UpdateDateColumn({ type: 'timestamp' })
-	updatedAt: Date;
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt: Date;
 }
