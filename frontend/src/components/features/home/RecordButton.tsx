@@ -43,7 +43,8 @@ const RecordButton: React.FC = () => {
     return (
         <>
             <Button
-                className='btn-danger btn-lg'
+                size="lg"
+                variant="danger"
                 onClick={record}
             >
                 {startedAt === "" ? "START" : "STOP"}

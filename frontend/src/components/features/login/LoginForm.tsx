@@ -45,8 +45,9 @@ const LoginForm: React.FC = () => {
                         />
                     </div>
                     <Button
+                        variant="primary"
                         type="submit"
-                        className='btn-primary w-100'
+                        className='w-100'
                     >
                         ログイン
                     </Button>

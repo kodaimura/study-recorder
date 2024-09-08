@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import { Container, Spinner, Dropdown } from 'react-bootstrap';
 
 import { Header, HeaderMenu } from 'components/common';
@@ -77,18 +77,20 @@ const HomePage: React.FC = () => {
 
 				<nav>
 					<div className="nav nav-tabs" role="tablist">
-						<Link to="/calendar" className='nav-link'>カレンダー</Link>
-						<Link to="/editor" className='nav-link'>編集</Link>
-						<Link to="/graph/monthly" className='nav-link'>月次グラフ</Link>
-						<Link to="/graph/total" className='nav-link'>累計グラフ</Link>
+						<NavLink to="/calendar" className='nav-link'>カレンダー</NavLink>
+						<NavLink to="/editor" className='nav-link'>編集</NavLink>
+						<NavLink to="/graph/monthly" className='nav-link'>月次グラフ</NavLink>
+						<NavLink to="/graph/total" className='nav-link'>累計グラフ</NavLink>
 					</div>
 				</nav>
-				<SelectDate
-					year={year}
-					month={month}
-					setYear={setYear}
-					setMonth={setMonth}
-				/>
+				<div className='d-flex justify-content-end'>
+					<SelectDate
+						year={year}
+						month={month}
+						setYear={setYear}
+						setMonth={setMonth}
+					/>
+				</div>
 				<Routes>
 					<Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
 					<Route path="editor" element={<RecordEditor year={year} month={month} />} />

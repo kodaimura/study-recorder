@@ -13,7 +13,3 @@ footer{
     bottom: 0;
     width: 100%;
 }
-
-.no-caret::after {
-    display: none;
-}

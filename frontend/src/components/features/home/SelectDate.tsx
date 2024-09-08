@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 
 type Props = {
     year?: number,
@@ -52,39 +52,49 @@ const SelectDate: React.FC<Props> = (props) => {
     }
 
     return (
-        <div className="d-flex">
-            <div className="btn-group me-2">
+        <>
+            <ButtonGroup className="me-2">
                 <Button
-                    className='btn-sm'
+                    variant="light"
                     onClick={subYear}
                 >
                     &lt;&lt;
                 </Button>
-                <Button disabled>{y}</Button>
                 <Button
-                    className='btn-sm'
+                    variant="light" 
+                    disabled
+                >
+                    {y}
+                </Button>
+                <Button
+                    variant="light"
                     onClick={addYear}
                 >
                     &gt;&gt;
                 </Button>
-            </div>
+            </ButtonGroup>
 
-            <div className="btn-group">
+            <ButtonGroup>
                 <Button
-                    className='btn-sm'
+                    variant="light"
                     onClick={subMonth}
                 >
                     &lt;
                 </Button>
-                <Button disabled>{m}</Button>
+                <Button 
+                    variant="light"
+                     disabled
+                >
+                    {m}
+                </Button>
                 <Button
-                    className='btn-sm'
+                    variant="light"
                     onClick={addMonth}
                 >
                     &gt;
                 </Button>
-            </div>
-        </div>
+            </ButtonGroup>
+        </>
     );
 }
 

@@ -13,7 +13,7 @@ const SignupPage: React.FC = () => {
             <Header 
                 rightContent={
                     <Button
-                        className='btn-outline-light'
+						variant="outline-light"
                         onClick={() => navigate('/login')}
                         aria-label="ログインページへ移動"
                     >

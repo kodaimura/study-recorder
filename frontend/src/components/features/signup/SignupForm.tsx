@@ -59,7 +59,8 @@ const SignupForm: React.FC = () => {
                         />
                     </Form.Group>
                     <Button
-                        className='btn-primary w-100'
+                        variant="success"
+                        className='w-100'
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
