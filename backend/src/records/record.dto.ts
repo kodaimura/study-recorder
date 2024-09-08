@@ -1,7 +1,9 @@
 import {
 	IsInt, 
 	Min, 
-	Max
+	Max,
+	IsDateString,
+	IsNotEmpty
 } from 'class-validator';
 
 
@@ -28,5 +30,15 @@ export class RecordDto {
 
 	@IsInt()
 	minuteTime: number;
+	
+}
+
+export class RecordWorkDto {
+
+	userId: number;
+
+	@IsNotEmpty()
+	@IsDateString()
+	localeTime: string;
 	
 }

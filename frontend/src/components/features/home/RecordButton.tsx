@@ -3,41 +3,41 @@ import { useNavigate } from 'react-router';
 import { Button } from 'react-bootstrap';
 
 import { api } from 'apis/api';
+import { formatLocalDateTime, formatLocalDateTimeISO } from 'utils/utils';
 
 const RecordButton: React.FC = () => {
-    const [startTime, setStartTime] = useState<string>("");
+    const [startedAt, setStartedAt] = useState<string>("");
     const navigate = useNavigate();
 
     const record = async () => {
         try {
-            const data = await api.post('records/record', {});
-            if (data && data.startTime !== 0) {
-                const startDate = new Date(data.startTime);
-                setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");
+            const localeTime = formatLocalDateTimeISO (new Date());
+            const data = await api.post('records/record', {localeTime});
+            if (data && data.startedAt) {
+                setStartedAt(formatLocalDateTime(new Date(data.startedAt)) + "~");
             } else {
-                setStartTime("");
+                setStartedAt("");
                 navigate(0);
             }
         } catch (error) {
             console.error("レコード処理中にエラーが発生しました:", error);
-            setStartTime("");
+            setStartedAt("");
         }
     }
 
     useEffect(() => {
-        const fetchStartTime = async () => {
+        const fetchStartedAt = async () => {
             try {
-                const data = await api.get('records/record/start_time');
-                if (data && data.startTime !== 0) {
-                    const startDate = new Date(data.startTime);
-                    setStartTime(startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString() + "~");
+                const data = await api.get('records/record/started_at');
+                if (data && data.startedAt) {
+                    setStartedAt(formatLocalDateTime(new Date(data.startedAt)) + "~");
                 }
             } catch (error) {
                 console.error("開始時間の取得中にエラーが発生しました:", error);
             }
         };
 
-        fetchStartTime();
+        fetchStartedAt();
     }, [navigate]);
 
     return (
@@ -46,9 +46,9 @@ const RecordButton: React.FC = () => {
                 className='btn-danger btn-lg'
                 onClick={record}
             >
-                {startTime === "" ? "START" : "STOP"}
+                {startedAt === "" ? "START" : "STOP"}
             </Button>
-            &nbsp;&nbsp;&nbsp;{startTime}
+            &nbsp;&nbsp;&nbsp;{startedAt}
         </>
     );
 }

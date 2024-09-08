@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Record } from './record.entity';
 import { RecordWork } from './record-work.entity';
-import { RecordDto } from './record.dto';
+import { RecordDto, RecordWorkDto } from './record.dto';
 
 
 @Injectable()
@@ -17,22 +17,21 @@ export class RecordsService {
     	private readonly recordWorkRepository: Repository<RecordWork>,
   	) {}
 
-  	async record(userId: number): Promise<{[key:string]:number}> { 
-  		const startTime = await this.getStartTime(userId);
-  		const now = Date.now();
+  	async record(dto: RecordWorkDto): Promise<{[key:string]: string | null}> { 
+		const userId = dto.userId;
+  		const startedAt = await this.getStartedAt(userId);
 
-  		if (startTime === 0) {
-			this.recordWorkRepository.save({userId, startTime: now.toString()});
-  			return { startTime : now };
+  		if (startedAt === null) {
+			this.recordWorkRepository.save({userId, startedAt: dto.localeTime});
+  			return { startedAt : dto.localeTime };
   		} else {
-			await this.recordWorkRepository.save({userId, startTime: '0'});
-			const minuteTime = Math.round((now - startTime) / 60000);
+			await this.recordWorkRepository.save({userId, startedAt: null});
+			const minuteTime = Math.round((new Date(dto.localeTime).getTime() - startedAt.getTime()) / 60000);
   
-			//UTCの時間に9時間足して getUTC* で日本時間をとる
-			const startDate = new Date(startTime + 540 * 60000);
-			const year = startDate.getUTCFullYear();
-			const month = startDate.getUTCMonth() + 1;
-			const day = startDate.getUTCDate();
+			const startDate = new Date(startedAt);
+			const year = startDate.getFullYear();
+			const month = startDate.getMonth() + 1;
+			const day = startDate.getDate();
 			this.getRecord(userId, year, month, day)
 			.then((record: Record) => {
 				if (record) {
@@ -43,13 +42,13 @@ export class RecordsService {
 					this.registerRecord(dto);
 				}
 			});
-			return { startTime : 0 };
+			return { startedAt : null };
   		}
   	}
 
-  	async getStartTime(userId: number): Promise<number> {
+  	async getStartedAt(userId: number): Promise<Date | null> {
   		const row = await this.recordWorkRepository.findOne({where: {userId}});
-		return (row)? parseInt(row.startTime) : 0;
+		return row ? row.startedAt : null;
   	}
 
   	async getRecords(

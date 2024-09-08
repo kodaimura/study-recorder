@@ -15,7 +15,7 @@ import { JwtPayload } from 'src/auth/jwt.payload';
 import { MonthPipe, YearPipe } from 'src/app.pipe';
 
 import { RecordsService } from './records.service';
-import { RecordDto } from './record.dto';
+import { RecordDto, RecordWorkDto } from './record.dto';
 
 
 @Controller('records')
@@ -46,14 +46,18 @@ export class RecordsController {
 
 	@Post('record')
 	@UseGuards(AuthGuard('jwt'))
-	async record(@Payload() pl: JwtPayload) {
-		return this.recordsService.record(pl.userId);
+	async record(
+		@Body() dto: RecordWorkDto, 
+		@Payload() pl: JwtPayload
+	) {
+		dto.userId = pl.userId;
+		return this.recordsService.record(dto);
 	} 
 
-	@Get('record/start_time')
+	@Get('record/started_at')
 	@UseGuards(AuthGuard('jwt'))
 	async getWork(@Payload() pl: JwtPayload) {
-		const startTime: number = await this.recordsService.getStartTime(pl.userId);
-		return { startTime: startTime };
+		const startedAt: Date | null = await this.recordsService.getStartedAt(pl.userId);
+		return { startedAt: startedAt };
 	}
 }
