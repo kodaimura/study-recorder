@@ -62,6 +62,7 @@ const makePlotData = (records: Record[], timeUnit: string, year: number, month: 
 
 const makePlotOptions = (plotData: any[][], timeUnit: string, year: number, month: number): any => {
     return {
+        title: `${year}年${month}月`,
         hAxis: {
             minValue: 0,
             maxValue: 31,

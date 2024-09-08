@@ -106,6 +106,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
   }, [data, timeUnit]);
 
   const options = {
+    title: '全期間',
     vAxis: { title: `時間 [ ${timeUnit} ]` },
     seriesType: 'bars',
     series: { 1: { type: 'line' } },
