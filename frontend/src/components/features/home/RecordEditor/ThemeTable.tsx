@@ -53,22 +53,23 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
     };
 
     return (
-        <div className="mt-4">
+        <div>
             <Table bordered striped hover size="sm">
-                <thead className="bg-dark text-white">
+                <thead>
                     <tr>
-                        <th style={{ width: "70px" }}>期間</th>
-                        <th>テーマ</th>
-                        <th style={{ width: "70px" }}></th>
-                        <th style={{ width: "40px" }}></th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "70px" }}>期間</th>
+                        <th className="bg-dark text-white fs-6 text-center">テーマ</th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "55px" }}></th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "40px" }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{year}</td>
+                        <td className="text-center text-secondary">{year}年</td>
                         <td>
                             {target === "yearly" ? (
                                 <Form.Control
+                                    size='sm'
                                     placeholder="年のテーマ"
                                     value={themeForYear}
                                     onChange={(e) => setThemeForYear(e.target.value)}
@@ -99,10 +100,11 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
                         </td>
                     </tr>
                     <tr>
-                        <td>{month}</td>
+                        <td className="text-center text-secondary">{month}月</td>
                         <td>
                             {target === "monthly" ? (
                                 <Form.Control
+                                    size='sm'
                                     placeholder="月のテーマ"
                                     value={themeForMonth}
                                     onChange={(e) => setThemeForMonth(e.target.value)}

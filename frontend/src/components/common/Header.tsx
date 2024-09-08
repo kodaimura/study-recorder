@@ -18,7 +18,7 @@ const Header: React.FC<Props> = ({ rightContent }) => {
                     </Nav>
                 </Container>
             </Navbar>
-            <div style={{ width: '100%', height: '70px' }}></div>
+            <div style={{ width: '100%', height: '65px' }}></div>
         </header>
     );
 }

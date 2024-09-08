@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import { Chart } from 'react-google-charts';
+
 import { minuteToHour } from 'utils/utils';
 import { Record } from 'types/types';
 import { api } from 'apis/api';
-import { time } from 'console';
 
 const compareDate = (a: { year: number; month: number; day: number }, b: { year: number; month: number; day: number }): number => {
   if (a.year < b.year) return -1;
@@ -95,7 +96,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
     const dataMonthly = makeDataMonthly(data, timeUnit);
     const dataCumulative = makeDataCumulative(data, timeUnit);
     const labels = makeLabels(data);
-  
+
     const finalData: [string, number, number][] = labels.map((label, index) => [
       label,
       dataMonthly[index] ? dataMonthly[index][0] : 0,
@@ -112,32 +113,18 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
   };
 
   return (
-    <div className="bg-white">
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th style={{ backgroundColor: 'black', color: 'white', fontSize: '20px' }}>
-                累計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ margin: 0, padding: 0 }}>
-                <Chart
-                  chartType="ComboChart"
-                  width="100%"
-                  height="450px"
-                  data={plotData}
-                  options={options}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      <Alert variant="light" className='fs-5 pt-2 pb-2 mb-1'>
+        累計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
+      </Alert>
+      <Chart
+        chartType="ComboChart"
+        width="100%"
+        height="450px"
+        data={plotData}
+        options={options}
+      />
+    </>
   );
 };
 

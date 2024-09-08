@@ -83,25 +83,26 @@ const RecordTable: React.FC<Props> = ({ year, month }) => {
     return (
         <div className="table-responsive">
             <Table bordered striped hover size="sm">
-                <thead className="bg-dark text-white">
+                <thead>
                     <tr>
-                        <th style={{ width: "120px" }}>年月</th>
-                        <th style={{ width: "70px" }}>日</th>
-                        <th style={{ width: "90px" }}>記録 [m]</th>
-                        <th>コメント</th>
-                        <th style={{ width: "70px" }}></th>
-                        <th style={{ width: "40px" }}></th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "100px" }}>年月</th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "60px" }}>日</th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "80px" }}>記録 [m]</th>
+                        <th className="bg-dark text-white fs-6 text-center">コメント</th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "55px" }}></th>
+                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "40px" }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((record: Record, index: number) => (
                         <tr key={index}>
-                            <td>{record.year}/{record.month}</td>
-                            <td>{record.day}</td>
-                            <td>
+                            <td className="text-center text-secondary">{record.year}年{record.month}月</td>
+                            <td className="text-center text-secondary">{record.day}日</td>
+                            <td className="text-center">
                                 {editingIndex === index ? (
                                     <Form.Control
                                         type="number"
+                                        size='sm'
                                         value={minuteTime}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                             const value = e.target.value === '' ? 0 : Number(e.target.value);
@@ -115,6 +116,7 @@ const RecordTable: React.FC<Props> = ({ year, month }) => {
                             <td>
                                 {editingIndex === index ? (
                                     <Form.Control
+                                        size='sm'
                                         placeholder="free comment"
                                         value={comment}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {

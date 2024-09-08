@@ -6,7 +6,7 @@ const CalendarHeader: React.FC = () => (
     <thead>
         <tr>
             {DAYS_OF_WEEK.map((day, index) => (
-                <th key={index} style={{ backgroundColor: 'black', color: 'white', padding: '10px' }}>
+                <th className="bg-dark text-white fs-6 text-center" key={index}>
                     {day}
                 </th>
             ))}

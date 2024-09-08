@@ -40,8 +40,8 @@ const CalendarCell: React.FC<Props> = ({ day, minuteTime, timeUnit }) => {
         <td style={cellStyle}>
             {day !== 0 && (
                 <>
-                    <div style={{ height: '20px', fontSize: '1em' }}>{day}</div>
-                    <div style={{ fontSize: '1.3em', height: '60px', lineHeight: '50px' }}>{displayTime}</div>
+                    <div style={{ height: '20px', fontSize: '0.7rem', fontWeight: '300' }}>{day}</div>
+                    <div style={{ fontSize: '1.1rem', height: '45px', lineHeight: '40px' }}>{displayTime}</div>
                 </>
             )}
         </td>

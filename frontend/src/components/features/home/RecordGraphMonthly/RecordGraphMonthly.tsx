@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import { Chart } from 'react-google-charts';
+
 import { minuteToHour } from 'utils/utils';
 import { Record } from 'types/types';
 import { api } from 'apis/api';
 
 const compareDate = (
-    a: { year: number, month: number, day: number }, 
+    a: { year: number, month: number, day: number },
     b: { year: number, month: number, day: number }
 ): number => {
     return a.year !== b.year ? a.year - b.year :
-           a.month !== b.month ? a.month - b.month :
-           a.day - b.day;
+        a.month !== b.month ? a.month - b.month :
+            a.day - b.day;
 };
 
 const toCumulative = (arr: number[]): number[] => {
@@ -44,7 +46,7 @@ const transpose = (matrix: number[][]): number[][] => {
     if (!matrix.length) return [];
 
     const numColumns = matrix[0].length;
-    return Array.from({ length: numColumns }, (_, i) => 
+    return Array.from({ length: numColumns }, (_, i) =>
         matrix.map(row => row[i])
     );
 };
@@ -114,34 +116,18 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
     }, [data, timeUnit, year, month]);
 
     return (
-        <div className="bg-white">
-            <div className="table-responsive">
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th className="bg-dark text-white" style={{ fontSize: 20 }}>
-                                {year}-{month} 合計： {
-                                    timeUnit === "m" ? total :
-                                    minuteToHour(total)}[{timeUnit}]
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style={{ margin: 0, padding: 0 }}>
-                                <Chart
-                                    chartType="LineChart"
-                                    width="100%"
-                                    height="450px"
-                                    data={plotData}
-                                    options={plotOptions}
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <>
+            <Alert variant="light" className='fs-5 pt-2 pb-2 mb-1'>
+                合計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
+            </Alert>
+            <Chart
+                chartType="LineChart"
+                width="100%"
+                height="450px"
+                data={plotData}
+                options={plotOptions}
+            />
+        </>
     );
 };
 

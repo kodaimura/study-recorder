@@ -76,14 +76,14 @@ const HomePage: React.FC = () => {
 				</div>
 
 				<nav>
-					<div className="nav nav-tabs" role="tablist">
+					<div className="nav nav-tabs mt-2" role="tablist">
 						<NavLink to="/calendar" className='nav-link'>カレンダー</NavLink>
 						<NavLink to="/editor" className='nav-link'>編集</NavLink>
 						<NavLink to="/graph/monthly" className='nav-link'>月次グラフ</NavLink>
 						<NavLink to="/graph/total" className='nav-link'>累計グラフ</NavLink>
 					</div>
 				</nav>
-				<div className='d-flex justify-content-end'>
+				<div className='d-flex justify-content-end mt-1 mb-1'>
 					<SelectDate
 						year={year}
 						month={month}
