@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
 				</div>
 
 				<nav>
-					<div className="nav nav-tabs" id="nav-tab" role="tablist">
+					<div className="nav nav-tabs" role="tablist">
 						<Link to="/calendar" className='nav-link'>カレンダー</Link>
 						<Link to="/editor" className='nav-link'>編集</Link>
 						<Link to="/graph/monthly" className='nav-link'>月次グラフ</Link>

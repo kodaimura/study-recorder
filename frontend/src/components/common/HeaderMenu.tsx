@@ -19,16 +19,22 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
 
     return (
         <Dropdown onToggle={(isOpen) => setIsMenuOpen(isOpen)} className="d-flex">
-            <Dropdown.Toggle
-                as="button"
-                variant="light"
-                id="dropdown-custom-components"
-                style={{ width: '36px', height: '36px', borderRadius: '50%' }}
+            <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    backgroundColor: '#f8f9fa',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                }}
             >
-                <div className="d-flex align-items-center justify-content-center h-100 w-100">
-                    {username.charAt(0)}
-                </div>
-            </Dropdown.Toggle>
+                {username.charAt(0)}
+            </button>
 
             <Dropdown.Menu
                 show={isMenuOpen}
@@ -67,7 +73,7 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
                 </Dropdown.Item>
                 <Dropdown.Item
                     as="button"
-					disabled
+                    disabled
                 >
                     <i className="bi bi-gear me-2"></i>
                     設定
