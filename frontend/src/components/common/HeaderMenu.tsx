@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 
 import { logout } from 'apis/users.api';
@@ -11,9 +11,21 @@ type Props = {
 const HeaderMenu: React.FC<Props> = ({ username }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogout = () => {
         logout();
+        setIsMenuOpen(false);
+        navigate("/login");
+    };
+
+    const handleNavigation = (path: string) => {
+        if (location.pathname === path) {
+            // 同じページの場合はリロードを強制
+            window.location.reload();
+        } else {
+            navigate(path);
+        }
         setIsMenuOpen(false);
     };
 
@@ -52,10 +64,7 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
                 <Dropdown.Divider />
                 <Dropdown.Item
                     as="button"
-                    onClick={() => {
-                        navigate("/password");
-                        setIsMenuOpen(false);
-                    }}
+                    onClick={() => handleNavigation("/password")}
                 >
                     <i className="bi bi-key me-2"></i>
                     パスワード変更
@@ -63,10 +72,7 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
                 <Dropdown.Divider />
                 <Dropdown.Item
                     as="button"
-                    onClick={() => {
-                        navigate("/");
-                        setIsMenuOpen(false);
-                    }}
+                    onClick={() => handleNavigation("/")}
                 >
                     <i className="bi bi-house-door me-2"></i>
                     マイページ
