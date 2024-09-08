@@ -3,6 +3,7 @@ import { Chart } from 'react-google-charts';
 import { minuteToHour } from 'utils/utils';
 import { Record } from 'types/types';
 import { api } from 'apis/api';
+import { time } from 'console';
 
 const compareDate = (a: { year: number; month: number; day: number }, b: { year: number; month: number; day: number }): number => {
   if (a.year < b.year) return -1;
@@ -12,7 +13,7 @@ const compareDate = (a: { year: number; month: number; day: number }, b: { year:
   return a.day < b.day ? -1 : 1;
 };
 
-const makeDataMonthly = (data: Record[]) => {
+const makeDataMonthly = (data: Record[], timeUnit: string) => {
   let plotData = [[0]];
   let year = data.length ? data[0].year : 0;
   let month = year ? data[0].month : 0;
@@ -25,14 +26,14 @@ const makeDataMonthly = (data: Record[]) => {
       month = d.month;
       total = 0;
     }
-    total += d.minuteTime;
+    total += timeUnit === 'm' ? d.minuteTime : minuteToHour(d.minuteTime)
   }
 
   plotData.push([total]);
   return plotData;
 };
 
-const makeDataCumulative = (data: Record[]) => {
+const makeDataCumulative = (data: Record[], timeUnit: string) => {
   let plotData = [[0]];
   let year = data.length ? data[0].year : 0;
   let month = year ? data[0].month : 0;
@@ -44,7 +45,7 @@ const makeDataCumulative = (data: Record[]) => {
       year = d.year;
       month = d.month;
     }
-    total += d.minuteTime;
+    total += timeUnit === 'm' ? d.minuteTime : minuteToHour(d.minuteTime)
   }
 
   plotData.push([total]);
@@ -91,8 +92,8 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
   }, []);
 
   useEffect(() => {
-    const dataMonthly = makeDataMonthly(data);
-    const dataCumulative = makeDataCumulative(data);
+    const dataMonthly = makeDataMonthly(data, timeUnit);
+    const dataCumulative = makeDataCumulative(data, timeUnit);
     const labels = makeLabels(data);
   
     const finalData: [string, number, number][] = labels.map((label, index) => [
@@ -101,7 +102,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
       dataCumulative[index] ? dataCumulative[index][0] : 0,
     ]);
     setPlotData([['', '月合計', '累計'], ...finalData]);
-  }, [data]);
+  }, [data, timeUnit]);
 
   const options = {
     vAxis: { title: `時間 [ ${timeUnit} ]` },
