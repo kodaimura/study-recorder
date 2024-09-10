@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   backend:
-    container_name: backend
     build:
       context: ./backend
     ports:
@@ -13,7 +12,6 @@ services:
     tty: true
 
   frontend:
-    container_name: frontend
     build:
       context: ./frontend
     ports:
@@ -24,7 +22,6 @@ services:
     tty: true
 
   db:
-    container_name: db
     image: postgres:16.1
     environment:
       POSTGRES_DB: studyrecorder
