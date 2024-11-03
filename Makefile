@@ -7,6 +7,9 @@ dev:
 prod:
 	$(DOCKER_COMPOSE_PROD) up -d
 
+prod2:
+	ln -s index.html frontend/build/login
+
 dev-build:
 	$(DOCKER_COMPOSE_DEV) build --no-cache
 
