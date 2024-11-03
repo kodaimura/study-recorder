@@ -43,7 +43,6 @@ const RecordButton: React.FC = () => {
     return (
         <>
             <Button
-                size="lg"
                 variant="danger"
                 onClick={record}
             >
