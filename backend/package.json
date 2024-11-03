@@ -8,8 +8,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "cross-env ENV=local nest start",
-    "start:local": "cross-env ENV=local nest start",
+    "start": "nest start",
+    "start:local": "nest start",
     "start:dev": "cross-env ENV=local nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "cross-env ENV=production node dist/main",
