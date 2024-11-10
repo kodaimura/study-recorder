@@ -8,11 +8,12 @@ prod:
 	$(DOCKER_COMPOSE_PROD) up -d
 
 prod2:
-	ln -s index.html frontend/build/login
-	ln -s index.html frontend/build/calendar
-	ln -s index.html frontend/build/editor
-	ln -s index.html frontend/build/graph/monthly
-	ln -s index.html frontend/build/graph/total
+	mkdir frontend/build/graph || true
+    ln -s index.html frontend/build/login || true
+    ln -s index.html frontend/build/calendar || true
+    ln -s index.html frontend/build/editor || true
+    ln -s ../index.html frontend/build/graph/monthly || true
+    ln -s ../index.html frontend/build/graph/total || true
 
 dev-build:
 	$(DOCKER_COMPOSE_DEV) build --no-cache
