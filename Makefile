@@ -9,6 +9,10 @@ prod:
 
 prod2:
 	ln -s index.html frontend/build/login
+	ln -s index.html frontend/build/calendar
+	ln -s index.html frontend/build/editor
+	ln -s index.html frontend/build/graph/monthly
+	ln -s index.html frontend/build/graph/total
 
 dev-build:
 	$(DOCKER_COMPOSE_DEV) build --no-cache
