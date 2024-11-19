@@ -9,11 +9,11 @@ prod:
 
 prod2:
 	mkdir frontend/build/graph || true
-    ln -s index.html frontend/build/login || true
-    ln -s index.html frontend/build/calendar || true
-    ln -s index.html frontend/build/editor || true
-    ln -s ../index.html frontend/build/graph/monthly || true
-    ln -s ../index.html frontend/build/graph/total || true
+	ln -s index.html frontend/build/login || true
+	ln -s index.html frontend/build/calendar || true
+	ln -s index.html frontend/build/editor || true
+	ln -s ../index.html frontend/build/graph/monthly || true
+	ln -s ../index.html frontend/build/graph/total || true
 
 dev-build:
 	$(DOCKER_COMPOSE_DEV) build --no-cache
