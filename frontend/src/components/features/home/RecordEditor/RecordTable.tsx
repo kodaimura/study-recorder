@@ -96,9 +96,9 @@ const RecordTable: React.FC<Props> = ({ year, month }) => {
                 <tbody>
                     {data.map((record: Record, index: number) => (
                         <tr key={index}>
-                            <td className="text-center text-secondary">{record.year}年{record.month}月</td>
-                            <td className="text-center text-secondary">{record.day}日</td>
-                            <td className="text-center">
+                            <td className="align-middle text-center text-secondary">{record.year}年{record.month}月</td>
+                            <td className="align-middle text-center text-secondary">{record.day}日</td>
+                            <td className="align-middle text-center">
                                 {editingIndex === index ? (
                                     <Form.Control
                                         type="number"

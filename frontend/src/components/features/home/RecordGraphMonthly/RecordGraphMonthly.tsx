@@ -118,7 +118,7 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
 
     return (
         <>
-            <Alert variant="light" className='fs-5 pt-2 pb-2 mb-1'>
+            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
                 合計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
             </Alert>
             <Chart

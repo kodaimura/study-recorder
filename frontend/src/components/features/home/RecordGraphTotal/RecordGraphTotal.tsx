@@ -115,7 +115,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
 
     return (
         <>
-            <Alert variant="light" className='fs-5 pt-2 pb-2 mb-1'>
+            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
                 累計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
             </Alert>
             <Chart

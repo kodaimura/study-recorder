@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
                         </NavLink>
                     </div>
                 </nav>
-                <div className='d-flex justify-content-end mt-1 mb-1'>
+                <div className='mt-2 mb-2'>
                     <SelectDate
                         year={year}
                         month={month}

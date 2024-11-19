@@ -67,7 +67,7 @@ const RecordCalendar: React.FC<Props> = (props) => {
 
     return (
         <>
-            <Alert variant="light" className='fs-5 pt-2 pb-2 mb-1'>
+            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
                 合計： {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
             </Alert>
             <Table bordered hover responsive="sm">

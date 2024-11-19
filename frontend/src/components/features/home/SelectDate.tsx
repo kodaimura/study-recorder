@@ -53,48 +53,56 @@ const SelectDate: React.FC<Props> = (props) => {
 
     return (
         <>
-            <ButtonGroup className="me-2">
-                <Button
-                    variant="light"
-                    onClick={subYear}
-                >
-                    &lt;&lt;
-                </Button>
-                <Button
-                    variant="light"
-                    disabled
-                >
-                    {y}
-                </Button>
-                <Button
-                    variant="light"
-                    onClick={addYear}
-                >
-                    &gt;&gt;
-                </Button>
-            </ButtonGroup>
+    <div className="d-flex justify-content-between">
+        <ButtonGroup className="shadow-sm">
+            <Button
+                variant="outline-dark"
+                onClick={subYear}
+                className="rounded-start py-2 px-3"
+            >
+                <i className="bi bi-chevron-double-left"></i>
+            </Button>
+            <Button
+                variant="outline-dark"
+                disabled
+                className="py-2 px-4 fw-bold"
+            >
+                {y} 年
+            </Button>
+            <Button
+                variant="outline-dark"
+                onClick={addYear}
+                className="rounded-end py-2 px-3"
+            >
+                <i className="bi bi-chevron-double-right"></i>
+            </Button>
+        </ButtonGroup>
 
-            <ButtonGroup>
-                <Button
-                    variant="light"
-                    onClick={subMonth}
-                >
-                    &lt;
-                </Button>
-                <Button
-                    variant="light"
-                    disabled
-                >
-                    {m}
-                </Button>
-                <Button
-                    variant="light"
-                    onClick={addMonth}
-                >
-                    &gt;
-                </Button>
-            </ButtonGroup>
-        </>
+        <ButtonGroup className="shadow-sm">
+            <Button
+                variant="outline-dark"
+                onClick={subMonth}
+                className="rounded-start py-2 px-3"
+            >
+                <i className="bi bi-chevron-left"></i>
+            </Button>
+            <Button
+                variant="outline-dark"
+                disabled
+                className="py-2 px-4 fw-bold"
+            >
+                {m} 月
+            </Button>
+            <Button
+                variant="outline-dark"
+                onClick={addMonth}
+                className="rounded-end py-2 px-3"
+            >
+                <i className="bi bi-chevron-right"></i>
+            </Button>
+        </ButtonGroup>
+    </div>
+</>
     );
 }
 
