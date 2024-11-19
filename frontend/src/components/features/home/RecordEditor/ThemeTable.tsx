@@ -66,7 +66,7 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
                 <tbody>
                     <tr>
                         <td className="align-middle text-center text-secondary">{year}年</td>
-                        <td>
+                        <td className="align-middle">
                             {target === "yearly" ? (
                                 <Form.Control
                                     size='sm'
@@ -101,7 +101,7 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
                     </tr>
                     <tr>
                         <td className="align-middle text-center text-secondary">{month}月</td>
-                        <td>
+                        <td className="align-middle">
                             {target === "monthly" ? (
                                 <Form.Control
                                     size='sm'

@@ -113,7 +113,7 @@ const RecordTable: React.FC<Props> = ({ year, month }) => {
                                     record.minuteTime
                                 )}
                             </td>
-                            <td>
+                            <td className="align-middle">
                                 {editingIndex === index ? (
                                     <Form.Control
                                         size='sm'
