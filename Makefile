@@ -1,42 +1,54 @@
-DOCKER_COMPOSE_DEV = docker compose
-DOCKER_COMPOSE_PROD = docker compose -f docker-compose.prod.yml
+DOCKER_COMPOSE = docker compose
+ENV ?= dev
+DOCKER_COMPOSE_FILE = $(if $(filter prod,$(ENV)),-f docker-compose.prod.yml,)
+DOCKER_COMPOSE_CMD = $(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE)
 
-dev:
-	$(DOCKER_COMPOSE_DEV) up -d
+up:
+	$(DOCKER_COMPOSE_CMD) up -d
 
-prod:
-	$(DOCKER_COMPOSE_PROD) up -d
+build:
+	$(DOCKER_COMPOSE_CMD) build --no-cache
 
-prod2:
-	mkdir frontend/build/graph || true
-	ln -s index.html frontend/build/login || true
-	ln -s index.html frontend/build/calendar || true
-	ln -s index.html frontend/build/editor || true
-	ln -s ../index.html frontend/build/graph/monthly || true
-	ln -s ../index.html frontend/build/graph/total || true
-
-dev-build:
-	$(DOCKER_COMPOSE_DEV) build --no-cache
-
-prod-build:
-	$(DOCKER_COMPOSE_PROD) build --no-cache
+prod-setup:
+	mkdir -p frontend/build/graph
+	ln -sf index.html frontend/build/login
+	ln -sf index.html frontend/build/calendar
+	ln -sf index.html frontend/build/editor
+	ln -sf ../index.html frontend/build/graph/monthly
+	ln -sf ../index.html frontend/build/graph/total
 
 down:
-	$(DOCKER_COMPOSE_DEV) down
-	$(DOCKER_COMPOSE_PROD) down
+	$(DOCKER_COMPOSE_CMD) down
 
 stop:
-	$(DOCKER_COMPOSE_DEV) stop
-	$(DOCKER_COMPOSE_PROD) stop
+	$(DOCKER_COMPOSE_CMD) stop
 
-infront:
-	$(DOCKER_COMPOSE_DEV) exec frontend bash || $(DOCKER_COMPOSE_PROD) exec frontend bash
+exec-frontend:
+	$(DOCKER_COMPOSE_CMD) exec frontend bash
 
-inback:
-	$(DOCKER_COMPOSE_DEV) exec backend bash || $(DOCKER_COMPOSE_PROD) exec backend bash
+exec-backend:
+	$(DOCKER_COMPOSE_CMD) exec backend bash
 
-logfront:
-	docker compose logs -f frontend
+log-frontend:
+	$(DOCKER_COMPOSE_CMD) logs -f frontend
 
-logback:
-	docker compose logs -f backend
+log-backend:
+	$(DOCKER_COMPOSE_CMD) logs -f backend
+
+ps:
+	$(DOCKER_COMPOSE_CMD) ps
+
+help:
+	@echo "Usage: make [target] [ENV=dev|prod]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  up                Start containers in the specified environment (default: dev)"
+	@echo "  build             Build containers without cache"
+	@echo "  prod-setup        Set up production-specific symbolic links and directories"
+	@echo "  down              Stop and remove containers, networks, and volumes"
+	@echo "  stop              Stop containers"
+	@echo "  exec-frontend     Access the frontend container via bash"
+	@echo "  exec-backend      Access the backend container via bash"
+	@echo "  log-frontend      Show logs for the frontend service"
+	@echo "  log-backend       Show logs for the backend service"
+	@echo "  ps                Show container status"
