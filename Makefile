@@ -4,15 +4,16 @@ DOCKER_COMPOSE_FILE = $(if $(filter prod,$(ENV)),-f docker-compose.prod.yml,)
 DOCKER_COMPOSE_CMD = $(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE)
 
 up:
-	@if [ "$(ENV)" = "prod" ]; then \
-		mkdir -p frontend/build/graph \
-		ln -sf index.html frontend/build/login \
-		ln -sf index.html frontend/build/calendar \
-		ln -sf index.html frontend/build/editor \
-		ln -sf ../index.html frontend/build/graph/monthly \
-		ln -sf ../index.html frontend/build/graph/total \
-	fi
 	$(DOCKER_COMPOSE_CMD) up -d
+
+# 本番環境でupの後に実施
+prod-setup:
+	mkdir -p frontend/build/graph
+	ln -sf index.html frontend/build/login
+	ln -sf index.html frontend/build/calendar
+	ln -sf index.html frontend/build/editor
+	ln -sf ../index.html frontend/build/graph/monthly
+	ln -sf ../index.html frontend/build/graph/total
 
 build:
 	$(DOCKER_COMPOSE_CMD) build --no-cache
