@@ -100,6 +100,7 @@ const HomePage: React.FC = () => {
                     />
                 </div>
                 <Routes>
+                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
                     <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
                     <Route path="editor" element={<RecordEditor year={year} month={month} />} />
                     <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} />} />
