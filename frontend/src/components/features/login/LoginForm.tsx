@@ -6,7 +6,10 @@ import { login } from 'apis/users.api';
 const LoginForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('session') === 'expired' ? "セッションの有効期限が切れました。もう一度ログインしてください。" : "";
+    });
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

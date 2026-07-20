@@ -6,15 +6,16 @@ import RecordTable from './RecordTable';
 type Props = {
     year: number;
     month: number;
+    recordsVersion: number;
 };
 
 const RecordEditor: React.FC<Props> = (props) => {
-    const { year, month } = props;
+    const { year, month, recordsVersion } = props;
 
     return (
         <>
             <ThemeTable year={year} month={month} />
-            <RecordTable year={year} month={month} />
+            <RecordTable year={year} month={month} recordsVersion={recordsVersion} />
         </>
     );
 };

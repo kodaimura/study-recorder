@@ -26,9 +26,10 @@ const fillUpData = (year: number, month: number, data: Record[]): Record[] => {
 type Props = {
     year: number;
     month: number;
+    recordsVersion: number;
 }
 
-const RecordTable: React.FC<Props> = ({ year, month }) => {
+const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
     const [data, setData] = useState<Record[]>(fillUpData(year, month, []));
     const [reload, setReload] = useState<number>(1);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -38,7 +39,7 @@ const RecordTable: React.FC<Props> = ({ year, month }) => {
     useEffect(() => {
         fetchData(year, month);
         resetEditState();
-    }, [year, month, reload]);
+    }, [year, month, reload, recordsVersion]);
 
     const fetchData = async (year: number, month: number) => {
         try {

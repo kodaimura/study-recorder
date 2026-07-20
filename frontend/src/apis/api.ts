@@ -121,7 +121,10 @@ class Api {
 const api = new Api(BASE_URL);
 api.handleHttpError = (error: HttpError) => {
     if (error.status === 401) {
-        window.location.replace('/login');
+        clearAccessToken();
+        if (!window.location.pathname.startsWith('/login')) {
+            window.location.replace('/login?session=expired');
+        }
     } else {
         throw error;
     }

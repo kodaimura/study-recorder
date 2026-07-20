@@ -5,7 +5,6 @@ import { Header, HeaderMenu } from 'components/common';
 import { PasswordForm } from 'components/features/change-password';
 
 import { api } from 'apis/api';
-import { logout } from 'apis/users.api';
 
 const ChangePasswordPage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
@@ -19,7 +18,7 @@ const ChangePasswordPage: React.FC = () => {
                     setUsername(data.username);
                 }
             } catch (err) {
-                logout();
+                console.error('プロフィールの取得に失敗しました:', err);
             } finally {
                 setLoading(false);
             }

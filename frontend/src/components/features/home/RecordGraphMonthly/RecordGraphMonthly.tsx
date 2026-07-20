@@ -89,9 +89,10 @@ type Props = {
     year: number;
     month: number;
     timeUnit: string;
+    recordsVersion: number;
 };
 
-const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
+const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVersion }) => {
     const [data, setData] = useState<Record[]>([]);
     const [plotData, setPlotData] = useState<any[][]>([]);
     const [plotOptions, setPlotOptions] = useState<any>({});
@@ -107,7 +108,7 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit }) => {
                 console.error('Error fetching records:', error);
             }
         })();
-    }, []);
+    }, [recordsVersion]);
 
     useEffect(() => {
         const pd = makePlotData(data, timeUnit, year, month);

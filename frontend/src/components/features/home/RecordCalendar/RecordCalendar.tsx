@@ -39,6 +39,7 @@ type Props = {
     year: number;
     month: number;
     timeUnit: string;
+    recordsVersion: number;
 };
 
 const RecordCalendar: React.FC<Props> = (props) => {
@@ -63,7 +64,7 @@ const RecordCalendar: React.FC<Props> = (props) => {
             }
         };
         fetchRecords();
-    }, [props.year, props.month]);
+    }, [props.year, props.month, props.recordsVersion]);
 
     return (
         <>

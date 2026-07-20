@@ -72,9 +72,10 @@ const makeLabels = (data: Record[]) => {
 
 type Props = {
     timeUnit: string;
+    recordsVersion: number;
 };
 
-const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
+const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
     const [data, setData] = useState<Record[]>([]);
     const [plotData, setPlotData] = useState<(string[] | [string, number, number])[]>([['Month', 'Monthly Time', 'Total Time']]);
     const [total, setTotal] = useState(0);
@@ -90,7 +91,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit }) => {
                 console.error('Error fetching records:', error);
             }
         })();
-    }, []);
+    }, [recordsVersion]);
 
     useEffect(() => {
         const dataMonthly = makeDataMonthly(data, timeUnit);

@@ -13,11 +13,11 @@ import {
 } from 'components/features/home';
 
 import { api } from 'apis/api';
-import { logout } from 'apis/users.api';
 
 const HomePage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [recordsVersion, setRecordsVersion] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
                 const data = await api.get('account/profile');
                 if (data && data.username) setUsername(data.username);
             } catch (err) {
-                logout();
+                console.error('プロフィールの取得に失敗しました:', err);
             } finally {
                 setLoading(false);
             }
@@ -41,6 +41,10 @@ const HomePage: React.FC = () => {
         if (eventKey) {
             setTimeUnit(eventKey);
         }
+    };
+
+    const refreshRecords = () => {
+        setRecordsVersion((version) => version + 1);
     };
 
     if (loading) {
@@ -59,7 +63,7 @@ const HomePage: React.FC = () => {
             <Container>
                 <div className="row justify-content-between align-items-center">
                     <div className="col-auto">
-                        <RecordButton />
+                        <RecordButton onRecorded={refreshRecords} />
                     </div>
                     <div className="col-auto">
                         <Dropdown onSelect={selectTimeUnit}>
@@ -100,11 +104,11 @@ const HomePage: React.FC = () => {
                     />
                 </div>
                 <Routes>
-                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
-                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} />} />
-                    <Route path="editor" element={<RecordEditor year={year} month={month} />} />
-                    <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} />} />
-                    <Route path="graph/total" element={<RecordGraphTotal timeUnit={timeUnit} />} />
+                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
+                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
+                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} />} />
+                    <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} recordsVersion={recordsVersion} />} />
+                    <Route path="graph/total" element={<RecordGraphTotal timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
                 </Routes>
             </Container>
         </>
