@@ -5,3 +5,9 @@ export type Record = {
     minuteTime: number,
     comment: string,
 }
+
+export type MonthlyGoal = {
+    year: number,
+    month: number,
+    targetMinuteTime: number,
+}

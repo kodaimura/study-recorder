@@ -12,6 +12,8 @@ import { UsersModule } from 'src/users/users.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { Theme } from 'src/themes/theme.entity';
 import { ThemesModule } from 'src/themes/themes.module';
+import { GoalsModule } from 'src/goals/goals.module';
+import { MonthlyGoal } from 'src/goals/monthly-goal.entity';
 import { RecordsModule } from 'src/records/records.module';
 import { Record } from 'src/records/record.entity';
 import { RecordWork } from 'src/records/record-work.entity';
@@ -26,6 +28,7 @@ import { RecordWork } from 'src/records/record-work.entity';
         AuthModule,
         UsersModule,
         ThemesModule,
+        GoalsModule,
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: async (config: ConfigService) => ({
@@ -35,7 +38,7 @@ import { RecordWork } from 'src/records/record-work.entity';
                 database: config.get<string>('DB_NAME'),
                 username: config.get<string>('DB_USER'),
                 password: config.get<string>('DB_PASSWORD'),
-                entities: [User, Theme, Record, RecordWork],
+                entities: [User, Theme, MonthlyGoal, Record, RecordWork],
                 synchronize: config.get<string>('ENV') !== 'production',  // 本番環境ではfalseにする
                 namingStrategy: new SnakeNamingStrategy(),
             }),

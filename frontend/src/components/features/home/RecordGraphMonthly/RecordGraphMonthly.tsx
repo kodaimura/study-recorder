@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 import { Chart } from 'react-google-charts';
 
 import { minuteToHour } from 'utils/utils';
-import { Record } from 'types/types';
+import { MonthlyGoal, Record } from 'types/types';
 import { api } from 'apis/api';
 
 const compareDate = (
@@ -51,13 +51,18 @@ const transpose = (matrix: number[][]): number[][] => {
     );
 };
 
-const makePlotData = (records: Record[], timeUnit: string, year: number, month: number): any[][] => {
+const makePlotData = (records: Record[], timeUnit: string, year: number, month: number, targetMinuteTime: number): any[][] => {
     const data = formatData(records, timeUnit);
     const labels = Array.from({ length: 32 }, (_, i) => i);
     const values = transpose(Object.values(data));
     const keys = Object.keys(data);
+    const targetValue = timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime);
 
-    return [['', ...keys], ...labels.map((label, index) => [label, ...values[index]])];
+    if (targetMinuteTime <= 0) {
+        return [['', ...keys], ...labels.map((label, index) => [label, ...values[index]])];
+    }
+
+    return [['', ...keys, '月目標'], ...labels.map((label, index) => [label, ...values[index], targetValue])];
 };
 
 const makePlotOptions = (plotData: any[][], timeUnit: string, year: number, month: number): any => {
@@ -73,8 +78,9 @@ const makePlotOptions = (plotData: any[][], timeUnit: string, year: number, mont
         },
         legend: { position: 'bottom' },
         series: plotData[0].slice(1).map((ym: string) => ({
-            color: ym === `${year}/${month}` ? '#FF0000' : '#0000FF',
-            visibleInLegend: ym === `${year}/${month}`
+            color: ym === '月目標' ? '#198754' : ym === `${year}/${month}` ? '#FF0000' : '#0000FF',
+            lineDashStyle: ym === '月目標' ? [6, 4] : undefined,
+            visibleInLegend: ym === `${year}/${month}` || ym === '月目標'
         }))
     };
 };
@@ -90,10 +96,12 @@ type Props = {
     month: number;
     timeUnit: string;
     recordsVersion: number;
+    goalsVersion: number;
 };
 
-const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVersion }) => {
+const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVersion, goalsVersion }) => {
     const [data, setData] = useState<Record[]>([]);
+    const [goal, setGoal] = useState<MonthlyGoal | null>(null);
     const [plotData, setPlotData] = useState<any[][]>([]);
     const [plotOptions, setPlotOptions] = useState<any>({});
     const [total, setTotal] = useState(0);
@@ -111,16 +119,38 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
     }, [recordsVersion]);
 
     useEffect(() => {
-        const pd = makePlotData(data, timeUnit, year, month);
+        (async () => {
+            try {
+                const monthlyGoal = await api.get(`goals/monthly?year=${year}&month=${month}`);
+                setGoal(monthlyGoal);
+            } catch (error) {
+                console.error('Error fetching monthly goal:', error);
+                setGoal(null);
+            }
+        })();
+    }, [year, month, goalsVersion]);
+
+    useEffect(() => {
+        const targetMinuteTime = goal?.targetMinuteTime || 0;
+        const pd = makePlotData(data, timeUnit, year, month, targetMinuteTime);
         setPlotData(pd);
         setPlotOptions(makePlotOptions(pd, timeUnit, year, month));
         setTotal(getTotal(data, year, month));
-    }, [data, timeUnit, year, month]);
+    }, [data, goal, timeUnit, year, month]);
+
+    const targetMinuteTime = goal?.targetMinuteTime || 0;
+    const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
 
     return (
         <>
             <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
                 合計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
+                {targetMinuteTime > 0 && (
+                    <span className="ms-3">
+                        目標： {timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime)} [{timeUnit}]
+                        <span className="ms-2">達成率： {progress}%</span>
+                    </span>
+                )}
             </Alert>
             <Chart
                 chartType="LineChart"

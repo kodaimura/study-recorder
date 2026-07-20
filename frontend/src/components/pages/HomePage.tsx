@@ -18,6 +18,7 @@ const HomePage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [recordsVersion, setRecordsVersion] = useState(0);
+    const [goalsVersion, setGoalsVersion] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -45,6 +46,10 @@ const HomePage: React.FC = () => {
 
     const refreshRecords = () => {
         setRecordsVersion((version) => version + 1);
+    };
+
+    const refreshGoals = () => {
+        setGoalsVersion((version) => version + 1);
     };
 
     if (loading) {
@@ -104,10 +109,10 @@ const HomePage: React.FC = () => {
                     />
                 </div>
                 <Routes>
-                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
-                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
-                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} />} />
-                    <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} recordsVersion={recordsVersion} />} />
+                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
+                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
+                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} onGoalSaved={refreshGoals} />} />
+                    <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
                     <Route path="graph/total" element={<RecordGraphTotal timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
                 </Routes>
             </Container>

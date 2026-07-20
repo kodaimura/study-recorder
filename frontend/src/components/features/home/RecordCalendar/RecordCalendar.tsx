@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Alert } from 'react-bootstrap';
 
-import { Record } from 'types/types';
+import { MonthlyGoal, Record } from 'types/types';
 import { minuteToHour } from 'utils/utils';
 import CalendarBody from './CalendarBody';
 import CalendarHeader from './CalendarHeader';
@@ -40,11 +40,13 @@ type Props = {
     month: number;
     timeUnit: string;
     recordsVersion: number;
+    goalsVersion: number;
 };
 
 const RecordCalendar: React.FC<Props> = (props) => {
     const [data, setData] = useState<Record[][]>([]);
     const [total, setTotal] = useState(0);
+    const [goal, setGoal] = useState<MonthlyGoal | null>(null);
 
     useEffect(() => {
         const fetchRecords = async () => {
@@ -66,10 +68,32 @@ const RecordCalendar: React.FC<Props> = (props) => {
         fetchRecords();
     }, [props.year, props.month, props.recordsVersion]);
 
+    useEffect(() => {
+        const fetchGoal = async () => {
+            try {
+                const monthlyGoal = await api.get(`goals/monthly?year=${props.year}&month=${props.month}`);
+                setGoal(monthlyGoal);
+            } catch (error) {
+                console.error('Error fetching monthly goal:', error);
+                setGoal(null);
+            }
+        };
+        fetchGoal();
+    }, [props.year, props.month, props.goalsVersion]);
+
+    const targetMinuteTime = goal?.targetMinuteTime || 0;
+    const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
+
     return (
         <>
             <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
                 合計： {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
+                {targetMinuteTime > 0 && (
+                    <span className="ms-3">
+                        目標： {props.timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime)} [{props.timeUnit}]
+                        <span className="ms-2">達成率： {progress}%</span>
+                    </span>
+                )}
             </Alert>
             <Table bordered hover responsive="sm">
                 <CalendarHeader />
