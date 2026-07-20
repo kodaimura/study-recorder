@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsNotEmpty, Length, Matches } from 'class-validator';
 
 
 export class SignupDto {
@@ -8,6 +8,8 @@ export class SignupDto {
     username: string;
 
     @IsNotEmpty()
+    @Length(8, 128)
+    @Matches(/^(?=.*[A-Za-z])(?=.*\d).+$/)
     password: string;
 }
 
@@ -17,5 +19,7 @@ export class PutPasswordDto {
     password: string;
 
     @IsNotEmpty()
+    @Length(8, 128)
+    @Matches(/^(?=.*[A-Za-z])(?=.*\d).+$/)
     newPassword: string;
 }

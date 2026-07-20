@@ -3,7 +3,9 @@ import {
     Min,
     Max,
     IsDateString,
-    IsNotEmpty
+    IsNotEmpty,
+    IsString,
+    Length
 } from 'class-validator';
 
 
@@ -26,9 +28,13 @@ export class RecordDto {
     @Max(31)
     day: number;
 
+    @IsString()
+    @Length(0, 1000)
     comment: string;
 
     @IsInt()
+    @Min(0)
+    @Max(1440)
     minuteTime: number;
 
 }

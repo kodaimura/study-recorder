@@ -23,9 +23,9 @@ class Api {
         try {
             let header: any = {
                 method: method,
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.token}`
                 },
             };
 

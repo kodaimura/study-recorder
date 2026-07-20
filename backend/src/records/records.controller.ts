@@ -41,7 +41,7 @@ export class RecordsController {
         @Payload() pl: JwtPayload
     ) {
         dto.userId = pl.userId;
-        this.recordsService.registerRecord(dto);
+        await this.recordsService.registerRecord(dto);
     }
 
     @Post('record')

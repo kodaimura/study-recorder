@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { Payload } from 'src/auth/auth.decorator';
 import { JwtPayload } from 'src/auth/jwt.payload';
+import { MonthPipe, YearPipe } from 'src/app.pipe';
 
 import { ThemesService } from './themes.service';
 import { ThemeDto } from './theme.dto';
@@ -24,8 +25,8 @@ export class ThemesController {
     @Get()
     @UseGuards(AuthGuard('jwt'))
     async getThemes(
-        @Query('year') year: number,
-        @Query('month') month: number,
+        @Query('year', YearPipe) year: number,
+        @Query('month', MonthPipe) month: number,
         @Payload() pl: JwtPayload
     ) {
         return this.themesService.getThemes(pl.userId, year, month);
@@ -39,6 +40,6 @@ export class ThemesController {
         @Payload() pl: JwtPayload
     ) {
         dto.userId = pl.userId;
-        this.themesService.registerTheme(dto);
+        await this.themesService.registerTheme(dto);
     }
 }

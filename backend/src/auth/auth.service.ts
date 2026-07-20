@@ -17,9 +17,14 @@ export class AuthService {
     ) { }
 
     //認証処理
-    async validateUser(username: string, password: string): Promise<PasswordOmitUser | null> {
+    async validateUser(username: string, plainPassword: string): Promise<PasswordOmitUser | null> {
         const user = await this.usersService.getByUsername(username);
-        if (user && user.password === this.usersService.hashPassword(password)) {
+        const passwordType = user ? await this.usersService.verifyPassword(plainPassword, user.password) : null;
+        if (user && passwordType) {
+            if (passwordType === 'legacy') {
+                user.password = await this.usersService.hashPassword(plainPassword);
+                await this.usersService.save(user);
+            }
             const { password, ...result } = user;
             return result;
         }

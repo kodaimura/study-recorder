@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtSignOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,9 +19,14 @@ import { JwtStrategy } from './jwt.strategy';
         JwtModule.registerAsync({
             inject: [ConfigService],
             useFactory: async (config: ConfigService) => {
+                const secret = config.get<string>('JWT_SECRET_KEY');
+                const env = config.get<string>('ENV');
+                if (!secret || (env === 'production' && secret === 'secret')) {
+                    throw new Error('JWT_SECRET_KEY must be set to a strong value');
+                }
                 return {
-                    secret: config.get<string>('JWT_SECRET_KEY'),
-                    signOptions: { expiresIn: '1000h' },
+                    secret,
+                    signOptions: { expiresIn: (config.get<string>('JWT_EXPIRES_IN') || '4h') as JwtSignOptions['expiresIn'] },
                 }
             },
         }),

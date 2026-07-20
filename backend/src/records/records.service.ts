@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Record } from './record.entity';
@@ -15,35 +15,52 @@ export class RecordsService {
         private readonly recordRepository: Repository<Record>,
         @InjectRepository(RecordWork)
         private readonly recordWorkRepository: Repository<RecordWork>,
+        private readonly dataSource: DataSource,
     ) { }
 
     async record(dto: RecordWorkDto): Promise<{ [key: string]: string | null }> {
         const userId = dto.userId;
-        const startedAt = await this.getStartedAt(userId);
+        const requestedAt = new Date(dto.localeTime);
+        if (Number.isNaN(requestedAt.getTime())) {
+            throw new BadRequestException('Invalid localeTime');
+        }
 
-        if (startedAt === null) {
-            this.recordWorkRepository.save({ userId, startedAt: dto.localeTime });
-            return { startedAt: dto.localeTime };
-        } else {
-            await this.recordWorkRepository.save({ userId, startedAt: null });
-            const minuteTime = Math.round((new Date(dto.localeTime).getTime() - startedAt.getTime()) / 60000);
+        return this.dataSource.transaction(async (manager) => {
+            await manager.query('SELECT pg_advisory_xact_lock($1)', [userId]);
+
+            const workRepository = manager.getRepository(RecordWork);
+            const recordRepository = manager.getRepository(Record);
+            const work = await workRepository.findOne({ where: { userId } });
+            const startedAt = work?.startedAt ?? null;
+
+            if (startedAt === null) {
+                await workRepository.save({ userId, startedAt: requestedAt });
+                return { startedAt: dto.localeTime };
+            }
+
+            const minuteTime = Math.round((requestedAt.getTime() - startedAt.getTime()) / 60000);
+            if (minuteTime < 0) {
+                throw new BadRequestException('localeTime must be after startedAt');
+            }
+
+            await workRepository.save({ userId, startedAt: null });
 
             const startDate = new Date(startedAt);
             const year = startDate.getFullYear();
             const month = startDate.getMonth() + 1;
             const day = startDate.getDate();
-            this.getRecord(userId, year, month, day)
-                .then((record: Record) => {
-                    if (record) {
-                        record.minuteTime += minuteTime;
-                        this.registerRecord(record);
-                    } else {
-                        const dto: RecordDto = { userId, year, month, day, minuteTime, comment: '' };
-                        this.registerRecord(dto);
-                    }
-                });
+            const record = await recordRepository.findOne({ where: { userId, year, month, day } });
+
+            if (record) {
+                record.minuteTime += minuteTime;
+                await recordRepository.save(record);
+            } else {
+                const recordDto: RecordDto = { userId, year, month, day, minuteTime, comment: '' };
+                await recordRepository.save(recordDto);
+            }
+
             return { startedAt: null };
-        }
+        });
     }
 
     async getStartedAt(userId: number): Promise<Date | null> {
