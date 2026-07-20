@@ -20,13 +20,17 @@ import { JwtStrategy } from './jwt.strategy';
             inject: [ConfigService],
             useFactory: async (config: ConfigService) => {
                 const secret = config.get<string>('JWT_SECRET_KEY');
+                const refreshSecret = config.get<string>('JWT_REFRESH_SECRET_KEY');
                 const env = config.get<string>('ENV');
                 if (!secret || (env === 'production' && secret === 'secret')) {
                     throw new Error('JWT_SECRET_KEY must be set to a strong value');
                 }
+                if (!refreshSecret || refreshSecret === secret || (env === 'production' && refreshSecret === 'secret')) {
+                    throw new Error('JWT_REFRESH_SECRET_KEY must be set to a strong value distinct from JWT_SECRET_KEY');
+                }
                 return {
                     secret,
-                    signOptions: { expiresIn: (config.get<string>('JWT_EXPIRES_IN') || '4h') as JwtSignOptions['expiresIn'] },
+                    signOptions: { expiresIn: '15m' as JwtSignOptions['expiresIn'] },
                 }
             },
         }),

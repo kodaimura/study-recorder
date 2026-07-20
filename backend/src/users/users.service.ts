@@ -43,6 +43,10 @@ export class UsersService {
         return this.userRepository.findOne({ where: { username } });
     }
 
+    async getById(userId: number): Promise<User | undefined> {
+        return this.userRepository.findOne({ where: { userId } });
+    }
+
     async save(user: User): Promise<User> {
         return this.userRepository.save(user);
     }

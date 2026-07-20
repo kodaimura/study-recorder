@@ -1,4 +1,13 @@
 const BASE_URL = '/api';
+let accessToken: string | null = null;
+
+const setAccessToken = (token: string | null) => {
+    accessToken = token;
+};
+
+const clearAccessToken = () => {
+    accessToken = null;
+};
 
 class HttpError extends Error {
     public status: number;
@@ -19,7 +28,23 @@ class Api {
     /**
      * @throws { HttpError } If an API error occurs.
     */
-    private apiFetch = async (endpoint: string, method: string, body: any): Promise<any> => {
+    private refreshAccessToken = async (): Promise<boolean> => {
+        const response = await fetch(`${this.url}/refresh`, {
+            method: 'POST',
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            clearAccessToken();
+            return false;
+        }
+
+        const data = await response.json();
+        setAccessToken(data.access_token);
+        return true;
+    };
+
+    private apiFetch = async (endpoint: string, method: string, body: any, canRefresh = true): Promise<any> => {
         try {
             let header: any = {
                 method: method,
@@ -28,6 +53,9 @@ class Api {
                     'Content-Type': 'application/json',
                 },
             };
+            if (accessToken) {
+                header.headers.Authorization = `Bearer ${accessToken}`;
+            }
 
             if (body) {
                 header.body = JSON.stringify(body);
@@ -35,7 +63,18 @@ class Api {
             const response = await fetch(`${this.url}/${endpoint}`, header);
 
             if (!response.ok) {
-                const errorData = await response.json();
+                if (response.status === 401 && canRefresh && endpoint !== 'refresh') {
+                    const refreshed = await this.refreshAccessToken();
+                    if (refreshed) {
+                        return this.apiFetch(endpoint, method, body, false);
+                    }
+                }
+                let errorData: any = {};
+                try {
+                    errorData = await response.json();
+                } catch (error) {
+                    errorData.message = response.statusText;
+                }
                 throw new HttpError(response.status, errorData.message);
             }
 
@@ -88,4 +127,4 @@ api.handleHttpError = (error: HttpError) => {
     }
 }
 
-export { HttpError, Api, BASE_URL, api };
+export { HttpError, Api, BASE_URL, api, setAccessToken, clearAccessToken };

@@ -1,4 +1,4 @@
-import { BASE_URL, HttpError } from './api';
+import { BASE_URL, HttpError, clearAccessToken, setAccessToken } from './api';
 
 
 export const signup = async (username: string, password: string): Promise<any> => {
@@ -27,6 +27,8 @@ export const login = async (username: string, password: string): Promise<any> =>
     });
 
     if (response.ok) {
+        const data = await response.json();
+        setAccessToken(data.access_token);
         window.location.replace('/');
     } else {
         const errorData = await response.json();
@@ -36,6 +38,7 @@ export const login = async (username: string, password: string): Promise<any> =>
 
 
 export const logout = async () => {
+    clearAccessToken();
     await fetch(`${BASE_URL}/logout`, {
         method: "POST",
         credentials: 'include',
