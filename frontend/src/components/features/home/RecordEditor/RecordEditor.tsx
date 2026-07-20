@@ -15,11 +15,14 @@ const RecordEditor: React.FC<Props> = (props) => {
     const { year, month, recordsVersion, onGoalSaved } = props;
 
     return (
-        <>
-            <ThemeTable year={year} month={month} />
-            <MonthlyGoalTable year={year} month={month} onGoalSaved={onGoalSaved} />
+        <section className="record-editor">
+            <div className="editor-summary-grid">
+                <MonthlyGoalTable year={year} month={month} onGoalSaved={onGoalSaved} />
+                <ThemeTable year={year} month={month} />
+            </div>
+
             <RecordTable year={year} month={month} recordsVersion={recordsVersion} />
-        </>
+        </section>
     );
 };
 

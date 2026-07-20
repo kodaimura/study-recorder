@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Table } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 import { api } from 'apis/api';
 
@@ -9,22 +9,8 @@ type Props = {
 }
 
 const ThemeTable: React.FC<Props> = ({ year, month }) => {
-    const [themeForYear, setThemeForYear] = useState<string>("");
     const [themeForMonth, setThemeForMonth] = useState<string>("");
-    const [target, setTarget] = useState<string>("");
-
-    useEffect(() => {
-        const fetchYearlyTheme = async () => {
-            try {
-                const data = await api.get(`themes?year=${year}&month=0`);
-                setThemeForYear((data && data.length) ? data[0].theme : "");
-            } catch (error) {
-                console.error('Error fetching yearly theme:', error);
-            }
-        };
-        fetchYearlyTheme();
-        setTarget("");
-    }, [year]);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         const fetchMonthlyTheme = async () => {
@@ -36,106 +22,48 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
             }
         };
         fetchMonthlyTheme();
-        setTarget("");
     }, [year, month]);
 
-    const handleSave = async (targetType: string, theme: string) => {
+    const handleSave = async () => {
         try {
+            setSaving(true);
             await api.post('themes', {
                 year,
-                month: targetType === "monthly" ? month : 0,
-                theme
+                month,
+                theme: themeForMonth
             });
-            setTarget("");
         } catch (error) {
             console.error('Error saving theme:', error);
+        } finally {
+            setSaving(false);
         }
     };
 
     return (
-        <div>
-            <Table bordered striped hover size="sm">
-                <thead>
-                    <tr>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "70px" }}>期間</th>
-                        <th className="bg-dark text-white fs-6 text-center">テーマ</th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "55px" }}></th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "40px" }}></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="align-middle text-center text-secondary">{year}年</td>
-                        <td className="align-middle">
-                            {target === "yearly" ? (
-                                <Form.Control
-                                    size='sm'
-                                    placeholder="年のテーマ"
-                                    value={themeForYear}
-                                    onChange={(e) => setThemeForYear(e.target.value)}
-                                />
-                            ) : (
-                                themeForYear
-                            )}
-                        </td>
-                        <td>
-                            {target === "yearly" && (
-                                <Button
-                                    size="sm"
-                                    variant="primary"
-                                    onClick={() => handleSave("yearly", themeForYear)}
-                                >
-                                    保存
-                                </Button>
-                            )}
-                        </td>
-                        <td>
-                            <Button
-                                size="sm"
-                                variant="outline-primary"
-                                onClick={() => setTarget(target === "yearly" ? "" : "yearly")}
-                            >
-                                <i className="bi bi-pencil"></i>
-                            </Button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="align-middle text-center text-secondary">{month}月</td>
-                        <td className="align-middle">
-                            {target === "monthly" ? (
-                                <Form.Control
-                                    size='sm'
-                                    placeholder="月のテーマ"
-                                    value={themeForMonth}
-                                    onChange={(e) => setThemeForMonth(e.target.value)}
-                                />
-                            ) : (
-                                themeForMonth
-                            )}
-                        </td>
-                        <td>
-                            {target === "monthly" && (
-                                <Button
-                                    size="sm"
-                                    variant="primary"
-                                    onClick={() => handleSave("monthly", themeForMonth)}
-                                >
-                                    保存
-                                </Button>
-                            )}
-                        </td>
-                        <td>
-                            <Button
-                                size="sm"
-                                variant="outline-primary"
-                                onClick={() => setTarget(target === "monthly" ? "" : "monthly")}
-                            >
-                                <i className="bi bi-pencil"></i>
-                            </Button>
-                        </td>
-                    </tr>
-                </tbody>
-            </Table>
+        <div className="editor-card theme-card">
+            <div className="editor-card-heading">
+                <div>
+                    <h3>テーマ</h3>
+                </div>
+            </div>
+
+            <div className="theme-field">
+                <Form.Label className="editor-form-label">{month}月のテーマ</Form.Label>
+                <div className="theme-input-row">
+                    <Form.Control
+                        placeholder="例: 毎朝30分読む"
+                        value={themeForMonth}
+                        onChange={(e) => setThemeForMonth(e.target.value)}
+                    />
+                    <Button
+                        variant="outline-dark"
+                        onClick={handleSave}
+                        disabled={saving}
+                    >
+                        {saving ? "保存中" : "保存"}
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };

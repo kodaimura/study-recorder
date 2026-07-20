@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Form, Button, Table } from 'react-bootstrap';
+import { Form, Button, Table, Badge } from 'react-bootstrap';
 
 import { Record } from 'types/types';
 import { api } from 'apis/api';
+import { minuteToHour } from 'utils/utils';
 
 const compareDate = (a: { day: number }, b: { day: number }): number => {
     return a.day - b.day;
@@ -23,6 +24,17 @@ const fillUpData = (year: number, month: number, data: Record[]): Record[] => {
     return newData;
 };
 
+const getWeekdayName = (year: number, month: number, day: number): string => {
+    return ['日', '月', '火', '水', '木', '金', '土'][new Date(year, month - 1, day).getDay()];
+};
+
+const getDayChipClassName = (year: number, month: number, day: number): string => {
+    const weekday = new Date(year, month - 1, day).getDay();
+    if (weekday === 0) return 'day-chip sunday';
+    if (weekday === 6) return 'day-chip saturday';
+    return 'day-chip';
+};
+
 type Props = {
     year: number;
     month: number;
@@ -34,7 +46,9 @@ const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
     const [reload, setReload] = useState<number>(1);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [comment, setComment] = useState<string>('');
-    const [minuteTime, setMinuteTime] = useState<number>(0);
+    const [minuteTime, setMinuteTime] = useState<string>('0');
+    const total = data.reduce((sum, record) => sum + record.minuteTime, 0);
+    const activeDays = data.filter((record) => record.minuteTime > 0 || record.comment).length;
 
     useEffect(() => {
         fetchData(year, month);
@@ -57,9 +71,10 @@ const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
                 month,
                 day,
                 comment,
-                minuteTime,
+                minuteTime: Number(minuteTime || 0),
             });
             setReload(reload * -1);
+            resetEditState();
         } catch (error) {
             console.error('Error saving data:', error);
         }
@@ -67,7 +82,7 @@ const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
 
     const resetEditState = () => {
         setEditingIndex(null);
-        setMinuteTime(0);
+        setMinuteTime('0');
         setComment('');
     };
 
@@ -76,49 +91,73 @@ const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
             resetEditState();
         } else {
             setEditingIndex(index);
-            setMinuteTime(record.minuteTime);
+            setMinuteTime(String(record.minuteTime));
             setComment(record.comment);
         }
     };
 
+    const handleMinuteTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const digitsOnly = e.target.value.replace(/\D/g, '');
+        const nextValue = digitsOnly === '' ? '' : String(Math.min(1440, Number(digitsOnly)));
+        setMinuteTime(nextValue);
+    };
+
     return (
-        <div className="table-responsive">
-            <Table bordered striped hover size="sm">
+        <div className="editor-card record-card">
+            <div className="editor-card-heading record-heading">
+                <div>
+                    <h3>日別記録</h3>
+                </div>
+                <div className="record-stats">
+                    <span>{activeDays} 日記録</span>
+                    <strong>{minuteToHour(total)} h</strong>
+                </div>
+            </div>
+
+            <div className="record-table-wrap">
+            <Table hover responsive size="sm" className="editor-record-table">
                 <thead>
                     <tr>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "100px" }}>年月</th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "60px" }}>日</th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "80px" }}>記録 [m]</th>
-                        <th className="bg-dark text-white fs-6 text-center">コメント</th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "55px" }}></th>
-                        <th className="bg-dark text-white fs-6 text-center" style={{ width: "40px" }}></th>
+                        <th style={{ width: "120px" }}>日付</th>
+                        <th style={{ width: "140px" }}>記録</th>
+                        <th>コメント</th>
+                        <th style={{ width: "150px" }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((record: Record, index: number) => (
-                        <tr key={index}>
-                            <td className="align-middle text-center text-secondary">{record.year}年{record.month}月</td>
-                            <td className="align-middle text-center text-secondary">{record.day}日</td>
-                            <td className="align-middle text-center">
+                        <tr key={index} className={editingIndex === index ? 'is-editing' : ''}>
+                            <td className="align-middle">
+                                <div className="record-date-cell">
+                                    <span className={getDayChipClassName(year, month, record.day)}>
+                                        {record.day}
+                                    </span>
+                                    <small>{getWeekdayName(year, month, record.day)}</small>
+                                </div>
+                            </td>
+                            <td className="align-middle">
                                 {editingIndex === index ? (
                                     <Form.Control
-                                        type="number"
+                                        type="text"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         size='sm'
                                         value={minuteTime}
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                            const value = e.target.value === '' ? 0 : Number(e.target.value);
-                                            setMinuteTime(isNaN(value) ? 0 : value);
-                                        }}
+                                        onChange={handleMinuteTimeChange}
                                     />
                                 ) : (
-                                    record.minuteTime
+                                    <div className="record-time-cell">
+                                        <strong>{record.minuteTime}</strong>
+                                        <span>分</span>
+                                        {record.minuteTime > 0 && <Badge bg="light" text="dark">{minuteToHour(record.minuteTime)}h</Badge>}
+                                    </div>
                                 )}
                             </td>
                             <td className="align-middle">
                                 {editingIndex === index ? (
                                     <Form.Control
                                         size='sm'
-                                        placeholder="free comment"
+                                        placeholder="この日のメモ"
                                         value={comment}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                             setComment(e.target.value);
@@ -128,30 +167,41 @@ const RecordTable: React.FC<Props> = ({ year, month, recordsVersion }) => {
                                     record.comment
                                 )}
                             </td>
-                            <td>
+                            <td className="align-middle text-end">
                                 {editingIndex === index ? (
+                                    <div className="record-actions">
+                                        <Button
+                                            size="sm"
+                                            variant="dark"
+                                            onClick={() => handleSave(record.day)}
+                                        >
+                                            保存
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline-secondary"
+                                            onClick={resetEditState}
+                                        >
+                                            キャンセル
+                                        </Button>
+                                    </div>
+                                ) : (
                                     <Button
                                         size="sm"
-                                        variant="primary"
-                                        onClick={() => handleSave(record.day)}
+                                        variant={record.minuteTime || record.comment ? 'outline-dark' : 'light'}
+                                        className="edit-row-button"
+                                        onClick={() => handleEditClick(index, record)}
                                     >
-                                        保存
+                                        <i className="bi bi-pencil me-1"></i>
+                                        編集
                                     </Button>
-                                ) : null}
-                            </td>
-                            <td>
-                                <Button
-                                    size="sm"
-                                    variant="outline-primary"
-                                    onClick={() => handleEditClick(index, record)}
-                                >
-                                    <i className="bi bi-pencil"></i>
-                                </Button>
+                                )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            </div>
         </div>
     );
 };
