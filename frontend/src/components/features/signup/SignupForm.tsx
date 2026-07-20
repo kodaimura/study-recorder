@@ -8,13 +8,41 @@ const SignupForm: React.FC = () => {
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
+    const [usernameError, setUsernameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [passwordConfirmError, setPasswordConfirmError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+
+    const validateUsername = (value: string): string => {
+        if (!value.trim()) return "アカウント名を入力してください。";
+        if (value.length > 150) return "アカウント名は150文字以内で入力してください。";
+        return "";
+    };
+
+    const validatePassword = (value: string): string => {
+        if (!value) return "パスワードを入力してください。";
+        if (value.length < 8) return "パスワードは8文字以上で入力してください。";
+        if (value.length > 128) return "パスワードは128文字以内で入力してください。";
+        if (!/[A-Za-z]/.test(value) || !/\d/.test(value)) {
+            return "パスワードには英字と数字をどちらも含めてください。";
+        }
+        return "";
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (password !== passwordConfirm) {
-            setErrorMsg("確認用パスワードが一致していません。");
+        const nextUsernameError = validateUsername(username);
+        const nextPasswordError = validatePassword(password);
+        const nextPasswordConfirmError = !passwordConfirm
+            ? "確認用パスワードを入力してください。"
+            : password !== passwordConfirm ? "確認用パスワードが一致していません。" : "";
+        setUsernameError(nextUsernameError);
+        setPasswordError(nextPasswordError);
+        setPasswordConfirmError(nextPasswordConfirmError);
+        setErrorMsg("");
+
+        if (nextUsernameError || nextPasswordError || nextPasswordConfirmError) {
             return;
         }
 
@@ -48,9 +76,16 @@ const SignupForm: React.FC = () => {
                             </InputGroup.Text>
                             <Form.Control
                                 placeholder="アカウント名"
-                                required
-                                onChange={(e) => setUsername(e.target.value)}
+                                isInvalid={!!usernameError}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setUsername(value);
+                                    setUsernameError(validateUsername(value));
+                                }}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {usernameError}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
                     <Form.Group className='mb-3'>
@@ -61,9 +96,19 @@ const SignupForm: React.FC = () => {
                             <Form.Control
                                 type="password"
                                 placeholder="パスワード"
-                                required
-                                onChange={(e) => setPassword(e.target.value)}
+                                isInvalid={!!passwordError}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setPassword(value);
+                                    setPasswordError(validatePassword(value));
+                                    if (passwordConfirm) {
+                                        setPasswordConfirmError(value === passwordConfirm ? "" : "確認用パスワードが一致していません。");
+                                    }
+                                }}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {passwordError}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
                     <Form.Group className='mb-3'>
@@ -74,9 +119,16 @@ const SignupForm: React.FC = () => {
                             <Form.Control
                                 type="password"
                                 placeholder="パスワード（確認用）"
-                                required
-                                onChange={(e) => setPasswordConfirm(e.target.value)}
+                                isInvalid={!!passwordConfirmError}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setPasswordConfirm(value);
+                                    setPasswordConfirmError(!value ? "確認用パスワードを入力してください。" : password === value ? "" : "確認用パスワードが一致していません。");
+                                }}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {passwordConfirmError}
+                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
                     <Button

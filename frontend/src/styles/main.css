@@ -95,6 +95,10 @@ footer {
     text-transform: uppercase;
 }
 
+.user-menu-button::after {
+    display: none !important;
+}
+
 .app-header .dropdown {
     position: relative;
 }
@@ -539,8 +543,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .home-toolbar,
-    .record-running-status {
+    .home-toolbar {
         align-items: stretch;
         flex-direction: column;
     }
@@ -564,6 +567,12 @@ footer {
 
     .date-selector .btn-group .btn {
         flex: 1 1 0;
+    }
+
+    .date-step-group .btn {
+        min-width: 30px;
+        padding-right: 0.36rem;
+        padding-left: 0.36rem;
     }
 
     .editor-summary-grid {
@@ -789,7 +798,7 @@ footer {
 
     .date-current {
         flex: 1 1 auto;
-        min-width: 0;
+        min-width: 132px;
     }
 
     .summary-metric {
@@ -1301,6 +1310,11 @@ select,
     color: #8a9299;
 }
 
+.auth-panel .invalid-feedback {
+    margin-left: 40px;
+    font-size: 0.8rem;
+}
+
 .auth-error {
     margin-bottom: 10px;
     padding: 7px 9px;
@@ -1340,4 +1354,171 @@ select,
 .calendar-head-cell.sunday,
 .calendar-head-cell.saturday {
     color: #ffffff !important;
+}
+
+/* Clear separation between page tabs and content */
+.home-nav {
+    margin-top: 14px;
+}
+
+.home-nav .nav-tabs {
+    gap: 0;
+    padding: 6px 6px 0;
+    border: 1px solid var(--app-border);
+    border-bottom: 0;
+    background: #34383d;
+}
+
+.home-nav .nav-link {
+    margin-bottom: 0;
+    padding: 0.58rem 0.95rem;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    color: rgba(255, 255, 255, 0.72);
+    background: transparent;
+    font-weight: 520;
+}
+
+.home-nav .nav-link:hover,
+.home-nav .nav-link:focus {
+    color: #ffffff;
+    border-color: transparent;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.home-nav .nav-link.active {
+    color: var(--app-text);
+    border-color: var(--app-border);
+    border-bottom-color: #ffffff;
+    background: #ffffff;
+}
+
+.content-panel {
+    padding: 14px;
+    border: 1px solid var(--app-border);
+    border-top: 0;
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .home-nav .nav-tabs {
+        flex-wrap: nowrap;
+        padding: 5px 5px 0;
+    }
+
+    .home-nav .nav-link {
+        flex: 1 1 0;
+        padding: 0.5rem 0.3rem;
+        font-size: 0.8rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+}
+
+/* Softer tab/content separation */
+.home-nav {
+    margin-top: 14px;
+}
+
+.home-nav .nav-tabs {
+    gap: 2px;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--app-border);
+    background: transparent;
+}
+
+.home-nav .nav-link {
+    margin-bottom: -1px;
+    padding: 0.54rem 0.85rem;
+    border: 1px solid transparent;
+    border-bottom-color: transparent;
+    color: var(--app-muted);
+    background: transparent;
+}
+
+.home-nav .nav-link:hover,
+.home-nav .nav-link:focus {
+    color: var(--app-text);
+    border-color: transparent;
+    background: #f8f9fa;
+}
+
+.home-nav .nav-link.active {
+    color: var(--app-text);
+    border-color: var(--app-border);
+    border-bottom-color: #ffffff;
+    background: #ffffff;
+}
+
+.content-panel {
+    padding: 14px 12px 12px;
+    border: 1px solid var(--app-border);
+    border-top: 0;
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .home-nav .nav-tabs {
+        flex-wrap: nowrap;
+        gap: 0;
+    }
+
+    .home-nav .nav-link {
+        flex: 1 1 0;
+        padding: 0.48rem 0.28rem;
+        font-size: 0.8rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+}
+
+/* Mobile date picker width fix */
+@media (max-width: 768px) {
+    .date-selector {
+        display: grid;
+        grid-template-columns: auto minmax(150px, 1fr) auto;
+        width: 100%;
+        max-width: 360px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .date-selector .date-step-group {
+        display: flex;
+        width: auto;
+    }
+
+    .date-selector .date-step-group .btn {
+        flex: 0 0 28px;
+        min-width: 28px;
+        padding-right: 0.25rem;
+        padding-left: 0.25rem;
+    }
+
+    .date-selector .date-current {
+        min-width: 150px;
+        width: 100%;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
+}
+
+/* Mobile date picker button size balance */
+@media (max-width: 768px) {
+    .date-selector {
+        grid-template-columns: auto minmax(144px, 1fr) auto;
+        max-width: 390px;
+    }
+
+    .date-selector .date-step-group .btn {
+        flex-basis: 36px;
+        min-width: 36px;
+        padding-right: 0.4rem;
+        padding-left: 0.4rem;
+    }
+
+    .date-selector .date-current {
+        min-width: 144px;
+    }
 }

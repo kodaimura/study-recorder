@@ -30,22 +30,33 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
     };
 
     return (
-        <Dropdown onToggle={(isOpen) => setIsMenuOpen(isOpen)} className="d-flex">
-            <button
+        <Dropdown
+            show={isMenuOpen}
+            onToggle={(isOpen) => setIsMenuOpen(isOpen)}
+            align="end"
+            className="d-flex"
+        >
+            <Dropdown.Toggle
+                as="button"
+                id="header-user-menu"
                 className="user-menu-button"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
                 {username.charAt(0)}
-            </button>
+            </Dropdown.Toggle>
 
             <Dropdown.Menu
-                show={isMenuOpen}
                 className="shadow-sm app-dropdown"
-                align="end"
                 onMouseLeave={() => setIsMenuOpen(false)}
             >
                 <Dropdown.ItemText>{username}</Dropdown.ItemText>
                 <Dropdown.Divider />
+                <Dropdown.Item
+                    as="button"
+                    onClick={() => handleNavigation("/")}
+                >
+                    <i className="bi bi-house-door me-2"></i>
+                    ホーム
+                </Dropdown.Item>
                 <Dropdown.Item
                     as="button"
                     onClick={() => handleNavigation("/password")}
