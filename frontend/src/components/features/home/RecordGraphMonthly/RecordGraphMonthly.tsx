@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-bootstrap';
 import { Chart } from 'react-google-charts';
 
 import { minuteToHour } from 'utils/utils';
@@ -140,18 +139,29 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
 
     const targetMinuteTime = goal?.targetMinuteTime || 0;
     const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
+    const totalValue = timeUnit === 'm' ? total : minuteToHour(total);
+    const targetValue = timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime);
 
     return (
-        <>
-            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
-                合計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
+        <div className="content-panel">
+            <div className='summary-metrics'>
+                <div className="summary-metric">
+                    <span>合計</span>
+                    <strong>{totalValue}<small>{timeUnit}</small></strong>
+                </div>
                 {targetMinuteTime > 0 && (
-                    <span className="ms-3">
-                        目標： {timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime)} [{timeUnit}]
-                        <span className="ms-2">達成率： {progress}%</span>
-                    </span>
+                    <>
+                        <div className="summary-metric">
+                            <span>目標</span>
+                            <strong>{targetValue}<small>{timeUnit}</small></strong>
+                        </div>
+                        <div className="summary-metric">
+                            <span>達成率</span>
+                            <strong>{progress}<small>%</small></strong>
+                        </div>
+                    </>
                 )}
-            </Alert>
+            </div>
             <Chart
                 chartType="LineChart"
                 width="100%"
@@ -159,7 +169,7 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
                 data={plotData}
                 options={plotOptions}
             />
-        </>
+        </div>
     );
 };
 

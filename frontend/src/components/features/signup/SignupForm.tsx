@@ -33,9 +33,13 @@ const SignupForm: React.FC = () => {
     }
 
     return (
-        <div className='row justify-content-center'>
-            <div className='col-md-6'>
-                <div className='text-danger mb-3'>{errorMsg}</div>
+        <div className='auth-panel'>
+            <div className="auth-panel-header">
+                <h1>アカウント作成</h1>
+                <p>8文字以上で、英字と数字を含むパスワードを設定してください。</p>
+            </div>
+            <div>
+                {errorMsg && <div className='auth-error'>{errorMsg}</div>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className='mb-3'>
                         <InputGroup>
@@ -76,8 +80,8 @@ const SignupForm: React.FC = () => {
                         </InputGroup>
                     </Form.Group>
                     <Button
-                        variant="success"
-                        className='w-100 d-flex align-items-center justify-content-center'
+                        variant="dark"
+                        className='app-submit-button'
                         type="submit"
                         disabled={isLoading}
                     >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Alert } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 import { MonthlyGoal, Record } from 'types/types';
 import { minuteToHour } from 'utils/utils';
@@ -41,12 +41,14 @@ type Props = {
     timeUnit: string;
     recordsVersion: number;
     goalsVersion: number;
+    themesVersion: number;
 };
 
 const RecordCalendar: React.FC<Props> = (props) => {
     const [data, setData] = useState<Record[][]>([]);
     const [total, setTotal] = useState(0);
     const [goal, setGoal] = useState<MonthlyGoal | null>(null);
+    const [theme, setTheme] = useState('');
 
     useEffect(() => {
         const fetchRecords = async () => {
@@ -81,25 +83,55 @@ const RecordCalendar: React.FC<Props> = (props) => {
         fetchGoal();
     }, [props.year, props.month, props.goalsVersion]);
 
+    useEffect(() => {
+        const fetchTheme = async () => {
+            try {
+                const themes = await api.get(`themes?year=${props.year}&month=${props.month}`);
+                setTheme((themes && themes.length) ? themes[0].theme : '');
+            } catch (error) {
+                console.error('Error fetching monthly theme:', error);
+                setTheme('');
+            }
+        };
+        fetchTheme();
+    }, [props.year, props.month, props.themesVersion]);
+
     const targetMinuteTime = goal?.targetMinuteTime || 0;
     const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
+    const totalValue = props.timeUnit === 'm' ? total : minuteToHour(total);
+    const targetValue = props.timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime);
 
     return (
-        <>
-            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
-                合計： {props.timeUnit === 'm' ? total : minuteToHour(total)} [{props.timeUnit}]
+        <div className="content-panel">
+            <div className='summary-metrics'>
+                <div className="summary-metric">
+                    <span>合計</span>
+                    <strong>{totalValue}<small>{props.timeUnit}</small></strong>
+                </div>
                 {targetMinuteTime > 0 && (
-                    <span className="ms-3">
-                        目標： {props.timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime)} [{props.timeUnit}]
-                        <span className="ms-2">達成率： {progress}%</span>
-                    </span>
+                    <>
+                        <div className="summary-metric">
+                            <span>目標</span>
+                            <strong>{targetValue}<small>{props.timeUnit}</small></strong>
+                        </div>
+                        <div className="summary-metric">
+                            <span>達成率</span>
+                            <strong>{progress}<small>%</small></strong>
+                        </div>
+                    </>
                 )}
-            </Alert>
-            <Table bordered hover responsive="sm">
+                {theme && (
+                    <div className="summary-theme">
+                        <span>テーマ</span>
+                        <strong>{theme}</strong>
+                    </div>
+                )}
+            </div>
+            <Table responsive="sm" className="calendar-table">
                 <CalendarHeader />
                 <CalendarBody timeUnit={props.timeUnit} records={data} />
             </Table>
-        </>
+        </div>
     );
 };
 

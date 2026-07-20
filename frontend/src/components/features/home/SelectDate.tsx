@@ -52,57 +52,48 @@ const SelectDate: React.FC<Props> = (props) => {
     }
 
     return (
-        <>
-    <div className="d-flex justify-content-between">
-        <ButtonGroup className="shadow-sm">
+        <div className="date-selector">
+        <ButtonGroup className="date-step-group">
             <Button
                 variant="outline-dark"
                 onClick={subYear}
-                className="rounded-start py-2 px-3"
+                aria-label="前年"
             >
                 <i className="bi bi-chevron-double-left"></i>
             </Button>
             <Button
                 variant="outline-dark"
-                disabled
-                className="py-2 px-4 fw-bold"
+                onClick={subMonth}
+                aria-label="前月"
             >
-                {y} 年
+                <i className="bi bi-chevron-left"></i>
+            </Button>
+        </ButtonGroup>
+
+        <div className="date-current">
+            <span>{y}</span>
+            <small>年</small>
+            <span>{m}</span>
+            <small>月</small>
+        </div>
+
+        <ButtonGroup className="date-step-group">
+            <Button
+                variant="outline-dark"
+                onClick={addMonth}
+                aria-label="翌月"
+            >
+                <i className="bi bi-chevron-right"></i>
             </Button>
             <Button
                 variant="outline-dark"
                 onClick={addYear}
-                className="rounded-end py-2 px-3"
+                aria-label="翌年"
             >
                 <i className="bi bi-chevron-double-right"></i>
             </Button>
         </ButtonGroup>
-
-        <ButtonGroup className="shadow-sm">
-            <Button
-                variant="outline-dark"
-                onClick={subMonth}
-                className="rounded-start py-2 px-3"
-            >
-                <i className="bi bi-chevron-left"></i>
-            </Button>
-            <Button
-                variant="outline-dark"
-                disabled
-                className="py-2 px-4 fw-bold"
-            >
-                {m} 月
-            </Button>
-            <Button
-                variant="outline-dark"
-                onClick={addMonth}
-                className="rounded-end py-2 px-3"
-            >
-                <i className="bi bi-chevron-right"></i>
-            </Button>
-        </ButtonGroup>
-    </div>
-</>
+        </div>
     );
 }
 

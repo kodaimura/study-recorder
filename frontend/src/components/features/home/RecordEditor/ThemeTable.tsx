@@ -6,9 +6,10 @@ import { api } from 'apis/api';
 type Props = {
     year: number;
     month: number;
+    onThemeSaved: () => void;
 }
 
-const ThemeTable: React.FC<Props> = ({ year, month }) => {
+const ThemeTable: React.FC<Props> = ({ year, month, onThemeSaved }) => {
     const [themeForMonth, setThemeForMonth] = useState<string>("");
     const [saving, setSaving] = useState(false);
 
@@ -32,6 +33,7 @@ const ThemeTable: React.FC<Props> = ({ year, month }) => {
                 month,
                 theme: themeForMonth
             });
+            onThemeSaved();
         } catch (error) {
             console.error('Error saving theme:', error);
         } finally {

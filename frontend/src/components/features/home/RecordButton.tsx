@@ -66,20 +66,22 @@ const RecordButton: React.FC<Props> = ({ onRecorded }) => {
     }, [startedAt]);
 
     return (
-        <>
+        <div className="record-button-wrap">
             <Button
-                variant="danger"
+                variant={startedAt === null ? "dark" : "outline-danger"}
+                className="record-toggle-button"
                 onClick={record}
             >
                 {startedAt === null ? <i className="bi bi-play me-2"></i> : <i className="bi bi-stop me-2"></i>}
                 {startedAt === null ? "START" : "STOP"}
             </Button>
             {startedAt && (
-                <span className="ms-3">
-                    {formatLocalDateTime(startedAt)}~ / {formatElapsedTime(startedAt, now)}
+                <span className="record-running-status">
+                    <span>{formatLocalDateTime(startedAt)} 開始</span>
+                    <strong>{formatElapsedTime(startedAt, now)}</strong>
                 </span>
             )}
-        </>
+        </div>
     );
 }
 

@@ -21,7 +21,7 @@ const SignupPage: React.FC = () => {
                     </Button>
                 }
             />
-            <Container className='mt-5'>
+            <Container className='auth-page'>
                 <SignupForm />
             </Container>
         </>

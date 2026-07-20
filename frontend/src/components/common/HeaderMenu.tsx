@@ -32,32 +32,16 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
     return (
         <Dropdown onToggle={(isOpen) => setIsMenuOpen(isOpen)} className="d-flex">
             <button
+                className="user-menu-button"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    backgroundColor: '#f8f9fa',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                }}
             >
                 {username.charAt(0)}
             </button>
 
             <Dropdown.Menu
                 show={isMenuOpen}
-                className="shadow-sm"
+                className="shadow-sm app-dropdown"
                 align="end"
-                style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: 0,
-                    minWidth: '200px',
-                }}
                 onMouseLeave={() => setIsMenuOpen(false)}
             >
                 <Dropdown.ItemText>{username}</Dropdown.ItemText>

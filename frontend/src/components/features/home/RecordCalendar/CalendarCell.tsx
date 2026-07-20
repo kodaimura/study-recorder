@@ -1,20 +1,12 @@
 import React from 'react';
 
-const CELL_WIDTH = '90px';
-const CELL_HEIGHT = '80px';
-
 const getCellColor = (minuteTime: number): string => {
-    if (minuteTime > 599) return '#FFFF00';
-    if (minuteTime > 539) return '#FFFF60';
-    if (minuteTime > 479) return '#FFFF90';
-    if (minuteTime > 419) return '#FFFFB0';
-    if (minuteTime > 359) return '#BBBBBB';
-    if (minuteTime > 299) return '#CCCCCC';
-    if (minuteTime > 239) return '#DDDDDD';
-    if (minuteTime > 179) return '#E2E2E2';
-    if (minuteTime > 119) return '#DC954E';
-    if (minuteTime > 59) return '#E2AA72';
-    return '#FFF';
+    if (minuteTime >= 480) return '#8fbc8f';
+    if (minuteTime >= 360) return '#afd4aa';
+    if (minuteTime >= 240) return '#cfe6c8';
+    if (minuteTime >= 120) return '#e5f2df';
+    if (minuteTime > 0) return '#f3f8ef';
+    return '#fff';
 };
 
 type Props = {
@@ -26,22 +18,12 @@ type Props = {
 const CalendarCell: React.FC<Props> = ({ day, minuteTime, timeUnit }) => {
     const displayTime = timeUnit === 'm' ? minuteTime : Math.round((minuteTime / 60) * 100) / 100;
 
-    const cellStyle = {
-        backgroundColor: getCellColor(minuteTime),
-        width: CELL_WIDTH,
-        height: CELL_HEIGHT,
-        borderRight: '1px solid rgba(224, 224, 224, 1)',
-        textAlign: 'center' as const,
-        verticalAlign: 'middle' as const,
-        padding: '5px',
-    };
-
     return (
-        <td style={cellStyle}>
+        <td className="calendar-cell" style={{ backgroundColor: getCellColor(minuteTime) }}>
             {day !== 0 && (
                 <>
-                    <div style={{ height: '20px', fontSize: '0.7rem', fontWeight: '300' }}>{day}</div>
-                    <div style={{ fontSize: '1.1rem', height: '45px', lineHeight: '40px' }}>{displayTime}</div>
+                    <div className="calendar-day">{day}</div>
+                    <div className="calendar-time">{displayTime}</div>
                 </>
             )}
         </td>

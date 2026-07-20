@@ -26,11 +26,13 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <div className='row justify-content-center'>
-            <div>
-                <div className='text-danger text-center'>{errorMsg}</div>
+        <div className='auth-panel'>
+            <div className="auth-panel-header">
+                <h1>ログイン</h1>
+                <p>学習記録を続きから確認します。</p>
             </div>
-            <div className='col-md-6'>
+            {errorMsg && <div className='auth-error'>{errorMsg}</div>}
+            <div>
                 <Form onSubmit={handleSubmit}>
                     <InputGroup className='mb-3'>
                         <InputGroup.Text>
@@ -54,9 +56,9 @@ const LoginForm: React.FC = () => {
                         />
                     </InputGroup>
                     <Button
-                        variant="primary"
+                        variant="dark"
                         type="submit"
-                        className='w-100 d-flex align-items-center justify-content-center'
+                        className='app-submit-button'
                     >
                         <i className="bi bi-box-arrow-in-right me-2"></i> ログイン
                     </Button>

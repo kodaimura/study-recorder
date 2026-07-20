@@ -19,6 +19,7 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [recordsVersion, setRecordsVersion] = useState(0);
     const [goalsVersion, setGoalsVersion] = useState(0);
+    const [themesVersion, setThemesVersion] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -36,11 +37,15 @@ const HomePage: React.FC = () => {
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
-    const [timeUnit, setTimeUnit] = useState("h");
+    const [timeUnit, setTimeUnit] = useState(() => {
+        const savedTimeUnit = window.localStorage.getItem('study-recorder-time-unit');
+        return savedTimeUnit === 'm' || savedTimeUnit === 'h' ? savedTimeUnit : 'h';
+    });
 
     const selectTimeUnit = (eventKey: string | null) => {
         if (eventKey) {
             setTimeUnit(eventKey);
+            window.localStorage.setItem('study-recorder-time-unit', eventKey);
         }
     };
 
@@ -50,6 +55,10 @@ const HomePage: React.FC = () => {
 
     const refreshGoals = () => {
         setGoalsVersion((version) => version + 1);
+    };
+
+    const refreshThemes = () => {
+        setThemesVersion((version) => version + 1);
     };
 
     if (loading) {
@@ -65,27 +74,37 @@ const HomePage: React.FC = () => {
     return (
         <>
             <Header rightContent={<HeaderMenu username={username || ''} />} />
-            <Container>
-                <div className="row justify-content-between align-items-center">
+            <Container className="app-main">
+                <div className="home-toolbar">
                     <div className="col-auto">
                         <RecordButton onRecorded={refreshRecords} />
                     </div>
-                    <div className="col-auto">
-                        <Dropdown onSelect={selectTimeUnit}>
-                            <Dropdown.Toggle variant="light">
-                                {timeUnit}
+                    <div className="toolbar-controls">
+                        <SelectDate
+                            year={year}
+                            month={month}
+                            setYear={setYear}
+                            setMonth={setMonth}
+                        />
+                        <Dropdown onSelect={selectTimeUnit} className="unit-dropdown">
+                            <Dropdown.Toggle variant="outline-dark">
+                                {timeUnit === 'h' ? '時間 (h)' : '分 (m)'}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                <Dropdown.Item eventKey="h">[h]表示</Dropdown.Item>
-                                <Dropdown.Item eventKey="m">[m]表示</Dropdown.Item>
+                                <Dropdown.Item eventKey="h" active={timeUnit === 'h'}>
+                                    時間 (h) で表示
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="m" active={timeUnit === 'm'}>
+                                    分 (m) で表示
+                                </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
                 </div>
 
-                <nav>
-                    <div className="nav nav-tabs mt-2" role="tablist">
+                <nav className="home-nav">
+                    <div className="nav nav-tabs" role="tablist">
                         <NavLink to="/calendar" className='nav-link'>
                             <i className="bi bi-calendar me-2"></i> カレンダー
                         </NavLink>
@@ -100,18 +119,10 @@ const HomePage: React.FC = () => {
                         </NavLink>
                     </div>
                 </nav>
-                <div className='mt-2 mb-2'>
-                    <SelectDate
-                        year={year}
-                        month={month}
-                        setYear={setYear}
-                        setMonth={setMonth}
-                    />
-                </div>
                 <Routes>
-                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
-                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
-                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} onGoalSaved={refreshGoals} />} />
+                    <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} themesVersion={themesVersion} />} />
+                    <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} themesVersion={themesVersion} />} />
+                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} onGoalSaved={refreshGoals} onThemeSaved={refreshThemes} />} />
                     <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
                     <Route path="graph/total" element={<RecordGraphTotal timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
                 </Routes>

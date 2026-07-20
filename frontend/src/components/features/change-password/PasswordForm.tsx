@@ -34,12 +34,14 @@ const PasswordForm: React.FC = () => {
     };
 
     return (
-        <div className='row justify-content-center'>
-            <div className='col-md-6'>
+        <div className='auth-panel'>
+            <div className="auth-panel-header">
+                <h1>パスワード変更</h1>
+                <p>変更後は再ログインが必要です。</p>
+            </div>
+            <div>
                 <Form onSubmit={handleSubmit}>
-                    <div>
-                        <div className='text-danger'>{errorMsg}</div>
-                    </div>
+                    {errorMsg && <div className='auth-error'>{errorMsg}</div>}
                     <InputGroup className='mb-3'>
                         <InputGroup.Text>
                             <i className="bi bi-key"></i>
@@ -74,9 +76,9 @@ const PasswordForm: React.FC = () => {
                         />
                     </InputGroup>
                     <Button
-                        variant="success"
+                        variant="dark"
                         type="submit"
-                        className='w-100 d-flex align-items-center justify-content-center'
+                        className='app-submit-button'
                     >
                         <i className="bi bi-save me-2"></i> 変更
                     </Button>

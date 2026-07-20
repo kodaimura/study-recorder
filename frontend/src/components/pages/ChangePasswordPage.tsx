@@ -38,7 +38,7 @@ const ChangePasswordPage: React.FC = () => {
     return (
         <>
             <Header rightContent={username ? <HeaderMenu username={username} /> : null} />
-            <Container className='mt-5'>
+            <Container className='auth-page'>
                 <PasswordForm />
             </Container>
         </>

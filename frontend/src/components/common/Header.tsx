@@ -8,17 +8,17 @@ type Props = {
 const Header: React.FC<Props> = ({ rightContent }) => {
     return (
         <header>
-            <Navbar bg="dark" variant="dark" fixed="top" expand="sm">
+            <Navbar className="app-header" variant="dark" fixed="top" expand="sm">
                 <Container fluid>
-                    <Navbar.Brand href="/calendar">
+                    <Navbar.Brand href="/calendar" className="app-brand">
                         STUDY RECORDER
                     </Navbar.Brand>
-                    <Nav className="ml-auto">
+                    <Nav className="ms-auto">
                         {rightContent}
                     </Nav>
                 </Container>
             </Navbar>
-            <div style={{ width: '100%', height: '65px' }}></div>
+            <div className="header-spacer"></div>
         </header>
     );
 }

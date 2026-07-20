@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-bootstrap';
 import { Chart } from 'react-google-charts';
 
 import { minuteToHour } from 'utils/utils';
@@ -115,10 +114,13 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
     };
 
     return (
-        <>
-            <Alert variant="white" className='fs-5 pt-2 pb-2 mb-1'>
-                累計： {timeUnit === 'm' ? total : minuteToHour(total)} [{timeUnit}]
-            </Alert>
+        <div className="content-panel">
+            <div className='summary-metrics'>
+                <div className="summary-metric">
+                    <span>累計</span>
+                    <strong>{timeUnit === 'm' ? total : minuteToHour(total)}<small>{timeUnit}</small></strong>
+                </div>
+            </div>
             <Chart
                 chartType="ComboChart"
                 width="100%"
@@ -126,7 +128,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
                 data={plotData}
                 options={options}
             />
-        </>
+        </div>
     );
 };
 
