@@ -69,6 +69,10 @@ const makeLabels = (data: Record[]) => {
     return labels;
 };
 
+const getRecordedMonthCount = (records: Record[]): number => {
+    return new Set(records.map((record) => `${record.year}-${record.month}`)).size;
+};
+
 type Props = {
     timeUnit: string;
     recordsVersion: number;
@@ -78,12 +82,14 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
     const [data, setData] = useState<Record[]>([]);
     const [plotData, setPlotData] = useState<(string[] | [string, number, number])[]>([['Month', 'Monthly Time', 'Total Time']]);
     const [total, setTotal] = useState(0);
+    const [recordedMonthCount, setRecordedMonthCount] = useState(0);
 
     useEffect(() => {
         (async () => {
             try {
                 const records = await api.get('records');
                 setTotal(records.reduce((sum: number, row: Record) => sum + row.minuteTime, 0));
+                setRecordedMonthCount(getRecordedMonthCount(records));
                 records.sort(compareDate);
                 setData(records);
             } catch (error) {
@@ -112,6 +118,7 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
         series: { 1: { type: 'line' } },
         legend: { position: 'bottom' },
     };
+    const monthlyAverage = recordedMonthCount > 0 ? total / recordedMonthCount : 0;
 
     return (
         <div className="content-panel">
@@ -119,6 +126,10 @@ const RecordGraphTotal: React.FC<Props> = ({ timeUnit, recordsVersion }) => {
                 <div className="summary-metric">
                     <span>累計</span>
                     <strong>{timeUnit === 'm' ? total : minuteToHour(total)}<small>{timeUnit}</small></strong>
+                </div>
+                <div className="summary-metric">
+                    <span>月平均</span>
+                    <strong>{timeUnit === 'm' ? Math.round(monthlyAverage) : minuteToHour(monthlyAverage)}<small>{timeUnit}</small></strong>
                 </div>
             </div>
             <Chart

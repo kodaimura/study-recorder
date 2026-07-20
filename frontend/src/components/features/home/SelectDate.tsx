@@ -53,46 +53,46 @@ const SelectDate: React.FC<Props> = (props) => {
 
     return (
         <div className="date-selector">
-        <ButtonGroup className="date-step-group">
-            <Button
-                variant="outline-dark"
-                onClick={subYear}
-                aria-label="前年"
-            >
-                <i className="bi bi-chevron-double-left"></i>
-            </Button>
-            <Button
-                variant="outline-dark"
-                onClick={subMonth}
-                aria-label="前月"
-            >
-                <i className="bi bi-chevron-left"></i>
-            </Button>
-        </ButtonGroup>
+            <ButtonGroup className="date-step-group">
+                <Button
+                    variant="link"
+                    onClick={subYear}
+                    aria-label="前年"
+                >
+                    <i className="bi bi-chevron-double-left"></i>
+                </Button>
+                <Button
+                    variant="link"
+                    onClick={subMonth}
+                    aria-label="前月"
+                >
+                    <i className="bi bi-chevron-left"></i>
+                </Button>
+            </ButtonGroup>
 
-        <div className="date-current">
-            <span>{y}</span>
-            <small>年</small>
-            <span>{m}</span>
-            <small>月</small>
-        </div>
+            <div className="date-current">
+                <span className="date-year">{y}</span>
+                <small>年</small>
+                <span className="date-month">{m}</span>
+                <small>月</small>
+            </div>
 
-        <ButtonGroup className="date-step-group">
-            <Button
-                variant="outline-dark"
-                onClick={addMonth}
-                aria-label="翌月"
-            >
-                <i className="bi bi-chevron-right"></i>
-            </Button>
-            <Button
-                variant="outline-dark"
-                onClick={addYear}
-                aria-label="翌年"
-            >
-                <i className="bi bi-chevron-double-right"></i>
-            </Button>
-        </ButtonGroup>
+            <ButtonGroup className="date-step-group">
+                <Button
+                    variant="link"
+                    onClick={addMonth}
+                    aria-label="翌月"
+                >
+                    <i className="bi bi-chevron-right"></i>
+                </Button>
+                <Button
+                    variant="link"
+                    onClick={addYear}
+                    aria-label="翌年"
+                >
+                    <i className="bi bi-chevron-double-right"></i>
+                </Button>
+            </ButtonGroup>
         </div>
     );
 }
