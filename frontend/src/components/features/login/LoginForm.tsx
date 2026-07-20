@@ -29,7 +29,6 @@ const LoginForm: React.FC = () => {
         <div className='auth-panel'>
             <div className="auth-panel-header">
                 <h1>ログイン</h1>
-                <p>学習記録を続きから確認します。</p>
             </div>
             {errorMsg && <div className='auth-error'>{errorMsg}</div>}
             <div>

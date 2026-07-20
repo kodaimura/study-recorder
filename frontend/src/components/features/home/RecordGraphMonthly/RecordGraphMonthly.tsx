@@ -5,82 +5,73 @@ import { minuteToHour } from 'utils/utils';
 import { MonthlyGoal, Record } from 'types/types';
 import { api } from 'apis/api';
 
-const compareDate = (
-    a: { year: number, month: number, day: number },
-    b: { year: number, month: number, day: number }
-): number => {
-    return a.year !== b.year ? a.year - b.year :
-        a.month !== b.month ? a.month - b.month :
-            a.day - b.day;
+const toDisplayValue = (minuteTime: number, timeUnit: string): number => {
+    return timeUnit === 'm' ? minuteTime : minuteToHour(minuteTime);
 };
 
-const toCumulative = (arr: number[]): number[] => {
-    return arr.reduce((acc, val, idx) => {
-        acc.push(val + (acc[idx - 1] || 0));
-        return acc;
-    }, [] as number[]);
+const makeDailyValues = (records: Record[], year: number, month: number): number[] => {
+    const lastDay = new Date(year, month, 0).getDate();
+    const dailyMinutes = Array(lastDay + 1).fill(0);
+
+    records
+        .filter((record) => record.year === year && record.month === month)
+        .forEach((record) => {
+            dailyMinutes[record.day] = record.minuteTime;
+        });
+
+    return dailyMinutes.slice(1);
 };
 
-const formatData = (records: Record[], timeUnit: string): { [key: string]: number[] } => {
-    const data: { [key: string]: number[] } = {};
-    let year = records.length ? records[0].year : 0;
-    let month = year ? records[0].month : 0;
-    let arr = Array(32).fill(0);
-
-    records.forEach(d => {
-        if (year !== d.year || month !== d.month) {
-            data[`${year}/${month}`] = toCumulative(arr);
-            year = d.year;
-            month = d.month;
-            arr = Array(32).fill(0);
-        }
-        arr[d.day] = timeUnit === "m" ? d.minuteTime : minuteToHour(d.minuteTime);
+const makeDailyCumulative = (dailyMinutes: number[]): number[] => {
+    let total = 0;
+    return dailyMinutes.map((minuteTime) => {
+        total += minuteTime;
+        return total;
     });
-
-    data[`${year}/${month}`] = toCumulative(arr);
-    return data;
-};
-
-const transpose = (matrix: number[][]): number[][] => {
-    if (!matrix.length) return [];
-
-    const numColumns = matrix[0].length;
-    return Array.from({ length: numColumns }, (_, i) =>
-        matrix.map(row => row[i])
-    );
 };
 
 const makePlotData = (records: Record[], timeUnit: string, year: number, month: number, targetMinuteTime: number): any[][] => {
-    const data = formatData(records, timeUnit);
-    const labels = Array.from({ length: 32 }, (_, i) => i);
-    const values = transpose(Object.values(data));
-    const keys = Object.keys(data);
-    const targetValue = timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime);
+    const dailyMinutes = makeDailyValues(records, year, month);
+    const cumulativeMinutes = makeDailyCumulative(dailyMinutes);
+    const lastDay = cumulativeMinutes.length;
+    const hasTarget = targetMinuteTime > 0;
+    const header = hasTarget ? ['日', '日別', '累計', '目標ペース'] : ['日', '日別', '累計'];
 
-    if (targetMinuteTime <= 0) {
-        return [['', ...keys], ...labels.map((label, index) => [label, ...values[index]])];
-    }
+    return [
+        header,
+        ...cumulativeMinutes.map((minuteTime, index) => {
+            const day = index + 1;
+            const dailyValue = toDisplayValue(dailyMinutes[index], timeUnit);
+            const actualValue = toDisplayValue(minuteTime, timeUnit);
+            if (!hasTarget) return [day, dailyValue, actualValue];
 
-    return [['', ...keys, '月目標'], ...labels.map((label, index) => [label, ...values[index], targetValue])];
+            const targetPaceMinute = Math.round(targetMinuteTime * day / lastDay);
+            return [day, dailyValue, actualValue, toDisplayValue(targetPaceMinute, timeUnit)];
+        }),
+    ];
 };
 
-const makePlotOptions = (plotData: any[][], timeUnit: string, year: number, month: number): any => {
+const makePlotOptions = (timeUnit: string, year: number, month: number): any => {
     return {
         title: `${year}年${month}月`,
         hAxis: {
-            minValue: 0,
-            maxValue: 31,
+            title: '日',
+            minValue: 1,
+            gridlines: { color: '#eef0f2' },
         },
         vAxis: {
-            title: `時間 ${timeUnit === 'm' ? '[ m ]' : '[ h ]'}`,
-            gridlines: { color: 'transparent' },
+            title: `時間 [ ${timeUnit} ]`,
+            minValue: 0,
+            gridlines: { color: '#eef0f2' },
         },
         legend: { position: 'bottom' },
-        series: plotData[0].slice(1).map((ym: string) => ({
-            color: ym === '月目標' ? '#198754' : ym === `${year}/${month}` ? '#FF0000' : '#0000FF',
-            lineDashStyle: ym === '月目標' ? [6, 4] : undefined,
-            visibleInLegend: ym === `${year}/${month}` || ym === '月目標'
-        }))
+        chartArea: { left: 56, top: 48, width: '82%', height: '68%' },
+        seriesType: 'bars',
+        series: {
+            0: { type: 'bars', color: '#cfe6c8' },
+            1: { type: 'line', color: '#1f5fbf', lineWidth: 3 },
+            2: { type: 'line', color: '#198754', lineDashStyle: [6, 4], lineWidth: 2 },
+        },
     };
 };
 
@@ -109,7 +100,6 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
         (async () => {
             try {
                 const records = await api.get('records');
-                records.sort(compareDate);
                 setData(records);
             } catch (error) {
                 console.error('Error fetching records:', error);
@@ -131,16 +121,15 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
 
     useEffect(() => {
         const targetMinuteTime = goal?.targetMinuteTime || 0;
-        const pd = makePlotData(data, timeUnit, year, month, targetMinuteTime);
-        setPlotData(pd);
-        setPlotOptions(makePlotOptions(pd, timeUnit, year, month));
+        setPlotData(makePlotData(data, timeUnit, year, month, targetMinuteTime));
+        setPlotOptions(makePlotOptions(timeUnit, year, month));
         setTotal(getTotal(data, year, month));
     }, [data, goal, timeUnit, year, month]);
 
     const targetMinuteTime = goal?.targetMinuteTime || 0;
     const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
-    const totalValue = timeUnit === 'm' ? total : minuteToHour(total);
-    const targetValue = timeUnit === 'm' ? targetMinuteTime : minuteToHour(targetMinuteTime);
+    const totalValue = toDisplayValue(total, timeUnit);
+    const targetValue = toDisplayValue(targetMinuteTime, timeUnit);
 
     return (
         <div className="content-panel">
@@ -163,7 +152,7 @@ const RecordGraphMonthly: React.FC<Props> = ({ year, month, timeUnit, recordsVer
                 )}
             </div>
             <Chart
-                chartType="LineChart"
+                chartType="ComboChart"
                 width="100%"
                 height="450px"
                 data={plotData}

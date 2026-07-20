@@ -9,6 +9,7 @@ import LoginPage from 'components/pages/LoginPage';
 import SignupPage from 'components/pages/SignupPage';
 import HomePage from 'components/pages/HomePage';
 import ChangePasswordPage from 'components/pages/ChangePasswordPage';
+import SettingsPage from 'components/pages/SettingsPage';
 import { NotFoundPage } from 'components/pages/errors';
 
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/password" element={<ChangePasswordPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>

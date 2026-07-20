@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
-import { Container, Spinner, Dropdown } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 
 import { Header, HeaderMenu } from 'components/common';
 import {
@@ -41,12 +41,17 @@ const HomePage: React.FC = () => {
         return savedTimeUnit === 'm' || savedTimeUnit === 'h' ? savedTimeUnit : 'h';
     });
 
-    const selectTimeUnit = (eventKey: string | null) => {
-        if (eventKey) {
-            setTimeUnit(eventKey);
-            window.localStorage.setItem('study-recorder-time-unit', eventKey);
-        }
-    };
+    useEffect(() => {
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key !== 'study-recorder-time-unit') return;
+            if (event.newValue === 'm' || event.newValue === 'h') {
+                setTimeUnit(event.newValue);
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     const refreshRecords = () => {
         setRecordsVersion((version) => version + 1);
@@ -78,28 +83,15 @@ const HomePage: React.FC = () => {
                     <div className="col-auto">
                         <RecordButton onRecorded={refreshRecords} />
                     </div>
-                    <div className="toolbar-controls">
-                        <SelectDate
-                            year={year}
-                            month={month}
-                            setYear={setYear}
-                            setMonth={setMonth}
-                        />
-                        <Dropdown onSelect={selectTimeUnit} className="unit-dropdown">
-                            <Dropdown.Toggle variant="outline-dark">
-                                {timeUnit === 'h' ? '時間 (h)' : '分 (m)'}
-                            </Dropdown.Toggle>
+                </div>
 
-                            <Dropdown.Menu>
-                                <Dropdown.Item eventKey="h" active={timeUnit === 'h'}>
-                                    時間 (h) で表示
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="m" active={timeUnit === 'm'}>
-                                    分 (m) で表示
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
+                <div className="date-selector-wrap">
+                    <SelectDate
+                        year={year}
+                        month={month}
+                        setYear={setYear}
+                        setMonth={setMonth}
+                    />
                 </div>
 
                 <nav className="home-nav">

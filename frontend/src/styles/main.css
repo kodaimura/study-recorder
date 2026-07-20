@@ -56,13 +56,18 @@ footer {
     padding: 10px 16px;
     color: var(--app-muted);
     background: #fff;
-    border-top: 1px solid var(--app-border);
     font-size: 0.82rem;
 }
 
 .app-header {
     background: #24272a;
     border-bottom: 1px solid #151719;
+    z-index: 1100;
+}
+
+.app-header .container-fluid {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
 }
 
 .app-brand {
@@ -90,10 +95,15 @@ footer {
     text-transform: uppercase;
 }
 
+.app-header .dropdown {
+    position: relative;
+}
+
 .app-dropdown {
     position: absolute !important;
     top: 100% !important;
     right: 0 !important;
+    z-index: 1200;
     min-width: 200px;
     border-color: var(--app-border);
 }
@@ -111,9 +121,9 @@ footer {
 }
 
 .home-toolbar {
-    padding: 12px;
-    border: 1px solid var(--app-border);
-    background: var(--app-surface);
+    padding: 4px 0 0;
+    border: 0;
+    background: transparent;
 }
 
 .toolbar-controls {
@@ -152,6 +162,12 @@ footer {
 }
 
 .home-nav {
+    margin-top: 12px;
+}
+
+.date-selector-wrap {
+    display: flex;
+    justify-content: center;
     margin-top: 12px;
 }
 
@@ -265,9 +281,12 @@ footer {
 }
 
 .auth-page {
+    min-height: calc(100vh - 130px);
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding-top: 42px;
+    padding-top: 0;
+    padding-bottom: 24px;
 }
 
 .auth-panel {
@@ -570,6 +589,22 @@ footer {
     .calendar-cell {
         min-width: 72px;
     }
+
+    .home-nav .nav-tabs {
+        flex-wrap: nowrap;
+    }
+
+    .home-nav .nav-link {
+        flex: 1 1 0;
+        padding: 0.5rem 0.35rem;
+        font-size: 0.82rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .home-nav .nav-link .bi {
+        margin-right: 0.25rem !important;
+    }
 }
 /* refined controls */
 .date-selector {
@@ -796,21 +831,21 @@ footer {
 .calendar-head-cell {
     padding: 8px 4px;
     border: 1px solid var(--app-border) !important;
-    color: #333;
-    background-color: #f1f3f5 !important;
+    color: #f8f9fa;
+    background-color: #34383d !important;
     text-align: center;
     font-size: 0.9rem;
     font-weight: 700;
 }
 
 .calendar-head-cell.sunday {
-    color: #9f2f24;
-    background-color: #f1f3f5 !important;
+    color: #ffb0a8;
+    background-color: #34383d !important;
 }
 
 .calendar-head-cell.saturday {
-    color: #1f5fbf;
-    background-color: #f1f3f5 !important;
+    color: #aecaef;
+    background-color: #34383d !important;
 }
 
 .calendar-cell {
@@ -1186,4 +1221,123 @@ select,
 .dropdown-menu,
 .modal-content {
     font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif !important;
+}
+
+.settings-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+}
+
+.settings-panel {
+    width: min(100%, 560px);
+    padding: 20px;
+    border: 1px solid var(--app-border);
+    background: #fff;
+}
+
+.settings-panel h1 {
+    margin: 0 0 18px;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.settings-radio-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* Compact auth screens */
+.auth-page {
+    align-items: center;
+    padding-top: 0;
+}
+
+.auth-panel {
+    width: min(100%, 420px);
+    padding: 18px 20px 20px;
+    border-color: #cfd4da;
+    background: linear-gradient(180deg, #fff 0%, #fbfbfb 100%);
+}
+
+.auth-panel-header {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--app-border-soft);
+}
+
+.auth-panel-header h1 {
+    font-size: 1.12rem;
+    line-height: 1.25;
+}
+
+.auth-panel-header p {
+    margin-top: 4px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.auth-panel .input-group,
+.auth-panel .form-group {
+    margin-bottom: 10px !important;
+}
+
+.auth-panel .input-group-text {
+    width: 40px;
+    justify-content: center;
+    border-color: #d8dde2;
+    background: #f4f5f6;
+    color: #555;
+}
+
+.auth-panel .form-control {
+    min-height: 38px;
+    border-color: #d8dde2;
+    font-size: 0.92rem;
+}
+
+.auth-panel .form-control::placeholder {
+    color: #8a9299;
+}
+
+.auth-error {
+    margin-bottom: 10px;
+    padding: 7px 9px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.app-submit-button {
+    min-height: 39px;
+    margin-top: 4px;
+    font-size: 0.92rem;
+}
+
+.app-submit-button .bi {
+    font-size: 0.95rem;
+}
+
+.app-header .btn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.88rem;
+}
+
+/* Calendar weekday header final colors */
+.calendar-head-cell {
+    color: #ffffff !important;
+    background-color: #34383d !important;
+}
+
+.calendar-head-cell.sunday {
+    color: #ffb0a8 !important;
+}
+
+.calendar-head-cell.saturday {
+    color: #aecaef !important;
+}
+
+.calendar-head-cell.sunday,
+.calendar-head-cell.saturday {
+    color: #ffffff !important;
 }

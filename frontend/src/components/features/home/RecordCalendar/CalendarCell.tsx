@@ -2,13 +2,17 @@ import React from 'react';
 
 import { Record } from 'types/types';
 
-const getCellColor = (minuteTime: number): string => {
-    if (minuteTime >= 480) return '#8fbc8f';
-    if (minuteTime >= 360) return '#afd4aa';
-    if (minuteTime >= 240) return '#cfe6c8';
-    if (minuteTime >= 120) return '#e5f2df';
-    if (minuteTime > 0) return '#f3f8ef';
-    return '#fff';
+const getCellBackground = (minuteTime: number): string => {
+    if (minuteTime <= 0) return '#fff';
+    if (minuteTime < 60) return '#fbf1e5';
+    if (minuteTime < 120) return '#f1d3b5';
+    if (minuteTime < 180) return '#e4b07a';
+    if (minuteTime < 240) return '#f3f5f7';
+    if (minuteTime < 300) return '#dde2e7';
+    if (minuteTime < 360) return '#c8ced6';
+    if (minuteTime < 480) return '#fff3b8';
+    if (minuteTime < 600) return '#f3d56b';
+    return '#e5bf3d';
 };
 
 type Props = {
@@ -25,7 +29,7 @@ const CalendarCell: React.FC<Props> = ({ record, timeUnit, onEdit }) => {
     return (
         <td
             className={`calendar-cell editable ${hasComment ? 'has-comment' : ''}`}
-            style={{ backgroundColor: getCellColor(minuteTime) }}
+            style={{ background: getCellBackground(minuteTime) }}
         >
             {day !== 0 && (
                 <button

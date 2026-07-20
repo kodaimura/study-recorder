@@ -53,17 +53,9 @@ const HeaderMenu: React.FC<Props> = ({ username }) => {
                     <i className="bi bi-key me-2"></i>
                     パスワード変更
                 </Dropdown.Item>
-                <Dropdown.Divider />
                 <Dropdown.Item
                     as="button"
-                    onClick={() => handleNavigation("/")}
-                >
-                    <i className="bi bi-house-door me-2"></i>
-                    マイページ
-                </Dropdown.Item>
-                <Dropdown.Item
-                    as="button"
-                    disabled
+                    onClick={() => handleNavigation("/settings")}
                 >
                     <i className="bi bi-gear me-2"></i>
                     設定

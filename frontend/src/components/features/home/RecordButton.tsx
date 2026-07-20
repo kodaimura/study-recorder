@@ -68,12 +68,12 @@ const RecordButton: React.FC<Props> = ({ onRecorded }) => {
     return (
         <div className="record-button-wrap">
             <Button
-                variant={startedAt === null ? "dark" : "outline-danger"}
+                variant={startedAt === null ? "success" : "outline-danger"}
                 className="record-toggle-button"
                 onClick={record}
             >
                 {startedAt === null ? <i className="bi bi-play me-2"></i> : <i className="bi bi-stop me-2"></i>}
-                {startedAt === null ? "START" : "STOP"}
+                {startedAt === null ? "記録開始" : "記録停止"}
             </Button>
             {startedAt && (
                 <span className="record-running-status">
