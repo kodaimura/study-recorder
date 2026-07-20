@@ -12,6 +12,7 @@ import {
 } from 'components/features/home';
 
 import { api } from 'apis/api';
+import { getStoredTimeUnit, isTimeUnit, TIME_UNIT_STORAGE_KEY, TimeUnit } from 'utils/timeUnit';
 
 const HomePage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
@@ -36,17 +37,12 @@ const HomePage: React.FC = () => {
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
-    const [timeUnit, setTimeUnit] = useState(() => {
-        const savedTimeUnit = window.localStorage.getItem('study-recorder-time-unit');
-        return savedTimeUnit === 'm' || savedTimeUnit === 'h' ? savedTimeUnit : 'h';
-    });
+    const [timeUnit, setTimeUnit] = useState<TimeUnit>(getStoredTimeUnit);
 
     useEffect(() => {
         const handleStorageChange = (event: StorageEvent) => {
-            if (event.key !== 'study-recorder-time-unit') return;
-            if (event.newValue === 'm' || event.newValue === 'h') {
-                setTimeUnit(event.newValue);
-            }
+            if (event.key !== TIME_UNIT_STORAGE_KEY) return;
+            if (isTimeUnit(event.newValue)) setTimeUnit(event.newValue);
         };
 
         window.addEventListener('storage', handleStorageChange);

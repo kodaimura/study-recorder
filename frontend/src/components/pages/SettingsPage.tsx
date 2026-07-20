@@ -3,16 +3,12 @@ import { Container, Spinner, Form } from 'react-bootstrap';
 
 import { Header, HeaderMenu } from 'components/common';
 import { api } from 'apis/api';
-
-const TIME_UNIT_STORAGE_KEY = 'study-recorder-time-unit';
+import { getStoredTimeUnit, isTimeUnit, saveTimeUnit } from 'utils/timeUnit';
 
 const SettingsPage: React.FC = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [timeUnit, setTimeUnit] = useState(() => {
-        const savedTimeUnit = window.localStorage.getItem(TIME_UNIT_STORAGE_KEY);
-        return savedTimeUnit === 'm' || savedTimeUnit === 'h' ? savedTimeUnit : 'h';
-    });
+    const [timeUnit, setTimeUnit] = useState(getStoredTimeUnit);
 
     useEffect(() => {
         (async () => {
@@ -28,10 +24,9 @@ const SettingsPage: React.FC = () => {
     }, []);
 
     const handleTimeUnitChange = (value: string) => {
-        if (value !== 'h' && value !== 'm') return;
+        if (!isTimeUnit(value)) return;
         setTimeUnit(value);
-        window.localStorage.setItem(TIME_UNIT_STORAGE_KEY, value);
-        window.dispatchEvent(new StorageEvent('storage', { key: TIME_UNIT_STORAGE_KEY, newValue: value }));
+        saveTimeUnit(value);
     };
 
     if (loading) {
