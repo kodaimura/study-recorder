@@ -194,6 +194,9 @@ footer {
 
 .content-panel {
     padding: 12px;
+    border: 1px solid var(--app-border);
+    border-top: 0;
+    background: var(--app-surface);
 }
 
 .summary-line {
@@ -622,16 +625,24 @@ footer {
 
 .summary-metrics {
     display: flex;
+    align-items: stretch;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 12px;
 }
 
 .summary-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     min-width: 112px;
     padding: 8px 10px;
     border: 1px solid var(--app-border);
     background: #fff;
+    color: inherit;
+    font: inherit;
+    line-height: 1.2;
 }
 
 .summary-metric span {
@@ -658,11 +669,18 @@ footer {
 }
 
 .summary-theme {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     flex: 1 1 280px;
     min-width: 240px;
     padding: 8px 10px;
     border: 1px solid var(--app-border);
     background: #fff;
+    color: inherit;
+    font: inherit;
+    line-height: 1.2;
 }
 
 .summary-theme span {
@@ -814,4 +832,358 @@ footer {
     color: var(--app-text);
     font-size: 1.05rem;
     font-weight: 700;
+}
+
+.calendar-cell {
+    position: relative;
+}
+
+.calendar-cell.editable {
+    cursor: pointer;
+}
+
+.calendar-cell-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
+    text-align: inherit;
+}
+
+.calendar-cell-button:focus-visible {
+    outline: 2px solid #444;
+    outline-offset: -2px;
+}
+
+.comment-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 5px;
+    border-radius: 999px;
+    background: #444;
+    vertical-align: middle;
+}
+
+.calendar-comment-popover {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    display: none;
+    width: max-content;
+    max-width: 220px;
+    padding: 7px 9px;
+    border: 1px solid var(--app-border);
+    color: var(--app-text);
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    text-align: left;
+    transform: translateX(-50%);
+    white-space: pre-wrap;
+}
+
+.calendar-comment-popover::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid var(--app-border);
+    border-bottom: 1px solid var(--app-border);
+    background: #fff;
+    transform: translate(-50%, -4px) rotate(45deg);
+}
+
+.calendar-cell-button:hover .calendar-comment-popover,
+.calendar-cell-button:focus-visible .calendar-comment-popover {
+    display: block;
+}
+
+.summary-button {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    text-align: left;
+    cursor: pointer;
+}
+
+.summary-button:hover,
+.summary-button:focus-visible {
+    background: #f8f9fa;
+    outline: none;
+}
+
+.calendar-cell.editable .calendar-cell-button {
+    cursor: pointer;
+}
+
+.calendar-cell.editable .calendar-cell-button:hover .calendar-time {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.app-modal .modal-content {
+    border-radius: var(--app-radius);
+    border-color: var(--app-border);
+}
+
+.app-modal .modal-header,
+.app-modal .modal-footer {
+    background: #f8f9fa;
+}
+
+.app-modal .modal-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+/* Typography tuning */
+body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+    font-feature-settings: "palt" 1;
+    letter-spacing: 0.01em;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+.app-brand {
+    font-family: "Avenir Next", "Gill Sans", "Hiragino Sans", sans-serif;
+    font-size: 0.96rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.btn,
+.home-nav .nav-link,
+.editor-form-label,
+.theme-input-row button,
+.record-actions button,
+.edit-row-button {
+    font-weight: 560;
+}
+
+.summary-metric span,
+.summary-theme span,
+.calendar-head-cell,
+.record-stats,
+.goal-metrics span,
+.auth-panel-header p,
+.calendar-day {
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+.summary-metric strong,
+.calendar-time,
+.record-time-cell strong,
+.goal-metrics strong,
+.date-current span,
+.record-running-status strong {
+    font-family: "Avenir Next", "Helvetica Neue", "Hiragino Sans", sans-serif;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+.summary-theme strong,
+.editor-card h3,
+.auth-panel-header h1 {
+    font-weight: 620;
+    letter-spacing: 0.005em;
+}
+
+.form-control,
+.input-group-text,
+.dropdown-item {
+    font-size: 0.95rem;
+}
+
+.calendar-head-cell {
+    font-size: 0.86rem;
+}
+
+.calendar-day {
+    font-size: 0.74rem;
+}
+
+.calendar-time {
+    font-size: 1.02rem;
+}
+
+.summary-metric span,
+.summary-theme span {
+    font-size: 0.76rem;
+}
+
+.summary-metric strong {
+    font-size: 1.12rem;
+}
+
+.summary-theme strong {
+    font-size: 0.94rem;
+    line-height: 1.35;
+}
+
+/* Warmer typography pass */
+:root {
+    --font-body: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+    --font-label: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "YuGothic", sans-serif;
+    --font-number: "SF Pro Rounded", "Avenir Next", "Helvetica Neue", "Hiragino Sans", sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: 0.015em;
+}
+
+.app-brand,
+.auth-panel-header h1,
+.editor-card h3,
+.app-modal .modal-title {
+    font-family: var(--font-body);
+    font-weight: 580;
+    letter-spacing: 0.02em;
+}
+
+.app-brand {
+    font-family: var(--font-number);
+    font-weight: 620;
+    letter-spacing: 0.1em;
+}
+
+.btn,
+.home-nav .nav-link,
+.dropdown-item,
+.editor-form-label,
+.form-label,
+.input-group-text,
+.summary-metric span,
+.summary-theme span,
+.calendar-head-cell,
+.record-stats,
+.goal-metrics span,
+.auth-panel-header p,
+.calendar-day {
+    font-family: var(--font-label);
+    font-weight: 520;
+}
+
+.summary-metric strong,
+.calendar-time,
+.record-time-cell strong,
+.goal-metrics strong,
+.date-current span,
+.record-running-status strong,
+.goal-pill,
+.user-menu-button {
+    font-family: var(--font-number);
+    font-weight: 620;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.005em;
+}
+
+.summary-theme strong,
+.form-control,
+textarea.form-control {
+    font-family: var(--font-body);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.summary-metric span,
+.summary-theme span,
+.calendar-day,
+.calendar-head-cell {
+    color: #697178;
+}
+
+.summary-metric strong {
+    font-size: 1.16rem;
+}
+
+.summary-theme strong {
+    font-size: 0.96rem;
+    line-height: 1.45;
+}
+
+.calendar-time {
+    font-size: 1.04rem;
+}
+
+.btn {
+    letter-spacing: 0.01em;
+}
+
+.home-nav .nav-link {
+    letter-spacing: 0.015em;
+}
+
+/* Reduce overly rounded typography */
+:root {
+    --font-body: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+    --font-label: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
+    --font-number: "Avenir Next", "Helvetica Neue", "Hiragino Sans", sans-serif;
+}
+
+body {
+    font-weight: 400;
+    letter-spacing: 0.008em;
+}
+
+.summary-metric strong,
+.calendar-time,
+.record-time-cell strong,
+.goal-metrics strong,
+.date-current span,
+.record-running-status strong,
+.goal-pill,
+.user-menu-button {
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.app-brand,
+.auth-panel-header h1,
+.editor-card h3,
+.app-modal .modal-title {
+    font-weight: 600;
+}
+
+/* User preferred typography */
+body,
+button,
+input,
+textarea,
+select,
+.form-control,
+.dropdown-menu,
+.modal-content {
+    font-family: "Noto Serif JP", serif !important;
+}
+
+/* User preferred typography revision */
+body,
+button,
+input,
+textarea,
+select,
+.form-control,
+.dropdown-menu,
+.modal-content {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif !important;
 }

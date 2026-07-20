@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import { Form, Table } from 'react-bootstrap';
 
+import { AppModal } from 'components/common';
 import { MonthlyGoal, Record } from 'types/types';
 import { minuteToHour } from 'utils/utils';
 import CalendarBody from './CalendarBody';
@@ -35,6 +36,8 @@ const splitArray = <T,>(array: T[], chunkSize: number): T[][] =>
 const makeCalendarData = (year: number, month: number, data: Record[]): Record[][] =>
     splitArray(fillUpCalendarFirstWeek(year, month, fillUpData(year, month, data)), 7);
 
+type ModalType = 'record' | 'goal' | 'theme' | null;
+
 type Props = {
     year: number;
     month: number;
@@ -49,6 +52,16 @@ const RecordCalendar: React.FC<Props> = (props) => {
     const [total, setTotal] = useState(0);
     const [goal, setGoal] = useState<MonthlyGoal | null>(null);
     const [theme, setTheme] = useState('');
+    const [localRecordsVersion, setLocalRecordsVersion] = useState(0);
+    const [localGoalsVersion, setLocalGoalsVersion] = useState(0);
+    const [localThemesVersion, setLocalThemesVersion] = useState(0);
+    const [modalType, setModalType] = useState<ModalType>(null);
+    const [editingRecord, setEditingRecord] = useState<Record | null>(null);
+    const [editMinuteTime, setEditMinuteTime] = useState('0');
+    const [editComment, setEditComment] = useState('');
+    const [editTargetHours, setEditTargetHours] = useState('0');
+    const [editTheme, setEditTheme] = useState('');
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         const fetchRecords = async () => {
@@ -68,7 +81,7 @@ const RecordCalendar: React.FC<Props> = (props) => {
             }
         };
         fetchRecords();
-    }, [props.year, props.month, props.recordsVersion]);
+    }, [props.year, props.month, props.recordsVersion, localRecordsVersion]);
 
     useEffect(() => {
         const fetchGoal = async () => {
@@ -81,7 +94,7 @@ const RecordCalendar: React.FC<Props> = (props) => {
             }
         };
         fetchGoal();
-    }, [props.year, props.month, props.goalsVersion]);
+    }, [props.year, props.month, props.goalsVersion, localGoalsVersion]);
 
     useEffect(() => {
         const fetchTheme = async () => {
@@ -94,7 +107,91 @@ const RecordCalendar: React.FC<Props> = (props) => {
             }
         };
         fetchTheme();
-    }, [props.year, props.month, props.themesVersion]);
+    }, [props.year, props.month, props.themesVersion, localThemesVersion]);
+
+    const closeModal = () => {
+        setModalType(null);
+        setEditingRecord(null);
+        setEditMinuteTime('0');
+        setEditComment('');
+        setEditTargetHours('0');
+        setEditTheme('');
+        setSaving(false);
+    };
+
+    const openRecordModal = (record: Record) => {
+        setEditingRecord(record);
+        setEditMinuteTime(String(record.minuteTime));
+        setEditComment(record.comment);
+        setModalType('record');
+    };
+
+    const openGoalModal = () => {
+        setEditTargetHours(String(minuteToHour(goal?.targetMinuteTime || 0)));
+        setModalType('goal');
+    };
+
+    const openThemeModal = () => {
+        setEditTheme(theme);
+        setModalType('theme');
+    };
+
+    const handleDigitsOnly = (value: string, max: number): string => {
+        const digitsOnly = value.replace(/\D/g, '');
+        return digitsOnly === '' ? '' : String(Math.min(max, Number(digitsOnly)));
+    };
+
+    const saveRecord = async () => {
+        if (!editingRecord) return;
+
+        try {
+            setSaving(true);
+            await api.post('records', {
+                year: editingRecord.year,
+                month: editingRecord.month,
+                day: editingRecord.day,
+                minuteTime: Number(editMinuteTime || 0),
+                comment: editComment,
+            });
+            setLocalRecordsVersion((version) => version + 1);
+            closeModal();
+        } catch (error) {
+            console.error('Error saving calendar record:', error);
+            setSaving(false);
+        }
+    };
+
+    const saveGoal = async () => {
+        try {
+            setSaving(true);
+            await api.post('goals/monthly', {
+                year: props.year,
+                month: props.month,
+                targetMinuteTime: Number(editTargetHours || 0) * 60,
+            });
+            setLocalGoalsVersion((version) => version + 1);
+            closeModal();
+        } catch (error) {
+            console.error('Error saving monthly goal:', error);
+            setSaving(false);
+        }
+    };
+
+    const saveTheme = async () => {
+        try {
+            setSaving(true);
+            await api.post('themes', {
+                year: props.year,
+                month: props.month,
+                theme: editTheme,
+            });
+            setLocalThemesVersion((version) => version + 1);
+            closeModal();
+        } catch (error) {
+            console.error('Error saving monthly theme:', error);
+            setSaving(false);
+        }
+    };
 
     const targetMinuteTime = goal?.targetMinuteTime || 0;
     const progress = targetMinuteTime > 0 ? Math.min(999, Math.round(total / targetMinuteTime * 100)) : 0;
@@ -108,29 +205,90 @@ const RecordCalendar: React.FC<Props> = (props) => {
                     <span>合計</span>
                     <strong>{totalValue}<small>{props.timeUnit}</small></strong>
                 </div>
-                {targetMinuteTime > 0 && (
-                    <>
-                        <div className="summary-metric">
-                            <span>目標</span>
-                            <strong>{targetValue}<small>{props.timeUnit}</small></strong>
-                        </div>
-                        <div className="summary-metric">
-                            <span>達成率</span>
-                            <strong>{progress}<small>%</small></strong>
-                        </div>
-                    </>
-                )}
-                {theme && (
-                    <div className="summary-theme">
-                        <span>テーマ</span>
-                        <strong>{theme}</strong>
-                    </div>
-                )}
+                <button type="button" className="summary-metric summary-button" onClick={openGoalModal}>
+                    <span>目標</span>
+                    <strong>{targetValue}<small>{props.timeUnit}</small></strong>
+                </button>
+                <div className="summary-metric">
+                    <span>達成率</span>
+                    <strong>{targetMinuteTime > 0 ? progress : '-'}<small>%</small></strong>
+                </div>
+                <button type="button" className="summary-theme summary-button" onClick={openThemeModal}>
+                    <span>テーマ</span>
+                    <strong>{theme || '未設定'}</strong>
+                </button>
             </div>
             <Table responsive="sm" className="calendar-table">
                 <CalendarHeader />
-                <CalendarBody timeUnit={props.timeUnit} records={data} />
+                <CalendarBody
+                    timeUnit={props.timeUnit}
+                    records={data}
+                    onEditRecord={openRecordModal}
+                />
             </Table>
+
+            <AppModal
+                show={modalType === 'record'}
+                title={editingRecord ? `${editingRecord.month}月${editingRecord.day}日の記録` : '記録編集'}
+                onHide={closeModal}
+                onSave={saveRecord}
+                saving={saving}
+            >
+                <Form.Group className="mb-3">
+                    <Form.Label>記録時間 [m]</Form.Label>
+                    <Form.Control
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={editMinuteTime}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setEditMinuteTime(handleDigitsOnly(e.target.value, 1440))}
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>メモ</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        value={editComment}
+                        onChange={(e) => setEditComment(e.target.value)}
+                    />
+                </Form.Group>
+            </AppModal>
+
+            <AppModal
+                show={modalType === 'goal'}
+                title={`${props.year}年${props.month}月の目標`}
+                onHide={closeModal}
+                onSave={saveGoal}
+                saving={saving}
+            >
+                <Form.Group>
+                    <Form.Label>月目標 [h]</Form.Label>
+                    <Form.Control
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={editTargetHours}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => setEditTargetHours(handleDigitsOnly(e.target.value, 744))}
+                    />
+                </Form.Group>
+            </AppModal>
+
+            <AppModal
+                show={modalType === 'theme'}
+                title={`${props.year}年${props.month}月のテーマ`}
+                onHide={closeModal}
+                onSave={saveTheme}
+                saving={saving}
+            >
+                <Form.Group>
+                    <Form.Label>テーマ</Form.Label>
+                    <Form.Control
+                        value={editTheme}
+                        onChange={(e) => setEditTheme(e.target.value)}
+                    />
+                </Form.Group>
+            </AppModal>
         </div>
     );
 };

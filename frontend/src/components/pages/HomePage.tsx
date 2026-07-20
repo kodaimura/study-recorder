@@ -8,7 +8,6 @@ import {
     RecordCalendar,
     RecordGraphMonthly,
     RecordGraphTotal,
-    RecordEditor,
     SelectDate
 } from 'components/features/home';
 
@@ -108,9 +107,6 @@ const HomePage: React.FC = () => {
                         <NavLink to="/calendar" className='nav-link'>
                             <i className="bi bi-calendar me-2"></i> カレンダー
                         </NavLink>
-                        <NavLink to="/editor" className='nav-link'>
-                            <i className="bi bi-pencil-square me-2"></i> 編集
-                        </NavLink>
                         <NavLink to="/graph/monthly" className='nav-link'>
                             <i className="bi bi-graph-up me-2"></i> 月次グラフ
                         </NavLink>
@@ -122,7 +118,6 @@ const HomePage: React.FC = () => {
                 <Routes>
                     <Route path="" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} themesVersion={themesVersion} />} />
                     <Route path="calendar" element={<RecordCalendar year={year} month={month} timeUnit={timeUnit} recordsVersion={recordsVersion} goalsVersion={goalsVersion} themesVersion={themesVersion} />} />
-                    <Route path="editor" element={<RecordEditor year={year} month={month} recordsVersion={recordsVersion} onGoalSaved={refreshGoals} onThemeSaved={refreshThemes} />} />
                     <Route path="graph/monthly" element={<RecordGraphMonthly timeUnit={timeUnit} year={year} month={month} recordsVersion={recordsVersion} goalsVersion={goalsVersion} />} />
                     <Route path="graph/total" element={<RecordGraphTotal timeUnit={timeUnit} recordsVersion={recordsVersion} />} />
                 </Routes>

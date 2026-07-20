@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Record } from 'types/types';
+
 const getCellColor = (minuteTime: number): string => {
     if (minuteTime >= 480) return '#8fbc8f';
     if (minuteTime >= 360) return '#afd4aa';
@@ -10,21 +12,38 @@ const getCellColor = (minuteTime: number): string => {
 };
 
 type Props = {
-    day: number;
-    minuteTime: number;
+    record: Record;
     timeUnit: string;
+    onEdit: (record: Record) => void;
 };
 
-const CalendarCell: React.FC<Props> = ({ day, minuteTime, timeUnit }) => {
+const CalendarCell: React.FC<Props> = ({ record, timeUnit, onEdit }) => {
+    const { day, minuteTime, comment } = record;
     const displayTime = timeUnit === 'm' ? minuteTime : Math.round((minuteTime / 60) * 100) / 100;
+    const hasComment = comment.trim().length > 0;
 
     return (
-        <td className="calendar-cell" style={{ backgroundColor: getCellColor(minuteTime) }}>
+        <td
+            className={`calendar-cell editable ${hasComment ? 'has-comment' : ''}`}
+            style={{ backgroundColor: getCellColor(minuteTime) }}
+        >
             {day !== 0 && (
-                <>
-                    <div className="calendar-day">{day}</div>
+                <button
+                    type="button"
+                    className="calendar-cell-button"
+                    onClick={() => onEdit(record)}
+                >
+                    <div className="calendar-day">
+                        {day}
+                        {hasComment && <span className="comment-dot" aria-label="メモあり"></span>}
+                    </div>
                     <div className="calendar-time">{displayTime}</div>
-                </>
+                    {hasComment && (
+                        <span className="calendar-comment-popover">
+                            {comment}
+                        </span>
+                    )}
+                </button>
             )}
         </td>
     );
