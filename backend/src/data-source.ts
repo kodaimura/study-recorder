@@ -9,7 +9,8 @@ import { Record } from './records/record.entity';
 import { Theme } from './themes/theme.entity';
 import { User } from './users/user.entity';
 
-const envFilePath = process.env.ENV === 'local' ? '.env.local' : '.env';
+const isProductionEnv = (env?: string): boolean => env === 'production' || env === 'prod';
+const envFilePath = isProductionEnv(process.env.ENV) ? '.env' : '.env.local';
 loadEnv({ path: envFilePath });
 
 const getRequiredEnv = (key: string): string => {

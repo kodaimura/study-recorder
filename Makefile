@@ -39,6 +39,15 @@ logback:
 ps:
 	$(DOCKER_COMPOSE_CMD) ps
 
+migration-show:
+	$(DOCKER_COMPOSE_CMD) exec backend npm run migration:show
+
+migration-run:
+	$(DOCKER_COMPOSE_CMD) exec backend npm run migration:run
+
+migration-revert:
+	$(DOCKER_COMPOSE_CMD) exec backend npm run migration:revert
+
 help:
 	@echo "Usage: make [target] [ENV=dev|prod]"
 	@echo ""
@@ -52,3 +61,6 @@ help:
 	@echo "  logfront          Show logs for the frontend service"
 	@echo "  logback           Show logs for the backend service"
 	@echo "  ps                Show container status"
+	@echo "  migration-show    Show pending migrations"
+	@echo "  migration-run     Run pending migrations"
+	@echo "  migration-revert  Revert the latest migration"

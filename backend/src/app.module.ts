@@ -18,12 +18,13 @@ import { RecordsModule } from 'src/records/records.module';
 import { Record } from 'src/records/record.entity';
 import { RecordWork } from 'src/records/record-work.entity';
 
+const isProductionEnv = (env?: string): boolean => env === 'production' || env === 'prod';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: process.env.ENV === 'local' ? '.env.local' : '.env',
+            envFilePath: isProductionEnv(process.env.ENV) ? '.env' : '.env.local',
         }),
         AuthModule,
         UsersModule,
@@ -39,7 +40,7 @@ import { RecordWork } from 'src/records/record-work.entity';
                 username: config.get<string>('DB_USER'),
                 password: config.get<string>('DB_PASSWORD'),
                 entities: [User, Theme, MonthlyGoal, Record, RecordWork],
-                synchronize: config.get<string>('ENV') !== 'production',  // 本番環境ではfalseにする
+                synchronize: !isProductionEnv(config.get<string>('ENV')),  // 本番環境ではfalseにする
                 namingStrategy: new SnakeNamingStrategy(),
             }),
             inject: [ConfigService],
