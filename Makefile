@@ -10,8 +10,10 @@ up:
 prod-setup:
 	mkdir -p frontend/build/graph
 	ln -sf index.html frontend/build/login
+	ln -sf index.html frontend/build/signup
 	ln -sf index.html frontend/build/calendar
-	ln -sf index.html frontend/build/editor
+	ln -sf index.html frontend/build/password
+	ln -sf index.html frontend/build/settings
 	ln -sf ../index.html frontend/build/graph/monthly
 	ln -sf ../index.html frontend/build/graph/total
 
